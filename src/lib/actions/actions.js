@@ -3,16 +3,13 @@ import { authClient } from "../auth-client";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export const updateTask = async (id, taskData) => {
-  const response = await fetch(
-    `${baseUrl}/api/tasks/${id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(taskData),
-    }
-  );
+  const response = await fetch(`${baseUrl}/api/tasks/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(taskData),
+  });
 
   const data = await response.json();
 
@@ -23,12 +20,9 @@ export const updateTask = async (id, taskData) => {
 };
 
 export const deleteTask = async (id) => {
-  const response = await fetch(
-    `${baseUrl}/api/tasks/${id}`,
-    {
-      method: "DELETE",
-    }
-  );
+  const response = await fetch(`${baseUrl}/api/tasks/${id}`, {
+    method: "DELETE",
+  });
 
   return response.json();
 };
@@ -43,10 +37,10 @@ export const rejectProposalAction = async (taskId, proposalId) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({ status: "Rejected" }),
-      }
+      },
     );
 
     const result = await response.json();
@@ -54,14 +48,16 @@ export const rejectProposalAction = async (taskId, proposalId) => {
     if (response.ok && result.success) {
       return { success: true, message: "Proposal rejected successfully" };
     } else {
-      return { success: false, message: result.message || "Failed to reject proposal" };
+      return {
+        success: false,
+        message: result.message || "Failed to reject proposal",
+      };
     }
   } catch (error) {
     console.error("Error in rejectProposalAction:", error);
     return { success: false, message: "Network error, please try again." };
   }
 };
-
 
 // ফ্রিল্যান্সারের সব প্রপোজাল নিয়ে আসার সার্ভার অ্যাকশন
 export const getFreelancerProposals = async (email) => {
@@ -76,7 +72,7 @@ export const getFreelancerProposals = async (email) => {
         // Authorization হেডারে Bearer টোকেন পাস করা হলো
         authorization: `Bearer ${tokenData?.token}`,
       },
-      cache: "no-store" // রিয়েল-টাইম স্ট্যাটাস আপডেটের জন্য ক্যাশিং অফ রাখা হলো
+      cache: "no-store", // রিয়েল-টাইম স্ট্যাটাস আপডেটের জন্য ক্যাশিং অফ রাখা হলো
     });
     const data = await response.json();
     return data;
@@ -102,7 +98,7 @@ export const getProposalDetails = async (proposalId) => {
           authorization: `Bearer ${tokenData?.token}`,
         },
         cache: "no-store",
-      }
+      },
     );
     const result = await response.json();
 
@@ -128,7 +124,7 @@ export const acceptProposalAndPay = async (proposalId) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ status: "accepted" }),
-      }
+      },
     );
     const result = await response.json();
     return result;

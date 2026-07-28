@@ -1,24 +1,23 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { useEffect, useState } from "react";
 // টোস্ট ইম্পোর্ট করা হলো
-import toast, { Toaster } from "react-hot-toast";
 import {
-  User,
-  Mail,
-  Calendar,
-  ShieldAlert,
-  Loader2,
-  Edit3,
-  DollarSign,
-  History,
-  Briefcase,
-  Layers,
   ArrowUpRight,
-  Globe,
+  Briefcase,
+  Calendar,
+  DollarSign,
+  Edit3,
   FileText,
+  Globe,
+  History,
+  Layers,
+  Loader2,
+  Mail,
+  ShieldAlert,
 } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
 const ClientProfilePage = () => {
   const { data: session, isPending: authLoading } = authClient.useSession();
@@ -112,18 +111,15 @@ const ClientProfilePage = () => {
       const { data: tokenData } = await authClient.token();
 
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-      const response = await fetch(
-        `${apiUrl}/api/clients/${session.user.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization হেডারে Bearer টোকেন পাস করা হলো
-            authorization: `Bearer ${tokenData?.token}`,
-          },
-          body: JSON.stringify({ name, image, bio }),
+      const response = await fetch(`${apiUrl}/api/clients/${session.user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization হেডারে Bearer টোকেন পাস করা হলো
+          authorization: `Bearer ${tokenData?.token}`,
         },
-      );
+        body: JSON.stringify({ name, image, bio }),
+      });
 
       const result = await response.json();
 

@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -7,9 +7,9 @@ export const payment = async (data) => {
     const res = await fetch(`${baseUrl}/api/payment`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
 
     if (!res.ok) {
@@ -22,4 +22,4 @@ export const payment = async (data) => {
     console.error("Server Action Payment Error:", error);
     return { success: false, error: error.message };
   }
-}
+};

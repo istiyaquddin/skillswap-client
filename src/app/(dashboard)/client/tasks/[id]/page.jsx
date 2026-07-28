@@ -1,14 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { getTaskDetails } from "@/lib/api/tasks";
-import { Calendar, DollarSign, Briefcase, Edit3, Trash2, Loader2 } from "lucide-react";
-import EditTaskModal from "@/components/minor/EditTaskModal";
-import { deleteTask, rejectProposalAction } from "@/lib/actions/actions";
-import toast from "react-hot-toast";
 import DeleteTaskModal from "@/components/minor/DeleteTaskModal";
+import EditTaskModal from "@/components/minor/EditTaskModal";
 import RejectTaskModal from "@/components/minor/RejectTaskModal";
+import { deleteTask, rejectProposalAction } from "@/lib/actions/actions";
+import { getTaskDetails } from "@/lib/api/tasks";
+import {
+  Briefcase,
+  Calendar,
+  DollarSign,
+  Edit3,
+  Loader2,
+  Trash2,
+} from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 // 💳 পেমেন্ট গেটওয়ে কম্পোনেন্টটি ইম্পোর্ট করা হলো
 import SecureCheckoutView from "@/components/minor/SecureCheckoutView";
 
@@ -55,7 +62,9 @@ const MyTaskDetailsPage = () => {
 
   if (!task) {
     return (
-      <div className="text-center mt-10 text-rose-500 font-bold">Task not found!</div>
+      <div className="text-center mt-10 text-rose-500 font-bold">
+        Task not found!
+      </div>
     );
   }
 
@@ -155,7 +164,7 @@ const MyTaskDetailsPage = () => {
 
       if (response.ok && result.success) {
         toast.success(result.message);
-        
+
         // রিয়েল-টাইম স্টেট ও ইউআই আপডেট
         setTask((prevTask) => {
           const updatedProposals = prevTask.proposals.map((p) => {
@@ -196,7 +205,7 @@ const MyTaskDetailsPage = () => {
         onPaymentSuccess={async () => {
           await handleAcceptSuccessSubmit(
             selectedProposalData.taskId,
-            selectedProposalData.proposalId
+            selectedProposalData.proposalId,
           );
         }}
       />
@@ -206,7 +215,6 @@ const MyTaskDetailsPage = () => {
   return (
     <div className="mx-auto max-w-5xl p-4 md:p-6 text-inherit font-sans min-h-screen selection:bg-cyan-500/20 selection:text-cyan-500">
       <div className="space-y-6 mt-10 md:mt-0">
-        
         {/* ১. মেইন টাস্ক কার্ড */}
         <div className="border border-current/10 bg-current/5 rounded-2xl p-6 shadow-sm backdrop-blur-md relative overflow-hidden">
           <div className="space-y-2 mb-6">
@@ -282,7 +290,8 @@ const MyTaskDetailsPage = () => {
           {task.proposals && task.proposals.length > 0 ? (
             <div className="space-y-4">
               {task.proposals.map((proposal) => {
-                const isPending = proposal.status === "Pending" || !proposal.status;
+                const isPending =
+                  proposal.status === "Pending" || !proposal.status;
                 const isAccepted = proposal.status === "Accepted";
                 const isRejected = proposal.status === "Rejected";
 

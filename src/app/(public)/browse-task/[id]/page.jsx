@@ -1,22 +1,22 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
 import { getTaskDetails } from "@/lib/api/tasks";
-import {
-  Calendar,
-  DollarSign,
-  Briefcase,
-  Edit3,
-  Trash2,
-  Clock,
-  User,
-  Send,
-  CheckCircle2,
-  Loader2,
-  ArrowLeft, // ফিরে যাওয়ার আইকনের জন্য যুক্ত করা হয়েছে
-} from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import {
+  ArrowLeft,
+  Briefcase,
+  Calendar,
+  CheckCircle2,
+  Clock,
+  DollarSign,
+  Edit3,
+  Loader2,
+  Send,
+  Trash2,
+  User,
+} from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 // import { headers } from "next/headers";
 
 const TaskDetailsPage = () => {
@@ -87,7 +87,6 @@ const TaskDetailsPage = () => {
       coverNote,
       freelancerEmail: session.user.email,
     };
-    
 
     try {
       const { data: tokenData } = await authClient.token();
@@ -95,17 +94,14 @@ const TaskDetailsPage = () => {
 
       // console.log("My JWT Token:", tokenData);
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-      const response = await fetch(
-        `${apiUrl}/api/proposals`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${tokenData?.token}`,
-          },
-          body: JSON.stringify(proposalData),
+      const response = await fetch(`${apiUrl}/api/proposals`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${tokenData?.token}`,
         },
-      );
+        body: JSON.stringify(proposalData),
+      });
 
       const result = await response.json();
 

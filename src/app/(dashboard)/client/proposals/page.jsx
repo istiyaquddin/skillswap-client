@@ -1,22 +1,22 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import RejectTaskModal from "@/components/minor/RejectTaskModal";
+import { getMyTasks } from "@/lib/api/tasks";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 import {
+  ArrowUpRight,
+  Calendar,
   CheckCircle,
-  XCircle,
   Clock,
   DollarSign,
-  Calendar,
-  User,
   Layers,
-  ArrowUpRight,
   Loader2,
+  User,
+  XCircle,
 } from "lucide-react";
-import { getMyTasks } from "@/lib/api/tasks";
-import RejectTaskModal from "@/components/minor/RejectTaskModal";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 // 💳 নতুন পেমেন্ট গেটওয়ে কম্পোনেন্টটি ইম্পোর্ট করলাম (নিচে এই ফাইলটির কোড দেওয়া আছে)
 import SecureCheckoutView from "@/components/minor/SecureCheckoutView";
 
