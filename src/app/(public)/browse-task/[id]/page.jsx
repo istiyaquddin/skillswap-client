@@ -94,8 +94,9 @@ const TaskDetailsPage = () => {
       // console.log(tokenData);
 
       // console.log("My JWT Token:", tokenData);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/proposals`,
+        `${apiUrl}/api/proposals`,
         {
           method: "POST",
           headers: {

@@ -138,8 +138,9 @@ const MyTaskDetailsPage = () => {
   // 💳 পেমেন্ট সাকসেস হওয়ার পর এক্সেপ্ট অ্যাকশন সাবমিট করার হ্যান্ডলার
   const handleAcceptSuccessSubmit = async (taskId, proposalId) => {
     try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/proposals/${taskId}/${proposalId}`,
+        `${apiUrl}/api/proposals/${taskId}/${proposalId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

@@ -1,8 +1,10 @@
 import { authClient } from "../auth-client";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export const updateTask = async (id, taskData) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${id}`,
+    `${baseUrl}/api/tasks/${id}`,
     {
       method: "PUT",
       headers: {
@@ -22,7 +24,7 @@ export const updateTask = async (id, taskData) => {
 
 export const deleteTask = async (id) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${id}`,
+    `${baseUrl}/api/tasks/${id}`,
     {
       method: "DELETE",
     }
@@ -36,7 +38,7 @@ export const rejectProposalAction = async (taskId, proposalId) => {
   try {
     // তোমার ব্যাকএন্ড API-তে PUT রিকোয়েস্ট পাঠানো হচ্ছে
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/proposals/${taskId}/${proposalId}`,
+      `${baseUrl}/api/proposals/${taskId}/${proposalId}`,
       {
         method: "PUT",
         headers: {
@@ -67,7 +69,7 @@ export const getFreelancerProposals = async (email) => {
     // Better Auth থেকে টোকেন নেওয়া হচ্ছে
     const { data: tokenData } = await authClient.token();
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/my-proposals?email=${email}`, {
+    const response = await fetch(`${baseUrl}/api/my-proposals?email=${email}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -91,7 +93,7 @@ export const getProposalDetails = async (proposalId) => {
     const { data: tokenData } = await authClient.token();
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/proposals/details/${proposalId}`,
+      `${baseUrl}/api/proposals/details/${proposalId}`,
       {
         method: "GET",
         headers: {
@@ -119,7 +121,7 @@ export const getProposalDetails = async (proposalId) => {
 export const acceptProposalAndPay = async (proposalId) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/proposals/accept/${proposalId}`,
+      `${baseUrl}/api/proposals/accept/${proposalId}`,
       {
         method: "PATCH", // অথবা তোমার ব্যাকএন্ড অনুযায়ী PUT/POST
         headers: {

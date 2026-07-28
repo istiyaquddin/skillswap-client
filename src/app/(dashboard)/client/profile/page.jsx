@@ -111,8 +111,9 @@ const ClientProfilePage = () => {
       // Better Auth থেকে টোকেন নেওয়া হচ্ছে
       const { data: tokenData } = await authClient.token();
 
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/clients/${session.user.id}`,
+        `${apiUrl}/api/clients/${session.user.id}`,
         {
           method: "PUT",
           headers: {

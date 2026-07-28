@@ -1,8 +1,6 @@
-
-
 import { authClient } from "../auth-client";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export const createTask = async (newTaskData) => {
   try {
@@ -20,7 +18,8 @@ export const createTask = async (newTaskData) => {
     });
 
     if (!res.ok) {
-      throw new Error("Failed to create task");
+      const errorText = await res.text();
+      throw new Error(`Failed to create task: ${res.status} ${errorText}`);
     }
 
     return await res.json();
@@ -31,6 +30,8 @@ export const createTask = async (newTaskData) => {
 };
 
 export const getProposalDetails = async (proposalId) => {
-  const res = await fetch(`${baseUrl}/api/proposals/details/${proposalId}`, { cache: 'no-store' });
+  const res = await fetch(`${baseUrl}/api/proposals/details/${proposalId}`, {
+    cache: "no-store",
+  });
   return res.json();
 };

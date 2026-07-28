@@ -1,6 +1,6 @@
 import { authClient } from "../auth-client";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export const getAllTasks = async (filters = {}) => {
   const { search = "", category = "", minBudget = "", maxBudget = "", page = 1, limit = 6, status = "open" } = filters;
@@ -34,7 +34,12 @@ export const getMyTasks = async (clientId) => {
       },
       cache: 'no-store',
     });
-    
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to fetch my tasks: ${res.status} ${errorText}`);
+    }
+
     return await res.json();
   } catch (error) {
     console.error("Error in getMyTasks API call:", error);
