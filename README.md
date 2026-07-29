@@ -1,4 +1,4 @@
-# 🛠️ Freelance Terminal
+# 🛠️ Skill Swap
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 A high-performance full-stack marketplace web application where clients can post projects, freelancers can submit tailored proposals, and workspaces interact seamlessly.
 
-🌐 **Live Demo:** [View FreelanceTerminal Website](https://freelance-terminal.vercel.app)
+🌐 **Live Demo:** [View Skill Swap Website](https://skillswap-client-blush-two.vercel.app/)
 
 </div>
 
