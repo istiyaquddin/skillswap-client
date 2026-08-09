@@ -1,3 +1,5 @@
+<!-- Repository maintenance note -->
+
 # 🛠️ Skill Swap
 
 <div align="center">
