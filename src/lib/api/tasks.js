@@ -1,6 +1,6 @@
 import { authClient } from "../auth-client";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const baseUrl = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
 export const getAllTasks = async (filters = {}) => {
   const { search = "", category = "", minBudget = "", maxBudget = "", page = 1, limit = 6, status = "open" } = filters;
