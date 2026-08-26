@@ -40,20 +40,26 @@ const TasksPage = () => {
   });
 
   return (
-    <div className="mt-12 md:mt-0 max-w-6xl mx-auto p-4 md:p-0 font-sans text-inherit selection:bg-cyan-500/20 selection:text-cyan-500">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <h2 className="text-2xl font-extrabold text-[var(--text)] tracking-tight">My Tasks</h2>
-        
-        {/* টাস্ক যদি থাকে, তবেই যেন ফিল্টার ট্যাবগুলো স্ক্রিনে দেখায় */}
+    <div className="mt-12 md:mt-0 max-w-6xl mx-auto p-4 md:p-0 font-sans text-[var(--text)]">
+      <div className="glass-panel relative mb-8 p-6 md:p-8 rounded-[2.5rem] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
+        <div>
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
+            My <span className="amber-text-gradient">Tasks</span>
+          </h1>
+          <p className="mt-1 text-sm font-medium text-[var(--muted)]">
+            Manage your posted task opportunities and active projects.
+          </p>
+        </div>
+
         {tasks.length > 0 && (
           <div className="flex gap-1.5 bg-[var(--surface-strong)] border border-[var(--border)] p-1.5 rounded-2xl w-fit backdrop-blur-md">
             {["All", "Open", "Completed"].map((status) => (
               <button
                 key={status}
                 onClick={() => setFilterStatus(status)}
-                className={`px-4 py-1.5 text-xs font-bold rounded-xl transition duration-300 cursor-pointer ${
+                className={`px-4 py-2 text-xs font-bold rounded-xl transition duration-300 cursor-pointer ${
                   filterStatus === status
-                    ? "amber-gradient text-white shadow-md"
+                    ? "amber-gradient amber-glow text-white shadow-md"
                     : "text-[var(--muted)] hover:text-[var(--text)]"
                 }`}
               >

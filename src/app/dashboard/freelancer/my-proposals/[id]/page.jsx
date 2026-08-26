@@ -86,21 +86,21 @@ const ProposalDetailsPage = () => {
 
   if (authLoading || loading) {
     return (
-      <div className="flex flex-col gap-3 items-center justify-center min-h-[60vh] text-inherit">
-        <Loader2 className="w-10 h-10 animate-spin text-cyan-500" />
-        <p className="text-xs font-semibold tracking-wider opacity-50 uppercase animate-pulse">Loading Proposal Details...</p>
+      <div className="flex flex-col gap-3 items-center justify-center min-h-[60vh]">
+        <Loader2 className="w-10 h-10 animate-spin text-amber-500" />
+        <p className="text-xs font-semibold tracking-wider text-[var(--muted)] uppercase animate-pulse">Loading Proposal Details...</p>
       </div>
     );
   }
 
   if (!session) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center p-4 text-inherit">
-        <div className="text-center py-12 px-6 border border-current/10 rounded-3xl max-w-sm bg-current/5 backdrop-blur-md">
+      <div className="min-h-[50vh] flex items-center justify-center p-4">
+        <div className="glass-panel text-center py-12 px-6 rounded-3xl max-w-sm">
           <ShieldAlert className="w-10 h-10 mx-auto mb-4 text-rose-500" />
-          <h3 className="text-lg font-bold text-inherit mb-1">Access Denied</h3>
-          <p className="opacity-60 text-sm mb-6">Please authenticate your session to view this track.</p>
-          <button onClick={() => router.push("/login")} className="px-5 py-2 bg-current/10 hover:bg-current/20 text-inherit font-semibold rounded-xl text-sm transition">
+          <h3 className="text-lg font-bold text-[var(--text)] mb-1">Access Denied</h3>
+          <p className="text-[var(--muted)] text-sm mb-6">Please authenticate your session to view this track.</p>
+          <button onClick={() => router.push("/login")} className="px-5 py-2 amber-gradient amber-glow text-white font-semibold rounded-full text-sm transition">
             Go to Login
           </button>
         </div>
@@ -110,12 +110,12 @@ const ProposalDetailsPage = () => {
 
   if (!proposal) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center p-4 text-inherit">
-        <div className="text-center py-12 px-6 border border-dashed border-current/10 rounded-3xl max-w-sm bg-current/5">
+      <div className="min-h-[50vh] flex items-center justify-center p-4">
+        <div className="glass-panel text-center py-12 px-6 rounded-3xl max-w-sm">
           <AlertCircle className="w-10 h-10 mx-auto mb-3 text-amber-500" />
-          <h3 className="text-base font-bold text-inherit">Proposal Not Found</h3>
-          <p className="opacity-50 text-xs mt-1 mb-5">The proposal track ID might be invalid or deleted.</p>
-          <button onClick={() => router.back()} className="text-xs text-cyan-500 font-bold flex items-center justify-center gap-1 mx-auto hover:underline">
+          <h3 className="text-base font-bold text-[var(--text)]">Proposal Not Found</h3>
+          <p className="text-[var(--muted)] text-xs mt-1 mb-5">The proposal track ID might be invalid or deleted.</p>
+          <button onClick={() => router.back()} className="text-xs text-amber-400 font-bold flex items-center justify-center gap-1 mx-auto hover:underline">
             <ArrowLeft className="w-3.5 h-3.5" /> Back to Proposals
           </button>
         </div>
@@ -126,38 +126,38 @@ const ProposalDetailsPage = () => {
   const statusConfig = getStatusConfig(proposal.status);
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 md:mt-0 px-4 md:px-8 py-8 space-y-6 font-sans text-inherit selection:bg-cyan-500/20 selection:text-cyan-500">
+    <div className="max-w-4xl mx-auto mt-10 md:mt-0 px-4 md:px-8 py-8 space-y-6 font-sans text-[var(--text)]">
       
       {/* ব্যাক বাটন */}
       <button
         onClick={() => router.back()}
-        className="group flex items-center gap-2 text-xs font-bold uppercase tracking-wider opacity-60 hover:opacity-100 transition duration-300 cursor-pointer"
+        className="group flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--muted)] hover:text-amber-400 transition duration-300 cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
         Back to List
       </button>
 
       {/* স্ট্যাটাস ব্যানার */}
-      <div className={`relative border rounded-3xl p-6 md:p-8 overflow-hidden backdrop-blur-xl ${statusConfig.bg}`}>
+      <div className={`relative border rounded-[2.5rem] p-6 md:p-8 overflow-hidden backdrop-blur-xl ${statusConfig.bg}`}>
         <div className="absolute top-0 right-0 -mt-8 -mr-8 w-44 h-44 bg-current opacity-[0.03] rounded-full blur-3xl pointer-events-none" />
         
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2">
             <div className="flex items-center gap-2.5">
               {statusConfig.icon}
-              <h2 className="text-xl md:text-2xl font-black tracking-tight text-inherit">
+              <h2 className="text-xl md:text-2xl font-black tracking-tight text-[var(--text)]">
                 {statusConfig.title}
               </h2>
             </div>
-            <p className="text-sm opacity-80 leading-relaxed max-w-xl">
+            <p className="text-sm text-[var(--muted)] leading-relaxed max-w-xl">
               {statusConfig.desc}
             </p>
           </div>
           
-          <div className="border-t md:border-t-0 md:border-l border-current/10 pt-4 md:pt-0 md:pl-6 shrink-0">
-            <span className="text-[10px] uppercase font-bold tracking-widest opacity-50 block mb-1">Track Timeline</span>
-            <div className="flex items-center gap-2 text-sm font-medium opacity-90">
-              <Calendar className="w-4 h-4 opacity-60" />
+          <div className="border-t md:border-t-0 md:border-l border-[var(--border)] pt-4 md:pt-0 md:pl-6 shrink-0">
+            <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] block mb-1">Track Timeline</span>
+            <div className="flex items-center gap-2 text-sm font-medium text-[var(--text)]">
+              <Calendar className="w-4 h-4 text-amber-400" />
               <span>{formatDate(proposal.createdAt)}</span>
             </div>
           </div>
@@ -171,25 +171,25 @@ const ProposalDetailsPage = () => {
         <div className="md:col-span-2 space-y-6">
           
           {/* প্রজেক্ট ইনফো */}
-          <div className="border border-current/10 bg-current/5 rounded-3xl p-6 space-y-4 shadow-sm">
-            <div className="flex items-center gap-2 opacity-50 text-xs font-bold uppercase tracking-wider">
-              <Briefcase className="w-4 h-4 text-cyan-500" />
+          <div className="glass-panel rounded-[2rem] p-6 space-y-4 shadow-sm">
+            <div className="flex items-center gap-2 text-[var(--muted)] text-xs font-bold uppercase tracking-wider">
+              <Briefcase className="w-4 h-4 text-amber-400" />
               <span>Associated Project</span>
             </div>
             
             <div className="space-y-2">
-              <h3 className="text-lg md:text-xl font-bold text-inherit leading-snug">
+              <h3 className="text-lg md:text-xl font-bold text-[var(--text)] leading-snug">
                 {proposal.taskTitle}
               </h3>
-              <div className="flex items-center gap-2 text-xs opacity-60">
+              <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
                 <span>Client Budget Setup:</span>
-                <span className="text-emerald-500 font-bold">${proposal.taskBudget}</span>
+                <span className="text-emerald-400 font-bold">${proposal.taskBudget}</span>
               </div>
             </div>
 
             <Link
               href={`/browse-task/${proposal.taskId}`}
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-cyan-500 bg-cyan-500/5 hover:bg-cyan-500/10 border border-cyan-500/20 hover:border-cyan-500/30 rounded-xl transition-all"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 rounded-xl transition-all"
             >
               View Original Task Requirements
               <ExternalLink className="w-3 h-3" />
@@ -197,12 +197,12 @@ const ProposalDetailsPage = () => {
           </div>
 
           {/* কভার লেটার */}
-          <div className="border border-current/10 bg-current/5 rounded-3xl p-6 space-y-3">
-            <div className="flex items-center gap-2 opacity-50 text-xs font-bold uppercase tracking-wider border-b border-current/10 pb-3">
-              <FileText className="w-4 h-4 text-amber-500" />
+          <div className="glass-panel rounded-[2rem] p-6 space-y-3">
+            <div className="flex items-center gap-2 text-[var(--muted)] text-xs font-bold uppercase tracking-wider border-b border-[var(--border)] pb-3">
+              <FileText className="w-4 h-4 text-amber-400" />
               <span>Your Cover Letter / Pitch Statement</span>
             </div>
-            <p className="text-sm opacity-80 leading-relaxed whitespace-pre-line font-medium italic bg-current/5 p-4 rounded-2xl border border-current/5">
+            <p className="text-sm text-[var(--text)] leading-relaxed whitespace-pre-line font-medium italic bg-[var(--surface-strong)] p-4 rounded-2xl border border-[var(--border)]">
               {proposal.coverNote || "No pitch statement or cover note was included during submission."}
             </p>
           </div>
@@ -212,43 +212,43 @@ const ProposalDetailsPage = () => {
         <div className="space-y-6">
           
           {/* বিড স্টেটমেন্ট কার্ড */}
-          <div className="border border-current/10 bg-current/5 backdrop-blur-md rounded-3xl p-5 md:p-6 space-y-6">
-            <h4 className="text-xs font-black uppercase tracking-widest opacity-50 border-b border-current/10 pb-3">
+          <div className="glass-panel rounded-[2rem] p-5 md:p-6 space-y-6">
+            <h4 className="text-xs font-black uppercase tracking-widest text-[var(--muted)] border-b border-[var(--border)] pb-3">
               Bid Statement
             </h4>
 
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500 shrink-0">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0 font-bold">
                 <DollarSign className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] opacity-50 block font-bold uppercase">Proposed Budget</span>
-                <span className="text-xl font-black text-emerald-500">${proposal.proposedBudget}</span>
+                <span className="text-[11px] text-[var(--muted)] block font-bold uppercase">Proposed Budget</span>
+                <span className="text-xl font-black text-emerald-400">${proposal.proposedBudget}</span>
               </div>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-500 shrink-0">
+              <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0 font-bold">
                 <Clock className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] opacity-50 block font-bold uppercase">Estimated Time</span>
-                <span className="text-base font-bold opacity-90">
+                <span className="text-[11px] text-[var(--muted)] block font-bold uppercase">Estimated Time</span>
+                <span className="text-base font-bold text-[var(--text)]">
                   {proposal.estimatedDays} {proposal.estimatedDays > 1 ? "Days" : "Day"}
                 </span>
               </div>
             </div>
 
-            <div className="pt-2 border-t border-current/10 text-[10px] opacity-40 space-y-1 font-mono tracking-wider">
+            <div className="pt-2 border-t border-[var(--border)] text-[10px] text-[var(--muted)] space-y-1 font-mono tracking-wider">
               <span className="block">TRACK_ID: {id}</span>
               <span className="block">CLIENT_REF: {proposal.taskId}</span>
             </div>
           </div>
 
           {/* প্ল্যাটফর্ম অ্যাডভাইস */}
-          <div className="border border-dashed border-current/10 rounded-3xl p-5 bg-current/5 text-xs opacity-50 leading-relaxed">
-            <span className="font-bold opacity-80 block mb-1">💡 Platform Advice:</span>
-            Never start working or share credential source files until the project status moves to <span className="text-emerald-500 font-bold">Accepted</span> and proper contracts are active.
+          <div className="glass-panel border-dashed border-[var(--border)] rounded-[2rem] p-5 text-xs text-[var(--muted)] leading-relaxed">
+            <span className="font-bold text-[var(--text)] block mb-1">💡 Platform Advice:</span>
+            Never start working or share credential source files until the project status moves to <span className="text-emerald-400 font-bold">Accepted</span> and proper contracts are active.
           </div>
         </div>
 

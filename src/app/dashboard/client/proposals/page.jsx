@@ -200,16 +200,15 @@ const ManageProposalsPage = () => {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 mt-10 md:mt-0 md:px-8 text-inherit font-sans min-h-screen selection:bg-cyan-500/20 selection:text-cyan-500">
-      {/* হেডার সেকশন */}
-      <div className="relative mb-10 p-6 rounded-3xl overflow-hidden bg-current/5 border border-current/10 shadow-xl backdrop-blur-md">
-        <div className="absolute top-0 right-0 -mt-6 -mr-6 w-36 h-36 bg-cyan-500/10 rounded-full blur-3xl"></div>
-        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-inherit">
-          Manage Proposals
+    <div className="mx-auto max-w-6xl px-4 mt-10 md:mt-0 md:px-8 font-sans min-h-screen text-[var(--text)]">
+      {/* हेडर সেকশন */}
+      <div className="glass-panel relative mb-10 p-6 md:p-8 rounded-[2.5rem] overflow-hidden shadow-xl">
+        <div className="absolute top-0 right-0 -mt-6 -mr-6 w-36 h-36 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
+          Manage <span className="amber-text-gradient">Proposals</span>
         </h1>
-        <p className="mt-2 text-sm opacity-60">
-          Review, filter, and respond to incoming pitches from global
-          freelancers.
+        <p className="mt-2 text-sm font-medium text-[var(--muted)]">
+          Review, filter, and respond to incoming pitches from global freelancers.
         </p>
       </div>
 

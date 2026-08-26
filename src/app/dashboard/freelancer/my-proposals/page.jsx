@@ -164,9 +164,9 @@ const MyProposalsPage = () => {
                   </div>
 
                   {/* মেটা ইনফো গ্রিড: বিড বাজেট, টাইমলাইন ও ডেট */}
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 bg-current/5 border border-current/5 rounded-xl p-3 text-xs md:text-sm relative z-20">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 bg-[var(--surface-strong)] border border-[var(--border)] rounded-xl p-3 text-xs md:text-sm relative z-20">
                     <div className="space-y-0.5">
-                      <span className="opacity-50 text-[11px] block">
+                      <span className="text-[var(--muted)] text-[11px] block">
                         Your Bid Budget
                       </span>
                       <div className="flex items-center font-bold text-emerald-500">
@@ -176,22 +176,22 @@ const MyProposalsPage = () => {
                     </div>
 
                     <div className="space-y-0.5">
-                      <span className="opacity-50 text-[11px] block">
+                      <span className="text-[var(--muted)] text-[11px] block">
                         Estimated Time
                       </span>
-                      <div className="flex items-center gap-1.5 font-semibold opacity-80">
-                        <Clock className="w-3.5 h-3.5 opacity-60" />
+                      <div className="flex items-center gap-1.5 font-semibold text-[var(--text)]">
+                        <Clock className="w-3.5 h-3.5 text-amber-400" />
                         {item.estimatedDays}{" "}
                         {item.estimatedDays > 1 ? "Days" : "Day"}
                       </div>
                     </div>
 
                     <div className="space-y-0.5 col-span-2 sm:col-span-1">
-                      <span className="opacity-50 text-[11px] block">
+                      <span className="text-[var(--muted)] text-[11px] block">
                         Submitted On
                       </span>
-                      <div className="flex items-center gap-1.5 font-medium opacity-70">
-                        <Calendar className="w-3.5 h-3.5 opacity-60" />
+                      <div className="flex items-center gap-1.5 font-medium text-[var(--muted)]">
+                        <Calendar className="w-3.5 h-3.5 text-amber-400" />
                         {formatDate(item.createdAt)}
                       </div>
                     </div>
@@ -200,11 +200,11 @@ const MyProposalsPage = () => {
                   {/* কাভার নোট সেকশন */}
                   {item.coverNote && (
                     <div className="space-y-1.5 pt-1 relative z-20">
-                      <div className="flex items-center gap-1.5 text-xs font-medium opacity-50">
+                      <div className="flex items-center gap-1.5 text-xs font-medium text-[var(--muted)]">
                         <FileText className="w-3.5 h-3.5" />
                         <span>Your Cover Note</span>
                       </div>
-                      <p className="text-sm opacity-80 leading-relaxed bg-current/5 border border-current/5 rounded-xl p-3 italic">
+                      <p className="text-sm text-[var(--text)] leading-relaxed bg-[var(--surface-strong)] border border-[var(--border)] rounded-xl p-3 italic">
                         {item.coverNote}
                       </p>
                     </div>

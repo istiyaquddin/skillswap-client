@@ -20,6 +20,8 @@ import {
   Users,
   Briefcase,
   LogOut,
+  GraduationCap,
+  Sparkles,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
@@ -90,13 +92,20 @@ export default function Sidebar() {
           <X size={20} />
         </button>
 
-        <Link href="/" className="mb-6 mt-8 flex items-center gap-3 md:mt-0">
-          <div className="brand-gradient flex h-10 w-10 items-center justify-center rounded-2xl p-1.5">
-            <img src="/favicon.svg" alt="SkillSwap logo" className="h-6 w-6" />
+        <Link href="/" className="mb-6 mt-8 flex items-center gap-3 md:mt-0 group">
+          <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-[#222325] text-white shadow-[0_10px_24px_rgba(29,191,115,0.28)] transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110">
+            <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-[#3b82f6] ring-4 ring-white animate-pulse" />
+            <span className="absolute bottom-1.5 left-1.5 h-2 w-2 rounded-full bg-[#1dbf73]" />
+            <GraduationCap className="relative z-10 h-5 w-5 stroke-[2.2] group-hover:scale-110 transition-transform text-white" />
+            <Sparkles className="absolute -bottom-1 -right-1 h-4 w-4 text-[#1dbf73] animate-spin" style={{ animationDuration: '4s' }} />
           </div>
-          <div>
-            <h2 className="text-lg font-bold leading-none text-[var(--text)]">Skill<span className="text-[var(--accent)]">Swap</span></h2>
-            <p className="mt-1 text-[10px] uppercase tracking-[0.25em] text-[var(--muted)]">workspace</p>
+          <div className="leading-tight">
+            <h2 className="text-[1.1rem] font-black tracking-tight text-[var(--text)]">
+              Skill<span className="amber-text-gradient">Swap</span>
+            </h2>
+            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--muted)] group-hover:text-amber-400 transition-colors">
+              Campus exchange
+            </span>
           </div>
         </Link>
 
