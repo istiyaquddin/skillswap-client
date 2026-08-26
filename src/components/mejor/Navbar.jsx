@@ -1,19 +1,20 @@
 "use client";
 
+import avatar from "@/assets/user.png";
+import { authClient } from "@/lib/auth-client";
+import { Briefcase } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import toast from "react-hot-toast";
 import DropDownMenu from "../minor/DropDownMenu";
 import NavLink from "../minor/NavLink";
-import { authClient } from "@/lib/auth-client";
-import toast from "react-hot-toast";
-import avatar from "@/assets/user.png";
-import { Briefcase } from "lucide-react";
 
 const Navbar = () => {
   const { data: session, isPending } = authClient.useSession();
 
   const userImage =
-    typeof session?.user?.image === "string" && session.user.image.startsWith("http")
+    typeof session?.user?.image === "string" &&
+    session.user.image.startsWith("http")
       ? session.user.image
       : avatar;
 
@@ -33,13 +34,13 @@ const Navbar = () => {
     ? [
         { name: "Home", href: "/" },
         { name: "Dashboard", href: getDashboardHref(session.user.role) },
-        { name: "Browse Tasks", href: "/browse-task" },
-        { name: "Browse Freelancers", href: "/browse-freelancer" },
+        { name: "Explore Skills", href: "/browse-task" },
+        { name: "Find Mentors", href: "/browse-freelancer" },
       ]
     : [
         { name: "Home", href: "/" },
-        { name: "Browse Tasks", href: "/browse-task" },
-        { name: "Browse Freelancers", href: "/browse-freelancer" },
+        { name: "Explore Skills", href: "/browse-task" },
+        { name: "Find Mentors", href: "/browse-freelancer" },
       ];
 
   const handleLogout = async () => {
@@ -91,7 +92,10 @@ const Navbar = () => {
             <div className="h-9 w-24 animate-pulse rounded-full bg-[var(--surface-strong)]" />
           ) : session?.user ? (
             <>
-              <Link href={getProfileHref(session.user.role)} className="flex items-center">
+              <Link
+                href={getProfileHref(session.user.role)}
+                className="flex items-center"
+              >
                 <Image
                   src={userImage}
                   alt="User"
@@ -135,4 +139,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar;

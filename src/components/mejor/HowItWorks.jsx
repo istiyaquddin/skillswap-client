@@ -1,30 +1,33 @@
 "use client";
 
-import { FileText, Users, ShieldCheck, ArrowRight } from "lucide-react";
+import { ArrowRight, FileText, ShieldCheck, Users } from "lucide-react";
 import Link from "next/link";
 
 const HowItWorks = () => {
   const steps = [
     {
       number: "01",
-      title: "Post a Task",
-      description: "Define your project requirements, set a custom budget, and publish your micro-task in seconds.",
+      title: "Join Campus",
+      description:
+        "Create your student profile and receive starter tokens to begin learning from your community.",
       icon: FileText,
       accent: "from-amber-500 to-amber-600",
       glow: "amber-glow",
     },
     {
       number: "02",
-      title: "Get Proposals",
-      description: "Receive tailored bids from vetted specialists. Review profiles, skillsets, and past completion stats.",
+      title: "Find a Skill",
+      description:
+        "Explore peer teachers, compare skills and availability, then request a session with one token.",
       icon: Users,
       accent: "from-amber-400 to-emerald-500",
       glow: "emerald-glow",
     },
     {
       number: "03",
-      title: "Hire & Pay Securely",
-      description: "Accept the best proposal and collaborate. Payment is held in secure Stripe milestone escrows until you approve.",
+      title: "Learn, Then Teach",
+      description:
+        "Complete your session, build momentum, and earn tokens by sharing your own skills with others.",
       icon: ShieldCheck,
       accent: "from-emerald-500 to-teal-500",
       glow: "emerald-glow",
@@ -36,13 +39,13 @@ const HowItWorks = () => {
       <div className="relative mx-auto w-[95%] lg:w-[78%]">
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-400">
-            ⚡ Simple 3-Step Process
+            ⚡ Learn by exchange
           </div>
           <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[var(--text)] md:text-5xl">
             How <span className="amber-text-gradient">SkillSwap</span> Works
           </h2>
           <p className="mt-3 text-base text-[var(--muted)] max-w-xl mx-auto">
-            Get your tasks completed faster with zero friction. From brief to final delivery in three simple steps.
+            A simple loop that keeps knowledge moving across campus.
           </p>
         </div>
 
@@ -61,7 +64,9 @@ const HowItWorks = () => {
                 className="glass-panel relative overflow-hidden rounded-[2rem] p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-500/40 group block cursor-pointer"
               >
                 <div className="flex items-center justify-between mb-6">
-                  <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r ${step.accent} text-white shadow-lg transition-transform duration-300 group-hover:scale-110`}>
+                  <div
+                    className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r ${step.accent} text-white shadow-lg transition-transform duration-300 group-hover:scale-110`}
+                  >
                     <Icon className="h-7 w-7" />
                   </div>
                   <span className="text-3xl font-black text-[var(--muted)]/30 group-hover:text-amber-400/50 transition">
@@ -69,8 +74,12 @@ const HowItWorks = () => {
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-[var(--text)] mb-3">{step.title}</h3>
-                <p className="text-sm leading-relaxed text-[var(--muted)]">{step.description}</p>
+                <h3 className="text-xl font-bold text-[var(--text)] mb-3">
+                  {step.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-[var(--muted)]">
+                  {step.description}
+                </p>
 
                 {idx < steps.length - 1 && (
                   <div className="hidden lg:block absolute -right-4 top-1/2 -translate-y-1/2 z-10 text-amber-500/30">

@@ -2,8 +2,7 @@
 
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
-import { FaGoogle, FaPaypal, FaArrowRight } from "react-icons/fa";
-import { FiExternalLink } from "react-icons/fi";
+import { FaArrowRight, FaGoogle, FaPaypal } from "react-icons/fa";
 import { SiMeta, SiNetflix, SiPayoneer } from "react-icons/si";
 
 const Banner = () => {
@@ -31,16 +30,17 @@ const Banner = () => {
           <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
             <div className="text-center lg:text-left">
               <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur">
-                <span>✨</span> The modern freelance platform
+                <span>●</span> Campus-powered learning
               </div>
 
               <h1 className="text-4xl font-black tracking-tight leading-[1.15] text-[var(--text)] md:text-5xl lg:text-6xl">
-                Get your tasks done by{" "}
-                <span className="amber-text-gradient">skilled freelancers</span>
+                Trade skills.{" "}
+                <span className="amber-text-gradient">Learn together.</span>
               </h1>
 
               <p className="mt-6 max-w-2xl text-base leading-7 text-[var(--muted)] md:text-lg">
-                SkillSwap connects clients with skilled specialists for micro-tasks and full-scale engineering. Post, propose, pay — all in one seamless platform.
+                SkillSwap helps students teach what they know, learn from their
+                peers, and grow through a simple token-based campus community.
               </p>
 
               <div className="mt-8 flex flex-wrap justify-center gap-4 lg:justify-start">
@@ -90,7 +90,8 @@ const Banner = () => {
                       href="/browse-task"
                       className="rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-6 py-3.5 text-sm font-semibold text-[var(--text)] transition hover:border-amber-500/40 hover:text-amber-400"
                     >
-                      Browse Tasks <FaArrowRight className="inline-block ml-1 h-3 w-3" />
+                      Browse Tasks{" "}
+                      <FaArrowRight className="inline-block ml-1 h-3 w-3" />
                     </Link>
                   </>
                 )}
@@ -101,10 +102,10 @@ const Banner = () => {
                   const categoryQuery = item.includes("Development")
                     ? "Development"
                     : item.includes("Design")
-                    ? "Design"
-                    : item.includes("Marketing")
-                    ? "Marketing"
-                    : "Other";
+                      ? "Design"
+                      : item.includes("Marketing")
+                        ? "Marketing"
+                        : "Other";
                   return (
                     <Link
                       key={item}
@@ -136,9 +137,24 @@ const Banner = () => {
 
                 <div className="mt-6 space-y-3">
                   {[
-                    ["Software Development", "Full-Stack Task", "$450 Budget", "Open"],
-                    ["Brand Design Sprint", "UI/UX Identity", "$280 Budget", "In Review"],
-                    ["Stripe Payment Engine", "Milestone Released", "$600 Secured", "Completed"],
+                    [
+                      "Software Development",
+                      "Full-Stack Task",
+                      "$450 Budget",
+                      "Open",
+                    ],
+                    [
+                      "Brand Design Sprint",
+                      "UI/UX Identity",
+                      "$280 Budget",
+                      "In Review",
+                    ],
+                    [
+                      "Stripe Payment Engine",
+                      "Milestone Released",
+                      "$600 Secured",
+                      "Completed",
+                    ],
                   ].map(([title, desc, budget, status]) => (
                     <Link
                       key={title}
@@ -146,12 +162,18 @@ const Banner = () => {
                       className="flex items-center justify-between rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] p-3.5 transition hover:border-amber-500/30 block cursor-pointer"
                     >
                       <div>
-                        <p className="text-sm font-semibold text-[var(--text)]">{title}</p>
+                        <p className="text-sm font-semibold text-[var(--text)]">
+                          {title}
+                        </p>
                         <p className="text-xs text-[var(--muted)]">{desc}</p>
                       </div>
                       <div className="text-right">
-                        <span className="block text-xs font-bold text-amber-400">{budget}</span>
-                        <span className="text-[10px] text-emerald-400 font-semibold">{status}</span>
+                        <span className="block text-xs font-bold text-amber-400">
+                          {budget}
+                        </span>
+                        <span className="text-[10px] text-emerald-400 font-semibold">
+                          {status}
+                        </span>
                       </div>
                     </Link>
                   ))}
@@ -160,19 +182,24 @@ const Banner = () => {
 
               <div className="mt-6 flex flex-wrap items-center justify-center gap-5 text-sm text-[var(--muted)]">
                 <div className="flex items-center gap-1.5 hover:text-[var(--text)] transition">
-                  <FaGoogle className="text-base" /> <span className="font-semibold">Google</span>
+                  <FaGoogle className="text-base" />{" "}
+                  <span className="font-semibold">Google</span>
                 </div>
                 <div className="flex items-center gap-1.5 hover:text-[var(--text)] transition">
-                  <SiMeta className="text-base" /> <span className="font-semibold">Meta</span>
+                  <SiMeta className="text-base" />{" "}
+                  <span className="font-semibold">Meta</span>
                 </div>
                 <div className="flex items-center gap-1.5 hover:text-[var(--text)] transition">
-                  <SiNetflix className="text-base" /> <span className="font-semibold">Netflix</span>
+                  <SiNetflix className="text-base" />{" "}
+                  <span className="font-semibold">Netflix</span>
                 </div>
                 <div className="flex items-center gap-1.5 hover:text-[var(--text)] transition">
-                  <FaPaypal className="text-base" /> <span className="font-semibold">PayPal</span>
+                  <FaPaypal className="text-base" />{" "}
+                  <span className="font-semibold">PayPal</span>
                 </div>
                 <div className="flex items-center gap-1.5 hover:text-[var(--text)] transition">
-                  <SiPayoneer className="text-base" /> <span className="font-semibold">Payoneer</span>
+                  <SiPayoneer className="text-base" />{" "}
+                  <span className="font-semibold">Payoneer</span>
                 </div>
               </div>
             </div>
@@ -183,4 +210,4 @@ const Banner = () => {
   );
 };
 
-export default Banner;
+export default Banner;

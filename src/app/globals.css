@@ -2,28 +2,28 @@
 @import "@heroui/styles";
 
 :root {
-  color-scheme: dark;
-  --bg: #090d16;
-  --surface: rgba(15, 23, 42, 0.8);
-  --surface-strong: rgba(15, 23, 42, 0.95);
-  --text: #f8fafc;
-  --muted: #94a3b8;
-  --border: rgba(245, 158, 11, 0.2);
-  --primary-amber: #f59e0b;
-  --primary-amber-hover: #d97706;
-  --emerald-accent: #10b981;
-  --shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: rgba(255, 255, 255, 0.84);
+  --surface-strong: #ffffff;
+  --text: #222325;
+  --muted: #62646a;
+  --border: #e5e7eb;
+  --primary-amber: #1dbf73;
+  --primary-amber-hover: #19a463;
+  --emerald-accent: #1dbf73;
+  --shadow: 0 20px 50px rgba(34, 35, 37, 0.08);
 }
 
-[data-theme="light"], .light-mode {
-  color-scheme: light;
-  --bg: #fbf9f6;
-  --surface: rgba(255, 255, 255, 0.9);
-  --surface-strong: #ffffff;
-  --text: #0f172a;
-  --muted: #64748b;
-  --border: rgba(245, 158, 11, 0.25);
-  --shadow: 0 20px 40px rgba(245, 158, 11, 0.08);
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111315;
+  --surface: rgba(29, 33, 35, 0.88);
+  --surface-strong: #1d2123;
+  --text: #f8fafc;
+  --muted: #a7adb0;
+  --border: rgba(29, 191, 115, 0.24);
+  --shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
 }
 
 html {
@@ -46,8 +46,8 @@ body {
 
 .bg-grid-pattern {
   background-image:
-    linear-gradient(rgba(245, 158, 11, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245, 158, 11, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(29, 191, 115, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 191, 115, 0.08) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
@@ -60,7 +60,7 @@ body {
 }
 
 .amber-glow {
-  box-shadow: 0 10px 30px -10px rgba(245, 158, 11, 0.45);
+  box-shadow: 0 10px 30px -10px rgba(29, 191, 115, 0.45);
 }
 
 .amber-glow-lg {
@@ -68,11 +68,11 @@ body {
 }
 
 .amber-gradient {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background: linear-gradient(135deg, #1dbf73 0%, #19a463 100%);
 }
 
 .amber-text-gradient {
-  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  background: linear-gradient(135deg, #1dbf73 0%, #128c55 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -94,4 +94,4 @@ select:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
   box-shadow: 0 0 0px 1000px transparent inset !important;
   transition: background-color 5000s ease-in-out 0s;
-}
+}
