@@ -1,36 +1,35 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 import {
-  Users,
-  Briefcase,
-  ShieldAlert,
-  Loader2,
-  TrendingUp,
   Activity,
-  ArrowUpRight,
-  PieChart as PieIcon,
   BarChart3,
-  Sparkles,
+  Briefcase,
   ChevronRight,
+  Loader2,
+  PieChart as PieIcon,
+  ShieldAlert,
   ShieldCheck,
+  Sparkles,
+  TrendingUp,
+  Users,
 } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import {
-  ResponsiveContainer,
-  AreaChart,
   Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
 } from "recharts";
-import { authClient } from "@/lib/auth-client";
 
 export default function AdminDashboardOverview() {
   const [loading, setLoading] = useState(true);
@@ -50,10 +49,19 @@ export default function AdminDashboardOverview() {
     totalBudget: 0,
   });
   const [recentActivity, setRecentActivity] = useState([]);
+  const [proposalStats, setProposalStats] = useState({
+    total: 0,
+    pending: 0,
+    accepted: 0,
+    rejected: 0,
+  });
+  const [paymentStats, setPaymentStats] = useState({ total: 0, volume: 0 });
 
   useEffect(() => {
     const loadDashboardData = async () => {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      const apiUrl = (
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+      ).replace(/\/$/, "");
 
       try {
         const { data: tokenData } = await authClient.token();
@@ -63,19 +71,14 @@ export default function AdminDashboardOverview() {
           authorization: `Bearer ${tokenData?.token}`,
         };
 
-        const [userRes, taskRes] = await Promise.all([
-          fetch(`${apiUrl}/api/admin/users`, {
-            method: "GET",
-            headers: requestHeaders,
-          }).then((res) => res.json()).catch(() => ({ success: false })),
-          fetch(`${apiUrl}/api/admin/tasks`, {
-            method: "GET",
-            headers: requestHeaders,
-          }).then((res) => res.json()).catch(() => ({ success: false })),
-        ]);
+        const overviewRes = await fetch(`${apiUrl}/api/admin/overview`, {
+          method: "GET",
+          headers: requestHeaders,
+        });
+        const overview = await overviewRes.json();
 
-        if (userRes.success && taskRes.success) {
-          const users = userRes.users || [];
+        if (overview.success) {
+          const users = overview.users || [];
           const activeUsers = users.filter(
             (u) => u.status !== "Blocked",
           ).length;
@@ -98,7 +101,7 @@ export default function AdminDashboardOverview() {
             freelancer: freelancerCount || users.length - clientCount,
           });
 
-          const tasks = taskRes.tasks || [];
+          const tasks = overview.tasks || [];
           let completed = 0;
           let open = 0;
           let ongoing = 0;
@@ -120,7 +123,16 @@ export default function AdminDashboardOverview() {
             ongoing,
             totalBudget: budgetSum,
           });
-          setRecentActivity(tasks.slice(0, 5));
+          setProposalStats(
+            overview.proposals || {
+              total: 0,
+              pending: 0,
+              accepted: 0,
+              rejected: 0,
+            },
+          );
+          setPaymentStats(overview.payments || { total: 0, volume: 0 });
+          setRecentActivity(overview.recentActivity || tasks.slice(0, 5));
         }
       } catch (err) {
         console.error("Error loading dashboard metrics:", err);
@@ -136,7 +148,9 @@ export default function AdminDashboardOverview() {
     return (
       <div className="flex flex-col h-96 w-full items-center justify-center gap-3">
         <Loader2 className="w-10 h-10 animate-spin text-amber-500" />
-        <p className="text-xs font-semibold uppercase tracking-widest text-[var(--muted)]">Loading Admin Control Center...</p>
+        <p className="text-xs font-semibold uppercase tracking-widest text-[var(--muted)]">
+          Loading Admin Control Center...
+        </p>
       </div>
     );
   }
@@ -186,6 +200,20 @@ export default function AdminDashboardOverview() {
       icon: ShieldAlert,
       color: "text-rose-400 border-rose-500/30 bg-rose-500/10",
     },
+    {
+      title: "Proposal Pipeline",
+      value: proposalStats.total,
+      description: `${proposalStats.pending} Pending / ${proposalStats.accepted} Accepted`,
+      icon: Activity,
+      color: "text-indigo-400 border-indigo-500/30 bg-indigo-500/10",
+    },
+    {
+      title: "Payment Records",
+      value: paymentStats.total,
+      description: `$${paymentStats.volume.toLocaleString()} tracked volume`,
+      icon: ShieldCheck,
+      color: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10",
+    },
   ];
 
   return (
@@ -199,10 +227,12 @@ export default function AdminDashboardOverview() {
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
-            Platform <span className="amber-text-gradient">Governance</span> Portal
+            Platform <span className="amber-text-gradient">Governance</span>{" "}
+            Portal
           </h1>
           <p className="text-sm text-[var(--muted)] max-w-lg">
-            Real-time platform oversight, user moderation, transaction metrics, and ecosystem health.
+            Real-time platform oversight, user moderation, transaction metrics,
+            and ecosystem health.
           </p>
         </div>
 
@@ -230,11 +260,15 @@ export default function AdminDashboardOverview() {
                     {item.value}
                   </h2>
                 </div>
-                <div className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${item.color}`}>
+                <div
+                  className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${item.color}`}
+                >
                   <Icon className="w-5 h-5" />
                 </div>
               </div>
-              <p className="mt-4 text-xs font-medium text-[var(--muted)]">{item.description}</p>
+              <p className="mt-4 text-xs font-medium text-[var(--muted)]">
+                {item.description}
+              </p>
             </div>
           );
         })}
@@ -406,7 +440,8 @@ export default function AdminDashboardOverview() {
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-[var(--muted)] flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-400" /> Freelancers
+                <span className="w-2 h-2 rounded-full bg-emerald-400" />{" "}
+                Freelancers
               </span>
               <span className="text-[var(--text)]">{userStats.freelancer}</span>
             </div>
@@ -461,7 +496,8 @@ export default function AdminDashboardOverview() {
           <div className="space-y-1.5 font-bold">
             <div className="flex justify-between text-xs border-b border-[var(--border)] pb-1">
               <span className="text-[var(--muted)] flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-amber-400" /> Active Users
+                <span className="w-2 h-2 rounded-full bg-amber-400" /> Active
+                Users
               </span>
               <span className="text-[var(--text)]">{userStats.active}</span>
             </div>
@@ -482,7 +518,9 @@ export default function AdminDashboardOverview() {
             <h2 className="text-xl md:text-2xl font-extrabold tracking-tight text-[var(--text)]">
               Recent Market Tasks
             </h2>
-            <p className="text-xs text-[var(--muted)]">Global task postings across the platform.</p>
+            <p className="text-xs text-[var(--muted)]">
+              Global task postings across the platform.
+            </p>
           </div>
           {taskStats.total > 0 && (
             <Link
@@ -539,4 +577,3 @@ export default function AdminDashboardOverview() {
     </div>
   );
 }
-
