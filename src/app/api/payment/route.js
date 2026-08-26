@@ -46,8 +46,8 @@ export async function POST(request) {
         price: price
       },
       mode: 'payment',
-      success_url: `${origin}/api/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/client/proposals`,
+      success_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/dashboard/client/proposals`,
     });
 
     return NextResponse.redirect(session.url, 303)

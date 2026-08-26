@@ -4,20 +4,18 @@ import { getTaskDetails } from "@/lib/api/tasks";
 import { authClient } from "@/lib/auth-client";
 import {
   ArrowLeft,
-  Briefcase,
   Calendar,
   CheckCircle2,
   Clock,
-  DollarSign,
   Edit3,
   Loader2,
   Send,
-  Trash2,
+  ShieldCheck,
   User,
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-// import { headers } from "next/headers";
+import toast from "react-hot-toast";
 
 const TaskDetailsPage = () => {
   const { id } = useParams();
@@ -35,7 +33,6 @@ const TaskDetailsPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // ডাইনামিক রোল গেট করা (সেশন না থাকলে গেস্ট ইউজার)
   const userRole = session?.user?.role || "guest";
 
   useEffect(() => {
@@ -44,16 +41,20 @@ const TaskDetailsPage = () => {
         const data = await getTaskDetails(id);
         setTask(data);
 
-        if (data && session?.user?.email) {
-          const hasAlreadySubmitted = data.proposals?.some(
-            (proposal) => proposal.freelancerEmail === session.user.email,
-          );
-          if (hasAlreadySubmitted) {
-            setIsSubmitted(true);
+        if (data) {
+          if (data.budget) setProposedBudget(String(data.budget));
+          if (session?.user?.email) {
+            const hasAlreadySubmitted = data.proposals?.some(
+              (proposal) => proposal.freelancerEmail === session.user.email,
+            );
+            if (hasAlreadySubmitted) {
+              setIsSubmitted(true);
+            }
           }
         }
       } catch (error) {
         console.error("Error fetching task details:", error);
+        toast.error("Failed to load task details.");
       } finally {
         setLoading(false);
       }
@@ -67,16 +68,20 @@ const TaskDetailsPage = () => {
     e.preventDefault();
 
     if (!session?.user?.email) {
-      alert("You must be logged in to submit a proposal.");
+      toast.error("You must be logged in to submit a proposal.");
+      router.push("/login");
       return;
     }
 
     if (isSubmitted) {
-      alert("You have already submitted a proposal for this task.");
+      toast.error("You have already submitted a proposal for this task.");
       return;
     }
 
-    if (!proposedBudget || !estimatedDays || !coverNote) return;
+    if (!proposedBudget || !estimatedDays || !coverNote) {
+      toast.error("Please fill out all proposal fields.");
+      return;
+    }
 
     setIsSubmitting(true);
 
@@ -90,9 +95,6 @@ const TaskDetailsPage = () => {
 
     try {
       const { data: tokenData } = await authClient.token();
-      // console.log(tokenData);
-
-      // console.log("My JWT Token:", tokenData);
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
       const response = await fetch(`${apiUrl}/api/proposals`, {
         method: "POST",
@@ -107,6 +109,7 @@ const TaskDetailsPage = () => {
 
       if (response.ok && result.success) {
         setIsSubmitted(true);
+        toast.success("Proposal submitted successfully!");
 
         setTask((prev) => ({
           ...prev,
@@ -116,11 +119,11 @@ const TaskDetailsPage = () => {
           ],
         }));
       } else {
-        alert(result.message || "Failed to submit proposal");
+        toast.error(result.message || "Failed to submit proposal");
       }
     } catch (error) {
       console.error("Failed to submit proposal:", error);
-      alert("Network error, please try again.");
+      toast.error("Network error, please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -128,16 +131,28 @@ const TaskDetailsPage = () => {
 
   if (authLoading || loading) {
     return (
-      <div className="flex h-96 w-full items-center justify-center">
-        <Loader2 className="animate-spin text-cyan-500" size={36} />
+      <div className="flex flex-col h-96 w-full items-center justify-center gap-3">
+        <Loader2 className="animate-spin text-amber-500" size={38} />
+        <p className="text-xs font-semibold uppercase tracking-widest text-[var(--muted)]">
+          Loading Task Details...
+        </p>
       </div>
     );
   }
 
   if (!task) {
     return (
-      <div className="text-center mt-10 text-rose-500 font-semibold">
-        Task not found!
+      <div className="glass-panel max-w-lg mx-auto p-8 rounded-[2rem] text-center mt-12 space-y-4">
+        <h2 className="text-xl font-bold text-rose-400">Task Not Found</h2>
+        <p className="text-sm text-[var(--muted)]">
+          The requested task does not exist or has been removed.
+        </p>
+        <button
+          onClick={() => router.push("/browse-task")}
+          className="amber-gradient amber-glow px-6 py-2.5 rounded-full text-xs font-bold text-white uppercase tracking-wider"
+        >
+          Back to Task Directory
+        </button>
       </div>
     );
   }
@@ -145,251 +160,269 @@ const TaskDetailsPage = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
-    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4 md:px-6 mt-12 md:0 font-sans text-inherit">
-      {/* Back to Tasks Button */}
+    <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 font-sans">
+      {/* Back Button */}
       <div className="mb-6">
         <button
           onClick={() => router.push("/browse-task")}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-current/10 bg-current/5 text-sm font-medium transition hover:bg-current/10 opacity-80 hover:opacity-100"
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-2 text-xs font-bold text-[var(--text)] transition hover:text-amber-400 hover:border-amber-400"
         >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Tasks
+          <ArrowLeft className="w-4 h-4" /> Back to Tasks
         </button>
       </div>
 
-      {/* মেইন গ্রিড লেআউট */}
+      {/* Main Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* বাম দিকের সেকশন: টাইটেল, ডেসক্রিপশন ও প্রপোজাল ফর্ম/লিস্ট */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="border border-current/10 bg-current/5 rounded-xl p-6 space-y-4">
-            <div className="flex items-center gap-2">
+        {/* Left Column: Task Header, Description & Proposal Form */}
+        <div className="lg:col-span-2 space-y-8">
+          <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 space-y-6">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3.5 py-1 text-xs font-bold text-amber-400">
+                {task.category || "Development"}
+              </span>
+
               <span
-                className={`px-3 py-0.5 rounded-full text-xs font-semibold capitalize tracking-wide ${
+                className={`px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider border flex items-center gap-1.5 ${
                   task.status === "open"
-                    ? "bg-cyan-500/10 text-cyan-500 border border-cyan-500/20"
-                    : "bg-current/10 opacity-60"
+                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                    : "bg-[var(--surface)] text-[var(--muted)] border-[var(--border)]"
                 }`}
               >
-                {task.status}
-              </span>
-              <span className="flex items-center gap-1.5 bg-current/5 border border-current/10 px-3 py-0.5 rounded-full text-xs font-medium opacity-80">
-                <Briefcase className="w-3.5 h-3.5 text-cyan-500" />
-                {task.category || "Development"}
+                ● {task.status || "open"}
               </span>
             </div>
 
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-inherit">
+            <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--text)] leading-tight">
               {task.title}
             </h1>
 
-            <p className="opacity-70 text-sm md:text-base leading-relaxed whitespace-pre-line pt-2">
-              {task.description}
-            </p>
+            <div className="border-t border-[var(--border)] pt-5">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-2">
+                Project Brief
+              </h3>
+              <p className="text-[var(--text)] text-sm md:text-base leading-relaxed whitespace-pre-line">
+                {task.description}
+              </p>
+            </div>
 
-            {/* Client Role Buttons */}
-            {userRole === "client" && (
-              <div className="border-t border-current/10 my-6 pt-4 flex items-center gap-3">
-                <button
-                  type="button"
-                  className="flex items-center gap-2 px-4 py-1.5 border border-current/10 text-inherit opacity-60 font-medium text-sm rounded-lg transition hover:bg-current/5"
-                >
-                  <Edit3 className="w-4 h-4" />
-                  Edit
-                </button>
-
-                <button
-                  type="button"
-                  className="flex items-center gap-2 px-4 py-1.5 border border-rose-500/20 text-rose-500 font-medium text-sm rounded-lg transition hover:bg-rose-500/5"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  Delete
-                </button>
-              </div>
-            )}
+            {userRole === "client" &&
+              session?.user?.email === task.clientEmail && (
+                <div className="border-t border-[var(--border)] pt-4 flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      router.push(`/dashboard/client/tasks/${task._id}`)
+                    }
+                    className="amber-gradient amber-glow inline-flex items-center gap-2 rounded-full px-5 py-2 text-xs font-bold text-white"
+                  >
+                    <Edit3 className="w-3.5 h-3.5" /> Manage Task
+                  </button>
+                </div>
+              )}
           </div>
 
-          {/* PROPOSAL SECTION OR FORM */}
-          {userRole === "guest" || userRole === "freelancer" ? (
-            <div className="border border-current/10 bg-current/5 rounded-xl p-6 relative overflow-hidden">
-              {/* Already Submitted State */}
-              {isSubmitted ? (
-                <div className="py-8 flex flex-col items-center justify-center text-center space-y-3 animate-in fade-in zoom-in-95 duration-300">
-                  <div className="p-3 bg-cyan-500/10 rounded-full border border-cyan-500/20 text-cyan-500">
-                    <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
-                  </div>
-                  <h3 className="text-xl font-bold tracking-tight text-cyan-500">
-                    Proposal Already Submitted
-                  </h3>
-                  <p className="text-sm opacity-60 max-w-sm">
-                    You have already applied for this task. Your interest has
-                    been recorded, and the client can view your application from
-                    their dashboard.
-                  </p>
+          {/* Proposal Section */}
+          <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 relative overflow-hidden">
+            {isSubmitted ? (
+              <div className="py-10 flex flex-col items-center justify-center text-center space-y-4 animate-in fade-in zoom-in-95 duration-300">
+                <div className="p-4 bg-emerald-500/15 rounded-full border border-emerald-500/30 text-emerald-400 emerald-glow">
+                  <CheckCircle2 className="w-10 h-10 stroke-[2.5]" />
                 </div>
-              ) : (
-                /* Dynamic Form State */
-                <form onSubmit={handleSubmitProposal} className="space-y-6">
-                  <div className="flex items-center gap-2 pb-2 border-b border-current/10">
-                    <Send className="w-5 h-5 text-cyan-500 rotate-[-10deg]" />
-                    <h3 className="text-lg font-bold tracking-tight">
-                      Submit a Proposal
-                    </h3>
-                  </div>
-
-                  {/* Two Column Row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-xs font-semibold uppercase tracking-wider opacity-60">
-                        Proposed Budget (USD)
-                      </label>
-                      <div className="relative flex items-center">
-                        <span className="absolute left-3.5 opacity-50 text-sm">
-                          $
-                        </span>
-                        <input
-                          type="number"
-                          required
-                          value={proposedBudget}
-                          onChange={(e) => setProposedBudget(e.target.value)}
-                          placeholder="e.g. 50.00"
-                          className="w-full pl-8 pr-4 py-2 bg-current/5 border border-current/10 rounded-lg text-sm text-inherit focus:outline-none focus:border-cyan-500 transition placeholder:opacity-30"
-                        />
-                      </div>
+                <h3 className="text-2xl font-black tracking-tight text-emerald-400">
+                  Proposal Submitted Successfully
+                </h3>
+                <p className="text-sm text-[var(--muted)] max-w-md">
+                  You have applied for this task. The client will review your
+                  proposed rate and cover note on their dashboard.
+                </p>
+                <button
+                  onClick={() =>
+                    router.push("/dashboard/freelancer/my-proposals")
+                  }
+                  className="rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-6 py-2 text-xs font-bold text-amber-400 hover:border-amber-400"
+                >
+                  Track My Proposals
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmitProposal} className="space-y-6">
+                <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
+                  <div className="flex items-center gap-2.5">
+                    <div className="amber-gradient p-2 rounded-xl text-white">
+                      <Send className="w-5 h-5" />
                     </div>
+                    <div>
+                      <h3 className="text-lg font-extrabold tracking-tight text-[var(--text)]">
+                        Submit Your Proposal
+                      </h3>
+                      <p className="text-xs text-[var(--muted)]">
+                        Specify your rate and delivery estimate for this task.
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-xs font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">
+                    {task.proposals?.length || 0} Bids
+                  </span>
+                </div>
 
-                    <div className="space-y-2">
-                      <label className="text-xs font-semibold uppercase tracking-wider opacity-60">
-                        Estimated Days
-                      </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+                      Proposed Budget (USD)
+                    </label>
+                    <div className="relative flex items-center">
+                      <span className="absolute left-4 text-amber-400 font-bold text-sm">
+                        $
+                      </span>
                       <input
                         type="number"
                         required
-                        value={estimatedDays}
-                        onChange={(e) => setEstimatedDays(e.target.value)}
-                        placeholder="e.g. 3"
-                        className="w-full px-4 py-2 bg-current/5 border border-current/10 rounded-lg text-sm text-inherit focus:outline-none focus:border-cyan-500 transition placeholder:opacity-30"
+                        value={proposedBudget}
+                        onChange={(e) => setProposedBudget(e.target.value)}
+                        placeholder="e.g. 150"
+                        className="w-full pl-8 pr-4 py-3 bg-[var(--surface-strong)] border border-[var(--border)] rounded-full text-sm text-[var(--text)] focus:outline-none focus:border-amber-400"
                       />
                     </div>
                   </div>
 
-                  {/* Cover Note Textarea */}
                   <div className="space-y-2">
-                    <label className="text-xs font-semibold uppercase tracking-wider opacity-60">
-                      Cover Note
+                    <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+                      Estimated Days
                     </label>
-                    <textarea
-                      rows={4}
+                    <input
+                      type="number"
                       required
-                      value={coverNote}
-                      onChange={(e) => setCoverNote(e.target.value)}
-                      placeholder={
-                        userRole === "guest"
-                          ? "Please log in to submit your proposal..."
-                          : "Explain why you're the best fit for this task..."
-                      }
-                      disabled={userRole === "guest"}
-                      className="w-full px-4 py-2 bg-current/5 border border-current/10 rounded-lg text-sm text-inherit focus:outline-none focus:border-cyan-500 transition placeholder:opacity-30 resize-none disabled:opacity-50"
+                      value={estimatedDays}
+                      onChange={(e) => setEstimatedDays(e.target.value)}
+                      placeholder="e.g. 3"
+                      className="w-full px-4 py-3 bg-[var(--surface-strong)] border border-[var(--border)] rounded-full text-sm text-[var(--text)] focus:outline-none focus:border-amber-400"
                     />
                   </div>
+                </div>
 
-                  {/* Submit Action Button */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+                      Cover Note
+                    </label>
+                    <span className="text-[10px] text-[var(--muted)]">
+                      {coverNote.length}/1000 chars
+                    </span>
+                  </div>
+                  <textarea
+                    rows={4}
+                    required
+                    maxLength={1000}
+                    value={coverNote}
+                    onChange={(e) => setCoverNote(e.target.value)}
+                    placeholder={
+                      userRole === "guest"
+                        ? "Please sign in to submit your proposal..."
+                        : "Explain your experience and why you are the best fit for this task..."
+                    }
+                    disabled={userRole === "guest"}
+                    className="w-full px-4 py-3 bg-[var(--surface-strong)] border border-[var(--border)] rounded-2xl text-sm text-[var(--text)] focus:outline-none focus:border-amber-400 placeholder:[var(--muted)] resize-none disabled:opacity-50"
+                  />
+                </div>
+
+                {userRole === "guest" ? (
+                  <button
+                    type="button"
+                    onClick={() => router.push("/login")}
+                    className="w-full amber-gradient amber-glow py-3.5 px-6 text-white font-bold text-sm rounded-full transition-all duration-300 hover:scale-[1.02]"
+                  >
+                    Sign In to Submit Proposal
+                  </button>
+                ) : (
                   <button
                     type="submit"
-                    disabled={isSubmitting || userRole === "guest"}
-                    className="w-full py-2 px-4 bg-cyan-600 text-white font-semibold text-sm rounded-lg hover:bg-cyan-700 transition shadow-sm disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center gap-2"
+                    disabled={isSubmitting}
+                    className="w-full amber-gradient amber-glow py-3.5 px-6 text-white font-bold text-sm rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isSubmitting ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Processing...
+                        <Loader2 className="w-4 h-4 animate-spin text-white" />
+                        Submitting Proposal...
                       </>
-                    ) : userRole === "guest" ? (
-                      "Login to Submit Proposal"
                     ) : (
                       "Submit Proposal"
                     )}
                   </button>
-                </form>
-              )}
-            </div>
-          ) : (
-            /* Fallback/Client/Admin View */
-            <div className="border border-current/10 bg-current/5 rounded-xl p-6">
-              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                Proposals
-                <span className="bg-current/10 px-2 py-0.5 rounded-full text-xs font-semibold opacity-70">
-                  {task.proposals?.length || 0}
-                </span>
-              </h3>
-              <p className="opacity-50 text-sm italic">
-                No proposals yet. Freelancers will apply soon!
-              </p>
-            </div>
-          )}
+                )}
+              </form>
+            )}
+          </div>
         </div>
 
-        {/* ডান দিকের সেকশন: মেটাডেটা ওভারভিউ কার্ড */}
-        <div className="border border-current/10 bg-current/5 rounded-xl p-6 space-y-5 sticky top-6">
-          <h2 className="text-xs font-semibold uppercase tracking-wider opacity-60 mb-2">
-            Task Overview
-          </h2>
+        {/* Right Sidebar: Task Overview & Client Info */}
+        <div className="space-y-6 sticky top-6">
+          <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 space-y-6">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-[var(--muted)] pb-3 border-b border-[var(--border)]">
+              Task Overview
+            </h2>
 
-          {/* Budget Row */}
-          <div className="flex items-start gap-4">
-            <div className="p-2 bg-cyan-500/10 rounded-lg border border-cyan-500/20 text-cyan-500">
-              <DollarSign className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="text-xs opacity-60">Budget</p>
-              <p className="text-2xl font-bold tracking-tight text-cyan-500">
+            {/* Budget Highlight */}
+            <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-5 text-center">
+              <span className="text-xs uppercase tracking-wider text-amber-400 font-bold block mb-1">
+                Project Budget
+              </span>
+              <span className="text-4xl font-black text-amber-400">
                 ${task.budget || "0"}
-              </p>
+              </span>
+              <div className="mt-3 flex items-center justify-center gap-1.5 text-[11px] font-semibold text-emerald-400">
+                <ShieldCheck className="w-4 h-4" /> Stripe Milestone Escrow
+              </div>
             </div>
-          </div>
 
-          {/* Deadline Row */}
-          <div className="flex items-start gap-4">
-            <div className="p-2 bg-current/5 rounded-lg border border-current/10 text-inherit opacity-80">
-              <Calendar className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="text-xs opacity-60">Deadline</p>
-              <p className="text-base font-semibold">
-                {formatDate(task.deadline)}
-              </p>
-            </div>
-          </div>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3.5">
+                <div className="p-2.5 rounded-xl bg-[var(--surface-strong)] border border-[var(--border)] text-amber-400">
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs text-[var(--muted)]">Deadline Date</p>
+                  <p className="text-sm font-bold text-[var(--text)]">
+                    {formatDate(task.deadline)}
+                  </p>
+                </div>
+              </div>
 
-          {/* Posted Date Row */}
-          <div className="flex items-start gap-4">
-            <div className="p-2 bg-current/5 rounded-lg border border-current/10 text-inherit opacity-80">
-              <Clock className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="text-xs opacity-60">Posted</p>
-              <p className="text-base font-semibold">
-                {formatDate(task.createdAt || new Date())}
-              </p>
-            </div>
-          </div>
+              <div className="flex items-center gap-3.5">
+                <div className="p-2.5 rounded-xl bg-[var(--surface-strong)] border border-[var(--border)] text-amber-400">
+                  <Clock className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs text-[var(--muted)]">Posted Date</p>
+                  <p className="text-sm font-bold text-[var(--text)]">
+                    {task.createdAt
+                      ? formatDate(task.createdAt)
+                      : "Date unavailable"}
+                  </p>
+                </div>
+              </div>
 
-          {/* Client Row */}
-          <div className="flex items-start gap-4 border-t border-current/10 pt-4">
-            <div className="p-2 bg-current/5 rounded-lg border border-current/10 text-inherit opacity-80">
-              <User className="w-5 h-5" />
-            </div>
-            <div className="overflow-hidden w-full">
-              <p className="text-xs opacity-60">Client</p>
-              <p
-                className="text-sm font-semibold truncate"
-                title={task.clientEmail || "client@example.com"}
-              >
-                {task.clientEmail || "client@example.com"}
-              </p>
+              <div className="flex items-center gap-3.5 pt-3 border-t border-[var(--border)]">
+                <div className="p-2.5 rounded-xl bg-[var(--surface-strong)] border border-[var(--border)] text-amber-400">
+                  <User className="w-5 h-5" />
+                </div>
+                <div className="overflow-hidden">
+                  <p className="text-xs text-[var(--muted)]">Client Contact</p>
+                  <p
+                    className="text-sm font-bold text-[var(--text)] truncate"
+                    title={task.clientEmail}
+                  >
+                    {task.clientEmail || "client@example.com"}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

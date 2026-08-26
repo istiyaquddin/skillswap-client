@@ -5,13 +5,14 @@ import { Input, Button } from "@heroui/react";
 import {
   User,
   Mail,
-  Image as ImageIcon,
+  ImageIcon,
   Lock,
   Eye,
   EyeOff,
   ArrowLeft,
   Code,
-  Palette,
+  Sparkles,
+  Briefcase,
 } from "lucide-react";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
@@ -78,91 +79,146 @@ const SignupPage = () => {
     }
 
     toast.success("Signup Successful!");
-    window.location.href = "/";
+    if (role === "freelancer") {
+      window.location.href = "/dashboard/freelancer";
+    } else {
+      window.location.href = "/dashboard/client";
+    }
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(37,99,235,0.18),_transparent_45%),linear-gradient(135deg,_rgba(248,251,255,0.96),_rgba(236,244,255,0.95))] px-3 py-6">
-      <div className="mb-4 flex justify-start md:ml-10 lg:ml-20">
+    <div className="min-h-screen bg-grid-pattern px-3 py-8 flex flex-col justify-center">
+      <div className="mb-6 flex justify-start mx-auto w-full max-w-lg">
         <Link href="/">
-          <Button variant="light" size="sm" className="flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] font-medium text-[var(--text)]">
+          <Button variant="light" size="sm" className="flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-strong)] font-semibold text-[var(--text)] hover:text-amber-400">
             <ArrowLeft size={16} /> Back to Home
           </Button>
         </Link>
       </div>
 
       <div className="flex items-center justify-center">
-        <div className="glass-panel w-full max-w-lg rounded-[2rem] p-5 md:p-6">
+        <div className="glass-panel w-full max-w-lg rounded-[2.5rem] p-6 md:p-8 shadow-2xl">
           <div className="text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--accent)]/10 text-[var(--accent)]">✨</div>
-            <h1 className="text-3xl font-black text-[var(--text)]">Create your account</h1>
-            <p className="mt-2 text-sm text-[var(--muted)]">Pick a role and start building your next opportunity.</p>
+            <div className="amber-gradient mx-auto mb-4 flex h-13 w-13 items-center justify-center rounded-2xl text-white shadow-lg">
+              <Sparkles className="h-6 w-6" />
+            </div>
+            <h1 className="text-3xl font-black tracking-tight text-[var(--text)]">Create your account</h1>
+            <p className="mt-2 text-sm text-[var(--muted)]">Select your role and start building your next opportunity.</p>
           </div>
 
-          <form onSubmit={handleSignUp} className="mt-6 space-y-4">
+          <form onSubmit={handleSignUp} className="mt-8 space-y-4">
             <div>
-              <label className="mb-1.5 flex items-center gap-2 text-sm font-semibold text-[var(--text)]"><User size={16} /> Name</label>
-              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1"><Input id="name" required placeholder="Enter your name" radius="lg" size="md" className="w-full" name="name" /></div>
+              <label className="mb-1.5 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+                <User size={14} className="text-amber-400" /> Full Name
+              </label>
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] p-1">
+                <Input id="name" required placeholder="John Doe" radius="lg" size="md" className="w-full" name="name" />
+              </div>
             </div>
 
             <div>
-              <label className="mb-1.5 flex items-center gap-2 text-sm font-semibold text-[var(--text)]"><ImageIcon size={16} /> Image URL</label>
-              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1"><Input id="image" required placeholder="https://example.com/avatar.png" radius="lg" size="md" className="w-full" name="image" /></div>
+              <label className="mb-1.5 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+                <ImageIcon size={14} className="text-amber-400" /> Avatar Image URL
+              </label>
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] p-1">
+                <Input id="image" required placeholder="https://images.unsplash.com/photo-..." radius="lg" size="md" className="w-full" name="image" />
+              </div>
             </div>
 
             <div>
-              <label className="mb-1.5 flex items-center gap-2 text-sm font-semibold text-[var(--text)]"><Mail size={16} /> Email</label>
-              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1"><Input type="email" placeholder="you@example.com" className="w-full" id="email" name="email" required /></div>
+              <label className="mb-1.5 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+                <Mail size={14} className="text-amber-400" /> Email Address
+              </label>
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] p-1">
+                <Input type="email" placeholder="you@example.com" className="w-full" id="email" name="email" required />
+              </div>
             </div>
 
             <div>
-              <label className="mb-1.5 flex items-center gap-2 text-sm font-semibold text-[var(--text)]"><Lock size={16} /> Password</label>
-              <div className="relative rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1">
-                <Input type={showPassword ? "text" : "password"} placeholder="Enter your password" radius="lg" size="md" className="w-full" id="password" name="password" required value={password} onChange={(e) => { setPassword(e.target.value); if (passwordError) setPasswordError(""); }} />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 z-10 -translate-y-1/2 text-[var(--muted)]">
+              <label className="mb-1.5 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+                <Lock size={14} className="text-amber-400" /> Password
+              </label>
+              <div className="relative rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] p-1">
+                <Input type={showPassword ? "text" : "password"} placeholder="Min. 6 characters (1 upper & lower)" radius="lg" size="md" className="w-full" id="password" name="password" required value={password} onChange={(e) => { setPassword(e.target.value); if (passwordError) setPasswordError(""); }} />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 z-10 -translate-y-1/2 text-[var(--muted)] hover:text-amber-400">
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              {passwordError && <p className="mt-2 text-sm font-medium text-rose-500">{passwordError}</p>}
+              {passwordError && <p className="mt-2 text-xs font-semibold text-rose-400">{passwordError}</p>}
             </div>
 
-            <div className="space-y-2">
-              <label className="block text-sm font-semibold text-[var(--text)]">I want to join as a:</label>
+            <div className="space-y-2.5 pt-2">
+              <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)]">Choose Role:</label>
               <div className="grid gap-3 sm:grid-cols-2">
-                <div onClick={() => setRole("client")} className={`cursor-pointer rounded-2xl border p-4 text-center transition-all ${role === "client" ? "border-[var(--primary)] bg-[var(--primary)]/10" : "border-[var(--border)] bg-[var(--surface)]"}`}>
-                  <div className={`mx-auto mb-2 flex h-11 w-11 items-center justify-center rounded-2xl ${role === "client" ? "bg-[var(--primary)]/20 text-[var(--primary)]" : "bg-[var(--surface-strong)] text-[var(--muted)]"}`}><User size={20} /></div>
-                  <h3 className="font-semibold text-[var(--text)]">Client</h3>
-                  <p className="text-xs text-[var(--muted)]">Hire talent</p>
+                <div
+                  onClick={() => setRole("client")}
+                  className={`cursor-pointer rounded-2xl border p-4 text-center transition-all ${
+                    role === "client"
+                      ? "border-amber-500 bg-amber-500/10 amber-glow"
+                      : "border-[var(--border)] bg-[var(--surface-strong)] hover:border-amber-500/30"
+                  }`}
+                >
+                  <div className={`mx-auto mb-2 flex h-11 w-11 items-center justify-center rounded-2xl ${role === "client" ? "amber-gradient text-white" : "bg-[var(--surface)] text-[var(--muted)]"}`}>
+                    <Briefcase size={20} />
+                  </div>
+                  <h3 className="font-bold text-sm text-[var(--text)]">Client</h3>
+                  <p className="text-xs text-[var(--muted)]">Hire specialists & post tasks</p>
                 </div>
-                <div onClick={() => setRole("freelancer")} className={`cursor-pointer rounded-2xl border p-4 text-center transition-all ${role === "freelancer" ? "border-[var(--accent)] bg-[var(--accent)]/10" : "border-[var(--border)] bg-[var(--surface)]"}`}>
-                  <div className={`mx-auto mb-2 flex h-11 w-11 items-center justify-center rounded-2xl ${role === "freelancer" ? "bg-[var(--accent)]/20 text-[var(--accent)]" : "bg-[var(--surface-strong)] text-[var(--muted)]"}`}><Code size={20} /></div>
-                  <h3 className="font-semibold text-[var(--text)]">Freelancer</h3>
-                  <p className="text-xs text-[var(--muted)]">Find work</p>
+
+                <div
+                  onClick={() => setRole("freelancer")}
+                  className={`cursor-pointer rounded-2xl border p-4 text-center transition-all ${
+                    role === "freelancer"
+                      ? "border-emerald-500 bg-emerald-500/10 emerald-glow"
+                      : "border-[var(--border)] bg-[var(--surface-strong)] hover:border-emerald-500/30"
+                  }`}
+                >
+                  <div className={`mx-auto mb-2 flex h-11 w-11 items-center justify-center rounded-2xl ${role === "freelancer" ? "emerald-gradient text-white" : "bg-[var(--surface)] text-[var(--muted)]"}`}>
+                    <Code size={20} />
+                  </div>
+                  <h3 className="font-bold text-sm text-[var(--text)]">Freelancer</h3>
+                  <p className="text-xs text-[var(--muted)]">Find tasks & offer services</p>
                 </div>
               </div>
             </div>
 
             {role === "freelancer" && (
-              <div className="space-y-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
-                <div className="flex items-center gap-2 text-sm font-semibold text-[var(--accent)]"><Palette size={16} /> Freelancer profile</div>
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-[var(--muted)]">Skills <span className="text-xs">(comma-separated)</span></label>
-                  <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] p-1"><Input id="skills" name="skills" required placeholder="React, Node.js, Design" radius="lg" size="md" className="w-full" /></div>
+              <div className="space-y-3.5 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4 animate-in fade-in duration-300">
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-400">
+                  <Code size={16} /> Freelancer Profile Details
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-[var(--muted)]">Bio</label>
-                  <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] p-1"><Input id="bio" name="bio" required placeholder="Tell clients about yourself..." radius="lg" className="w-full" rows={3} /></div>
+                  <label className="mb-1 block text-xs font-semibold text-[var(--muted)]">Skills <span className="text-[10px]">(comma-separated)</span></label>
+                  <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] p-1">
+                    <Input id="skills" name="skills" required placeholder="React, Node.js, Design" radius="lg" size="md" className="w-full" />
+                  </div>
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-[var(--muted)]">Hourly Rate (USD) <span className="text-xs">optional</span></label>
-                  <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] p-1"><Input type="number" id="hourlyRate" name="hourlyRate" placeholder="50" radius="lg" size="md" className="w-full" /></div>
+                  <label className="mb-1 block text-xs font-semibold text-[var(--muted)]">Bio</label>
+                  <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] p-1">
+                    <Input id="bio" name="bio" required placeholder="Tell clients about your expertise..." radius="lg" className="w-full" />
+                  </div>
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs font-semibold text-[var(--muted)]">Hourly Rate (USD)</label>
+                  <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] p-1">
+                    <Input type="number" id="hourlyRate" name="hourlyRate" placeholder="50" radius="lg" size="md" className="w-full" />
+                  </div>
                 </div>
               </div>
             )}
 
-            <Button type="submit" className="brand-gradient h-11 w-full rounded-full text-base font-semibold text-white">Register</Button>
-            <Button onClick={handleGoogleSignUp} type="button" variant="bordered" className="h-11 w-full rounded-full border border-[var(--border)] bg-[var(--surface)] font-medium text-[var(--text)]"><FcGoogle /> Continue With Google</Button>
-            <p className="pt-1 text-center text-sm text-[var(--muted)]">Already have an account? <Link href="/login" className="font-semibold text-[var(--primary)]">Login</Link></p>
+            <Button type="submit" className="amber-gradient amber-glow h-12 w-full rounded-full text-sm font-bold text-white transition-all duration-300 hover:scale-[1.02] active:scale-95 mt-4">
+              Create Account
+            </Button>
+            
+            <Button onClick={handleGoogleSignUp} type="button" variant="bordered" className="h-12 w-full rounded-full border border-[var(--border)] bg-[var(--surface-strong)] font-semibold text-[var(--text)] hover:bg-[var(--surface)]">
+              <FcGoogle className="text-xl" /> Continue With Google
+            </Button>
+            
+            <p className="pt-2 text-center text-xs text-[var(--muted)]">
+              Already have an account? <Link href="/login" className="font-bold text-amber-400 hover:underline">Sign In</Link>
+            </p>
           </form>
         </div>
       </div>
@@ -170,4 +226,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default SignupPage;

@@ -44,7 +44,7 @@ const Footer = () => {
             <ul className="space-y-3 text-sm text-[var(--muted)]">
               <li><Link href="/browse-task">Browse Tasks</Link></li>
               <li><Link href="/browse-freelancer">Browse Freelancers</Link></li>
-              <li><Link href="/client/tasks/post-task">Post a Task</Link></li>
+              <li><Link href="/dashboard/client/tasks/post-task">Post a Task</Link></li>
               <li><Link href="/categories">Categories</Link></li>
             </ul>
           </div>

@@ -27,29 +27,29 @@ export default function Sidebar() {
   const { data: session } = authClient.useSession();
 
   const clientLinks = [
-    { name: "Overview", icon: LayoutGrid, href: "/client" },
-    { name: "Profile Preview", icon: UserRoundPen, href: "/client/profile" },
-    { name: "My Tasks", icon: ClipboardList, href: "/client/tasks" },
-    { name: "Post Task", icon: PlusCircle, href: "/client/tasks/post-task" },
-    { name: "Proposals", icon: FileText, href: "/client/proposals" },
-    { name: "Payments", icon: Wallet, href: "/client/payments" },
+    { name: "Overview", icon: LayoutGrid, href: "/dashboard/client" },
+    { name: "Profile Preview", icon: UserRoundPen, href: "/dashboard/client/profile" },
+    { name: "My Tasks", icon: ClipboardList, href: "/dashboard/client/tasks" },
+    { name: "Post Task", icon: PlusCircle, href: "/dashboard/client/tasks/post-task" },
+    { name: "Proposals", icon: FileText, href: "/dashboard/client/proposals" },
+    { name: "Payments", icon: Wallet, href: "/dashboard/client/payments" },
   ];
 
   const freelancerLinks = [
-    { name: "Overview", icon: LayoutGrid, href: "/freelancer" },
-    { name: "Profile Preview", icon: UserRoundPen, href: "/freelancer/profile" },
+    { name: "Overview", icon: LayoutGrid, href: "/dashboard/freelancer" },
+    { name: "Profile Preview", icon: UserRoundPen, href: "/dashboard/freelancer/profile" },
     { name: "Browse Tasks", icon: Search, href: "/browse-task" },
-    { name: "My Proposals", icon: FileText, href: "/freelancer/my-proposals" },
-    { name: "Active Projects", icon: BriefcaseBusiness, href: "/freelancer/active-projects" },
-    { name: "Earnings", icon: DollarSign, href: "/freelancer/earnings" },
+    { name: "My Proposals", icon: FileText, href: "/dashboard/freelancer/my-proposals" },
+    { name: "Active Projects", icon: BriefcaseBusiness, href: "/dashboard/freelancer/active-projects" },
+    { name: "Earnings", icon: DollarSign, href: "/dashboard/freelancer/earnings" },
   ];
 
   const adminLinks = [
-    { name: "Overview", icon: LayoutGrid, href: "/admin" },
-    { name: "Profile Preview", icon: UserRoundPen, href: "/admin/profile" },
-    { name: "Users", icon: Users, href: "/admin/users" },
-    { name: "Tasks", icon: Briefcase, href: "/admin/tasks" },
-    { name: "Payments", icon: DollarSign, href: "/admin/payments" },
+    { name: "Overview", icon: LayoutGrid, href: "/dashboard/admin" },
+    { name: "Profile Preview", icon: UserRoundPen, href: "/dashboard/admin/profile" },
+    { name: "Users", icon: Users, href: "/dashboard/admin/users" },
+    { name: "Tasks", icon: Briefcase, href: "/dashboard/admin/tasks" },
+    { name: "Payments", icon: DollarSign, href: "/dashboard/admin/payments" },
   ];
 
   const linksMap = { client: clientLinks, freelancer: freelancerLinks, admin: adminLinks };

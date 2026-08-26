@@ -3,33 +3,49 @@ import { authClient } from "../auth-client";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export const updateTask = async (id, taskData) => {
-  const response = await fetch(`${baseUrl}/api/tasks/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(taskData),
-  });
+  try {
+    const { data: tokenData } = await authClient.token();
 
-  const data = await response.json();
+    const response = await fetch(`${baseUrl}/api/tasks/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${tokenData?.token}`,
+      },
+      body: JSON.stringify(taskData),
+    });
 
-  // console.log("Status:", response.status);
-  // console.log("Response:", data);
-
-  return data;
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error in updateTask:", error);
+    return { success: false, message: "Failed to update task" };
+  }
 };
 
 export const deleteTask = async (id) => {
-  const response = await fetch(`${baseUrl}/api/tasks/${id}`, {
-    method: "DELETE",
-  });
+  try {
+    const { data: tokenData } = await authClient.token();
 
-  return response.json();
+    const response = await fetch(`${baseUrl}/api/tasks/${id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `Bearer ${tokenData?.token}`,
+      },
+    });
+
+    return response.json();
+  } catch (error) {
+    console.error("Error in deleteTask:", error);
+    return { success: false, message: "Failed to delete task" };
+  }
 };
 
 // প্রপোজাল রেজেক্ট করার সার্ভার অ্যাকশন
 export const rejectProposalAction = async (taskId, proposalId) => {
   try {
+    const { data: tokenData } = await authClient.token();
+
     // তোমার ব্যাকএন্ড API-তে PUT রিকোয়েস্ট পাঠানো হচ্ছে
     const response = await fetch(
       `${baseUrl}/api/proposals/${taskId}/${proposalId}`,
@@ -38,6 +54,7 @@ export const rejectProposalAction = async (taskId, proposalId) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          authorization: `Bearer ${tokenData?.token}`,
         },
         body: JSON.stringify({ status: "Rejected" }),
       },
@@ -116,12 +133,15 @@ export const getProposalDetails = async (proposalId) => {
 // পেমেন্ট সফল হওয়ার পর প্রপোজাল এক্সেপ্ট করার অ্যাকশন
 export const acceptProposalAndPay = async (proposalId) => {
   try {
+    const { data: tokenData } = await authClient.token();
+
     const response = await fetch(
       `${baseUrl}/api/proposals/accept/${proposalId}`,
       {
         method: "PATCH", // অথবা তোমার ব্যাকএন্ড অনুযায়ী PUT/POST
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${tokenData?.token}`,
         },
         body: JSON.stringify({ status: "accepted" }),
       },

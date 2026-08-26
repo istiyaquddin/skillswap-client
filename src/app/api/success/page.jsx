@@ -71,7 +71,7 @@ export default async function SuccessPage({ searchParams }) {
 
           {/* নেভিগেশন বাটন */}
           <Link
-            href="/client" // তোমার ড্যাশবোর্ড বা প্রজেক্ট ম্যানেজমেন্টের কারেক্ট পাথটি এখানে দিও
+            href="/dashboard/client"
             className="w-full bg-neutral-800 hover:bg-neutral-700 text-white font-bold py-3.5 px-4 rounded-xl text-xs uppercase tracking-wider transition-all border border-neutral-700 flex items-center justify-center gap-2 group cursor-pointer"
           >
             <span>Go To Dashboard</span>

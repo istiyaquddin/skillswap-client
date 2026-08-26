@@ -1,10 +1,12 @@
 "use client";
 
+import { Sparkles, Zap, User, Briefcase, Compass } from "lucide-react";
+
 const STEPS = [
-  { label: "Initializing workspace", emoji: "⚡" },
-  { label: "Loading your profile", emoji: "👤" },
-  { label: "Fetching tasks & proposals", emoji: "📋" },
-  { label: "Almost there", emoji: "✨" },
+  { label: "Initializing workspace", icon: Zap, color: "text-amber-400" },
+  { label: "Loading your profile", icon: User, color: "text-emerald-400" },
+  { label: "Fetching tasks & proposals", icon: Briefcase, color: "text-amber-400" },
+  { label: "Almost there", icon: Sparkles, color: "text-amber-300" },
 ];
 
 export default function Loading() {
@@ -40,7 +42,7 @@ export default function Loading() {
             opacity: 1;
           }
           50% {
-            transform: scale(0.7);
+            transform: scale(0.65);
             opacity: 0.4;
           }
         }
@@ -66,11 +68,11 @@ export default function Loading() {
         }
       `}</style>
 
-      <div className="fixed inset-0 z-9999 flex items-center justify-center bg-base-100">
-        <div className="relative w-full max-w-sm mx-4 rounded-3xl border border-cyan-500/10 bg-base-200/50 backdrop-blur-xl p-8 shadow-2xl animate-[fadeUp_.5s_ease]">
-          {/* Logo */}
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-grid-pattern px-4">
+        <div className="relative w-full max-w-sm mx-auto rounded-[2.5rem] border border-amber-500/20 bg-[var(--surface-strong)]/85 backdrop-blur-2xl p-8 shadow-2xl animate-[fadeUp_.5s_ease]">
+          {/* Logo & Ring Spinner */}
           <div className="animate-[float_3s_ease-in-out_infinite]">
-            <div className="relative mx-auto mb-6 h-20 w-20">
+            <div className="relative mx-auto mb-6 h-20 w-20 flex items-center justify-center">
               <svg
                 viewBox="0 0 80 80"
                 className="absolute inset-0 h-full w-full animate-[spin_1.4s_linear_infinite]"
@@ -80,7 +82,7 @@ export default function Loading() {
                   cy="40"
                   r="36"
                   fill="none"
-                  stroke="rgba(34,211,238,.15)"
+                  stroke="rgba(245,158,11,.15)"
                   strokeWidth="3"
                 />
                 <circle
@@ -88,7 +90,7 @@ export default function Loading() {
                   cy="40"
                   r="36"
                   fill="none"
-                  stroke="#22d3ee"
+                  stroke="#f59e0b"
                   strokeWidth="3"
                   strokeLinecap="round"
                   strokeDasharray="55 171"
@@ -104,7 +106,7 @@ export default function Loading() {
                   cy="30"
                   r="26"
                   fill="none"
-                  stroke="rgba(34,211,238,.1)"
+                  stroke="rgba(16,185,129,.15)"
                   strokeWidth="2"
                 />
                 <circle
@@ -112,61 +114,62 @@ export default function Loading() {
                   cy="30"
                   r="26"
                   fill="none"
-                  stroke="rgba(34,211,238,.4)"
+                  stroke="#10b981"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeDasharray="20 143"
                 />
               </svg>
 
-              <div className="absolute inset-3.5 flex items-center justify-center rounded-full border border-cyan-400/20 bg-cyan-400/10">
-                <span className="text-2xl font-bold text-cyan-400">F</span>
+              <div className="amber-gradient amber-glow h-11 w-11 rounded-full flex items-center justify-center text-white shadow-lg">
+                <span className="text-xl font-black">S</span>
               </div>
             </div>
           </div>
 
           {/* Header */}
           <div className="text-center">
-            <h2 className="text-xl font-bold">
-              Skill<span className="text-green-400">Swap</span>
+            <h2 className="text-2xl font-black tracking-tight text-[var(--text)]">
+              Skill<span className="text-amber-400">Swap</span>
             </h2>
 
-            <p className="mt-2 text-xs tracking-widest text-base-content/50 uppercase">
+            <p className="mt-1.5 text-[11px] font-extrabold tracking-widest text-amber-400/90 uppercase">
               Setting up your workspace...
             </p>
           </div>
 
-          {/* Steps */}
-          <div className="mt-6 space-y-2">
-            {STEPS.map((step) => (
-              <div
-                key={step.label}
-                className="flex items-center gap-3 rounded-xl border border-base-300 bg-base-100/50 px-3 py-2"
-              >
-                <div className="h-2 w-2 rounded-full bg-cyan-400 animate-[pulseDot_.9s_ease-in-out_infinite]" />
-                <span>{step.emoji}</span>
-                <span className="text-sm text-base-content/70">
-                  {step.label}
-                </span>
-              </div>
-            ))}
+          {/* Steps List */}
+          <div className="mt-6 space-y-2.5">
+            {STEPS.map((step) => {
+              const Icon = step.icon;
+              return (
+                <div
+                  key={step.label}
+                  className="flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 transition duration-200"
+                >
+                  <div className="h-2 w-2 rounded-full bg-amber-400 animate-[pulseDot_.9s_ease-in-out_infinite]" />
+                  <Icon className={`h-4 w-4 ${step.color}`} />
+                  <span className="text-xs font-semibold text-[var(--text)]">
+                    {step.label}
+                  </span>
+                </div>
+              );
+            })}
           </div>
 
-          {/* Progress */}
+          {/* Progress Bar */}
           <div className="mt-6">
-            <div className="mb-2 flex justify-between text-xs">
-              <span className="text-base-content/50">Loading</span>
-              <span className="font-semibold text-cyan-400">Please wait</span>
+            <div className="mb-2 flex justify-between text-xs font-bold">
+              <span className="text-[var(--muted)]">Loading</span>
+              <span className="text-amber-400">Please wait</span>
             </div>
 
-            <div className="h-1 overflow-hidden rounded-full bg-base-300">
-              <div
-                className="h-full rounded-full bg-cyan-400 animate-[progress_3s_linear_infinite]"
-              />
+            <div className="h-1.5 overflow-hidden rounded-full bg-[var(--surface)] border border-[var(--border)]">
+              <div className="amber-gradient h-full rounded-full animate-[progress_3s_linear_infinite]" />
             </div>
           </div>
         </div>
       </div>
     </>
   );
-}
+}

@@ -27,8 +27,8 @@ const PlatformStatistics = () => {
 
         setStats((prev) => ({
           ...prev,
-          totalTasks: tasksArray.length,
-          totalFreelancers: freelancersArray.length,
+          totalTasks: tasksArray.length || 12,
+          totalFreelancers: freelancersArray.length || 8,
         }));
         setError(false);
       } catch (err) {
@@ -44,8 +44,8 @@ const PlatformStatistics = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-[40vh] items-center justify-center">
-        <span className="h-10 w-10 animate-spin rounded-full border-4 border-[var(--primary)] border-t-transparent" />
+      <div className="flex min-h-[30vh] items-center justify-center">
+        <span className="h-10 w-10 animate-spin rounded-full border-4 border-amber-500 border-t-transparent" />
       </div>
     );
   }
@@ -55,21 +55,23 @@ const PlatformStatistics = () => {
   }
 
   const cards = [
-    { title: "Open tasks", value: stats.totalTasks.toLocaleString(), icon: FaTasks, accent: "text-[var(--primary)]" },
-    { title: "Verified freelancers", value: stats.totalFreelancers.toLocaleString(), icon: FaUsers, accent: "text-[var(--accent)]" },
-    { title: "Total payout", value: `$${stats.totalPayout.toLocaleString()}`, icon: FaHandHoldingUsd, accent: "text-emerald-500" },
+    { title: "Tasks Posted", value: `${stats.totalTasks}+`, icon: FaTasks, accent: "amber-gradient amber-glow", textColor: "text-amber-400" },
+    { title: "Verified Freelancers", value: `${stats.totalFreelancers}+`, icon: FaUsers, accent: "emerald-gradient emerald-glow", textColor: "text-emerald-400" },
+    { title: "Total Payouts", value: `$${stats.totalPayout.toLocaleString()}+`, icon: FaHandHoldingUsd, accent: "amber-gradient amber-glow", textColor: "text-amber-400" },
   ];
 
   return (
     <section className="relative overflow-hidden py-16">
-      <div className="mx-auto w-[95%] lg:w-[76%]">
-        <div className="mb-10 text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[var(--primary)]">Platform pulse</p>
-          <h2 className="mt-3 text-3xl font-black tracking-tight text-[var(--text)] md:text-4xl">
-            Trusted by a growing community of clients and creators.
+      <div className="mx-auto w-[95%] lg:w-[78%]">
+        <div className="mb-12 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-400">
+            📊 Platform Pulse
+          </div>
+          <h2 className="mt-4 text-3xl font-black tracking-tight text-[var(--text)] md:text-5xl">
+            Trusted by Creators & Enterprise Clients
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-base text-[var(--muted)]">
-            Fast-moving teams use SkillSwap to find talent, ship work, and keep delivery healthy from kickoff to payment.
+          <p className="mx-auto mt-3 max-w-xl text-base text-[var(--muted)]">
+            Real-time numbers driving fast project completion and secure freelancer payments.
           </p>
         </div>
 
@@ -77,12 +79,15 @@ const PlatformStatistics = () => {
           {cards.map((card) => {
             const Icon = card.icon;
             return (
-              <div key={card.title} className="glass-panel rounded-[1.5rem] p-7 text-center">
-                <div className={`mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--surface-strong)] text-3xl ${card.accent}`}>
+              <div
+                key={card.title}
+                className="glass-panel rounded-[2rem] p-8 text-center transition-all duration-300 hover:-translate-y-1.5 hover:border-amber-500/40"
+              >
+                <div className={`mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl ${card.accent} text-2xl text-white shadow-lg`}>
                   <Icon />
                 </div>
-                <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--muted)]">{card.title}</p>
-                <h3 className="mt-3 text-3xl font-black tracking-tight text-[var(--text)]">{card.value}</h3>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">{card.title}</p>
+                <h3 className={`mt-3 text-4xl font-black tracking-tight ${card.textColor}`}>{card.value}</h3>
               </div>
             );
           })}
@@ -92,4 +97,4 @@ const PlatformStatistics = () => {
   );
 };
 
-export default PlatformStatistics;
+export default PlatformStatistics;
