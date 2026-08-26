@@ -1,9 +1,19 @@
 import { authClient } from "../auth-client";
 
-const baseUrl = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "");
+const baseUrl = (
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+).replace(/\/$/, "");
 
 export const getAllTasks = async (filters = {}) => {
-  const { search = "", category = "", minBudget = "", maxBudget = "", page = 1, limit = 6, status = "open" } = filters;
+  const {
+    search = "",
+    category = "",
+    minBudget = "",
+    maxBudget = "",
+    page = 1,
+    limit = 6,
+    status = "open",
+  } = filters;
 
   // কুয়েরি প্যারামিটার তৈরি
   const queryParams = new URLSearchParams({
@@ -13,10 +23,12 @@ export const getAllTasks = async (filters = {}) => {
     minBudget,
     maxBudget,
     page,
-    limit
+    limit,
   }).toString();
 
-  const res = await fetch(`${baseUrl}/api/tasks?${queryParams}`, { cache: 'no-store' });
+  const res = await fetch(`${baseUrl}/api/tasks?${queryParams}`, {
+    cache: "no-store",
+  });
   return res.json();
 };
 
@@ -32,7 +44,7 @@ export const getMyTasks = async (clientId) => {
         // Authorization হেডারে Bearer টোকেন পাস করা হলো
         authorization: `Bearer ${tokenData?.token}`,
       },
-      cache: 'no-store',
+      cache: "no-store",
     });
 
     if (!res.ok) {
@@ -47,35 +59,42 @@ export const getMyTasks = async (clientId) => {
   }
 };
 
-
 export const getTaskDetails = async (taskId) => {
-  const res = await fetch(`${baseUrl}/api/tasks/${taskId}`, { cache: 'no-store' }); // 🔥 নো-স্টোর যোগ হলো
+  const res = await fetch(`${baseUrl}/api/tasks/${taskId}`, {
+    cache: "no-store",
+  }); // 🔥 নো-স্টোর যোগ হলো
   return res.json();
 };
 
-
 export const getAllFreelancers = async (filters = {}) => {
-  const { search = "", minRate = "", maxRate = "", page = 1, limit = 12 } = filters;
+  const {
+    search = "",
+    minRate = "",
+    maxRate = "",
+    page = 1,
+    limit = 12,
+  } = filters;
 
   const queryParams = new URLSearchParams({
     search,
     minRate,
     maxRate,
     page,
-    limit
+    limit,
   }).toString();
 
-  const res = await fetch(`${baseUrl}/api/freelancers?${queryParams}`, { cache: 'no-store' });
+  const res = await fetch(`${baseUrl}/api/freelancers?${queryParams}`, {
+    cache: "no-store",
+  });
   return res.json();
 };
 
 export const getFreelancerDetails = async (id) => {
   const res = await fetch(`${baseUrl}/api/freelancers/${id}`, {
-    cache: 'no-store'
+    cache: "no-store",
   });
   return res.json();
 };
-
 
 export const getMyProfile = async (id) => {
   try {

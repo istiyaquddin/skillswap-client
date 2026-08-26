@@ -1,6 +1,8 @@
 "use server";
 
-const baseUrl = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "");
+const baseUrl = (
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+).replace(/\/$/, "");
 
 export const payment = async (data) => {
   try {

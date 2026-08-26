@@ -1,23 +1,20 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
 import { getMyTasks } from "@/lib/api/tasks";
+import { authClient } from "@/lib/auth-client";
 import {
-  BriefcaseBusiness,
-  Clock3,
-  CheckCircle2,
-  Wallet,
-  PlusCircle,
   ArrowUpRight,
-  Orbit,
-  Loader2,
-  Sparkles,
+  BriefcaseBusiness,
   ChevronRight,
-  ShieldCheck,
+  Clock3,
   FileText,
+  Loader2,
+  PlusCircle,
+  Sparkles,
+  Wallet,
 } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function ClientDashboard() {
   const { data: session } = authClient.useSession();
@@ -30,7 +27,9 @@ export default function ClientDashboard() {
       if (!session?.user?.id || !session?.user?.email) return;
 
       try {
-        const apiUrl = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "");
+        const apiUrl = (
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+        ).replace(/\/$/, "");
 
         const { data: tokenData } = await authClient.token();
         const headers = {
@@ -42,7 +41,9 @@ export default function ClientDashboard() {
           getMyTasks(session.user.id),
           fetch(`${apiUrl}/api/payment-history?email=${session.user.email}`, {
             headers,
-          }).then((res) => res.json()).catch(() => ({ success: false })),
+          })
+            .then((res) => res.json())
+            .catch(() => ({ success: false })),
         ]);
 
         setTasks(tasksData || []);
@@ -79,7 +80,7 @@ export default function ClientDashboard() {
 
   const totalProposalsCount = tasks.reduce(
     (acc, t) => acc + (t.proposals?.length || 0),
-    0
+    0,
   );
 
   const recentProjects = [...tasks]
@@ -121,14 +122,15 @@ export default function ClientDashboard() {
     return (
       <div className="flex flex-col h-96 items-center justify-center gap-3">
         <Loader2 className="w-10 h-10 animate-spin text-amber-500" />
-        <p className="text-xs font-semibold uppercase tracking-widest text-[var(--muted)]">Loading Client Workspace...</p>
+        <p className="text-xs font-semibold uppercase tracking-widest text-[var(--muted)]">
+          Loading Client Workspace...
+        </p>
       </div>
     );
   }
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto p-4 md:p-6 font-sans">
-      
       {/* Header & Quick Action Banner */}
       <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 relative overflow-hidden">
         <div className="space-y-2">
@@ -138,10 +140,14 @@ export default function ClientDashboard() {
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
-            Welcome Back, <span className="amber-text-gradient">{session?.user?.name || "Client"}</span>
+            Welcome Back,{" "}
+            <span className="amber-text-gradient">
+              {session?.user?.name || "Client"}
+            </span>
           </h1>
           <p className="text-sm text-[var(--muted)] max-w-lg">
-            Manage your project listings, evaluate freelancer proposals, and fund secure escrow milestones.
+            Manage your project listings, evaluate freelancer proposals, and
+            fund secure escrow milestones.
           </p>
         </div>
 
@@ -171,11 +177,15 @@ export default function ClientDashboard() {
                     {item.value}
                   </h2>
                 </div>
-                <div className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${item.color}`}>
+                <div
+                  className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${item.color}`}
+                >
                   <Icon className="w-5 h-5" />
                 </div>
               </div>
-              <p className="mt-4 text-xs font-medium text-[var(--muted)]">{item.description}</p>
+              <p className="mt-4 text-xs font-medium text-[var(--muted)]">
+                {item.description}
+              </p>
             </div>
           );
         })}
@@ -188,9 +198,11 @@ export default function ClientDashboard() {
             <h2 className="text-xl md:text-2xl font-extrabold tracking-tight text-[var(--text)]">
               Your Posted Tasks
             </h2>
-            <p className="text-xs text-[var(--muted)]">Review active tasks, incoming proposals, and project milestones.</p>
+            <p className="text-xs text-[var(--muted)]">
+              Review active tasks, incoming proposals, and project milestones.
+            </p>
           </div>
-          
+
           <Link
             href="/dashboard/client/tasks"
             className="rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-2 text-xs font-bold text-amber-400 hover:border-amber-400 inline-flex items-center gap-1.5 transition"
@@ -202,8 +214,13 @@ export default function ClientDashboard() {
         {recentProjects.length === 0 ? (
           <div className="text-center py-16 rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface-strong)] space-y-3">
             <BriefcaseBusiness className="w-10 h-10 mx-auto text-amber-400 opacity-60" />
-            <p className="text-sm font-bold text-[var(--text)]">No tasks posted yet.</p>
-            <p className="text-xs text-[var(--muted)]">Post your first task to start receiving bids from verified freelancers.</p>
+            <p className="text-sm font-bold text-[var(--text)]">
+              No tasks posted yet.
+            </p>
+            <p className="text-xs text-[var(--muted)]">
+              Post your first task to start receiving bids from verified
+              freelancers.
+            </p>
             <Link
               href="/dashboard/client/tasks/post-task"
               className="amber-gradient amber-glow inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold text-white mt-2"
@@ -255,8 +272,8 @@ export default function ClientDashboard() {
                             isOpen
                               ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
                               : isComp
-                              ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/30"
-                              : "bg-[var(--surface)] text-[var(--muted)] border-[var(--border)]"
+                                ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/30"
+                                : "bg-[var(--surface)] text-[var(--muted)] border-[var(--border)]"
                           }`}
                         >
                           ● {project.status || "open"}
@@ -281,4 +298,3 @@ export default function ClientDashboard() {
     </div>
   );
 }
-
