@@ -219,10 +219,10 @@ const ManageProposalsPage = () => {
           <button
             key={status}
             onClick={() => setFilterStatus(status)}
-            className={`px-5 py-2 text-xs font-bold rounded-xl transition duration-300 cursor-pointer border ${
+            className={`px-5 py-2 text-xs font-bold rounded-full transition duration-300 cursor-pointer border ${
               filterStatus === status
-                ? "bg-cyan-500 text-zinc-950 border-cyan-400 shadow-[0_4px_12px_rgba(6,182,212,0.25)]"
-                : "bg-current/5 text-inherit border-current/10 opacity-70 hover:opacity-100"
+                ? "amber-gradient amber-glow text-white border-amber-400 shadow-md"
+                : "border-[var(--border)] bg-[var(--surface-strong)] text-[var(--muted)] hover:text-[var(--text)]"
             }`}
           >
             {status} (
@@ -236,9 +236,9 @@ const ManageProposalsPage = () => {
 
       {/* প্রপোজাল লিস্ট */}
       {filteredProposals.length === 0 ? (
-        <div className="text-center p-16 border border-dashed border-current/10 rounded-3xl bg-current/5">
-          <Layers className="mx-auto opacity-30 mb-3" size={40} />
-          <p className="opacity-50 font-medium text-sm italic">
+        <div className="text-center p-16 border border-dashed border-[var(--border)] rounded-3xl bg-[var(--surface-strong)]">
+          <Layers className="mx-auto text-[var(--muted)] opacity-40 mb-3" size={40} />
+          <p className="text-[var(--muted)] font-medium text-sm italic">
             No proposals found matching {filterStatus}
           </p>
         </div>
@@ -252,27 +252,27 @@ const ManageProposalsPage = () => {
             return (
               <div
                 key={proposal.proposalId}
-                className="group relative border border-current/10 hover:border-cyan-500/30 rounded-2xl p-5 md:p-6 bg-current/5 backdrop-blur-md transition-all duration-300 hover:shadow-[0_8px_30px_rgba(6,182,212,0.03)]"
+                className="group relative glass-panel rounded-3xl p-5 md:p-6 transition-all duration-300 hover:border-amber-500/40 hover:shadow-xl"
               >
                 {/* কার্ডের উপরের সেকশন */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 pb-4 border-b border-current/5">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 pb-4 border-b border-[var(--border)]">
                   <div>
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-cyan-500 flex items-center gap-1 mb-1">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-amber-400 flex items-center gap-1 mb-1">
                       Project Base <ArrowUpRight size={12} />
                     </span>
-                    <h2 className="font-extrabold text-lg text-inherit group-hover:text-cyan-500 transition-colors duration-300">
+                    <h2 className="font-extrabold text-lg text-[var(--text)] group-hover:text-amber-400 transition-colors duration-300">
                       {proposal.taskTitle}
                     </h2>
                   </div>
 
                   {/* স্ট্যাটাস ব্যাজ */}
                   <span
-                    className={`self-start md:self-center px-4 py-1 rounded-xl text-xs font-bold border flex items-center gap-1.5 backdrop-blur-md ${
+                    className={`self-start md:self-center px-4 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 backdrop-blur-md ${
                       isAccepted
-                        ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+                        ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
                         : isRejected
-                          ? "bg-rose-500/10 text-rose-500 border-rose-500/20"
-                          : "bg-amber-500/10 text-amber-500 border-amber-500/20"
+                          ? "bg-rose-500/10 text-rose-400 border-rose-500/20"
+                          : "bg-amber-500/10 text-amber-400 border-amber-500/20"
                     }`}
                   >
                     {isAccepted && <CheckCircle size={13} />}
@@ -283,13 +283,13 @@ const ManageProposalsPage = () => {
                 </div>
 
                 {/* ফ্রিল্যান্সার প্রোফাইল স্ট্রিপ */}
-                <div className="flex items-center gap-3 mb-4 bg-current/5 p-3 rounded-xl border border-current/5">
-                  <div className="w-9 h-9 rounded-xl bg-linear-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-zinc-950 font-bold">
+                <div className="flex items-center gap-3 mb-4 bg-[var(--surface-strong)] p-3 rounded-2xl border border-[var(--border)]">
+                  <div className="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold">
                     <User size={16} />
                   </div>
                   <div>
-                    <p className="text-xs opacity-50">Proposal submitted by</p>
-                    <p className="text-sm font-bold text-inherit opacity-90">
+                    <p className="text-xs text-[var(--muted)]">Proposal submitted by</p>
+                    <p className="text-sm font-bold text-[var(--text)]">
                       {proposal.freelancerEmail}
                     </p>
                   </div>
@@ -297,7 +297,7 @@ const ManageProposalsPage = () => {
 
                 {/* কভার নোট */}
                 <div className="mb-5">
-                  <p className="text-sm opacity-70 leading-relaxed bg-current/5 p-4 rounded-xl border border-current/5 whitespace-pre-line">
+                  <p className="text-sm text-[var(--muted)] leading-relaxed bg-[var(--surface-strong)] p-4 rounded-2xl border border-[var(--border)] whitespace-pre-line">
                     {proposal.coverNote || "No cover note provided."}
                   </p>
                 </div>
@@ -305,19 +305,19 @@ const ManageProposalsPage = () => {
                 {/* মেটাডেটা এবং অ্যাকশন বাটন সেকশন */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
                   <div className="flex flex-wrap items-center gap-4 text-xs">
-                    <div className="flex items-center gap-1 bg-current/5 px-3 py-1.5 rounded-lg border border-current/10">
-                      <DollarSign size={14} className="text-cyan-500" />
-                      <span className="text-inherit font-extrabold">
+                    <div className="flex items-center gap-1 bg-[var(--surface-strong)] px-3.5 py-2 rounded-xl border border-[var(--border)]">
+                      <DollarSign size={14} className="text-amber-400" />
+                      <span className="text-[var(--text)] font-extrabold">
                         ${proposal.proposedBudget}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 bg-current/5 px-3 py-1.5 rounded-lg border border-current/10">
-                      <Clock size={14} className="text-amber-500" />
-                      <span className="text-inherit font-semibold">
+                    <div className="flex items-center gap-1 bg-[var(--surface-strong)] px-3.5 py-2 rounded-xl border border-[var(--border)]">
+                      <Clock size={14} className="text-amber-400" />
+                      <span className="text-[var(--text)] font-semibold">
                         {proposal.estimatedDays} Days
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 bg-current/5 px-3 py-1.5 rounded-lg border border-current/10 opacity-60">
+                    <div className="flex items-center gap-1 bg-[var(--surface-strong)] px-3.5 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">
                       <Calendar size={14} />
                       <span>
                         {new Date(proposal.createdAt).toLocaleDateString(
@@ -342,15 +342,14 @@ const ManageProposalsPage = () => {
                             proposal.proposalId,
                           )
                         }
-                        className="flex-1 sm:flex-none px-4 py-2 bg-current/5 hover:bg-rose-500/10 border border-current/10 hover:border-rose-500/30 text-rose-500 font-bold text-xs rounded-xl transition duration-300 cursor-pointer"
+                        className="flex-1 sm:flex-none px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 font-bold text-xs rounded-full transition duration-300 cursor-pointer"
                       >
                         Reject
                       </button>
 
-                      {/* 💳 বাটন ক্লিক হ্যান্ডলার পরিবর্তন করে ম্যাপ করা প্রপোজাল অবজেক্টটি পাস করলাম */}
                       <button
                         onClick={() => handleAcceptPitchClick(proposal)}
-                        className="flex-1 sm:flex-none px-5 py-2 bg-linear-to-r from-cyan-400 to-teal-400 hover:opacity-90 text-zinc-950 font-extrabold text-xs rounded-xl shadow-[0_4px_12px_rgba(6,182,212,0.2)] transition duration-300 cursor-pointer"
+                        className="flex-1 sm:flex-none px-5 py-2 amber-gradient amber-glow text-white font-extrabold text-xs rounded-full shadow-md transition duration-300 cursor-pointer"
                       >
                         Accept Pitch
                       </button>

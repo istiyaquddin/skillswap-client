@@ -175,7 +175,7 @@ const ClientProfilePage = () => {
       <Toaster position="top-center" reverseOrder={false} />
 
       {/* প্রোফাইল হেডার */}
-      <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-b border-current/10">
+      <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-b border-[var(--border)]">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-400 flex items-center gap-1.5">
@@ -183,7 +183,7 @@ const ClientProfilePage = () => {
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
-            Partner <span className="text-amber-500">Profile</span>
+            Partner <span className="amber-text-gradient">Profile</span>
           </h1>
           <p className="text-sm text-[var(--muted)]">
             Manage corporate preferences, hiring metrics, and financial ledgers
@@ -194,18 +194,18 @@ const ClientProfilePage = () => {
       {/* টপ প্রোফাইল কার্ড এবং এডিট ফর্ম লেআউট গ্রিড */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         {/* বামে: প্রিমিয়াম প্রোফাইল ওভারভিউ কার্ড */}
-        <div className="border border-current/10 bg-current/5 rounded-3xl p-6 space-y-6 relative overflow-hidden backdrop-blur-md">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-amber-400/10 to-transparent rounded-full blur-2xl" />
+        <div className="glass-panel rounded-3xl p-6 space-y-6 relative overflow-hidden backdrop-blur-md shadow-xl border border-[var(--border)]">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
 
           {clientInfo?.status === "Blocked" && (
-            <div className="absolute top-0 right-0 bg-linear-to-r from-rose-500 to-red-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-bl-xl flex items-center gap-1 shadow-sm">
+            <div className="absolute top-0 right-0 bg-gradient-to-r from-rose-500 to-red-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-bl-xl flex items-center gap-1 shadow-sm">
               <ShieldAlert className="w-3.5 h-3.5" /> Restricted
             </div>
           )}
 
           <div className="flex flex-col items-center text-center space-y-3 pt-4">
-            <div className="relative p-1 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-full shadow-[0_4px_12px_rgba(245,158,11,0.15)]">
-              <div className="w-24 h-24 rounded-full overflow-hidden bg-zinc-900 flex items-center justify-center text-3xl font-black text-white">
+            <div className="relative p-1 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-full shadow-[0_4px_12px_rgba(245,158,11,0.25)]">
+              <div className="w-24 h-24 rounded-full overflow-hidden bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-3xl font-black text-amber-400">
                 {clientInfo?.image?.startsWith("http") ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -214,41 +214,41 @@ const ClientProfilePage = () => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  clientInfo?.name?.charAt(0)
+                  clientInfo?.name?.charAt(0) || "C"
                 )}
               </div>
             </div>
 
             <div className="space-y-1">
-              <h2 className="text-lg font-extrabold tracking-tight">
-                {clientInfo?.name}
+              <h2 className="text-xl font-extrabold tracking-tight text-[var(--text)]">
+                {clientInfo?.name || "Corporate Client"}
               </h2>
               <span className="inline-block mt-1 text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">
-                Corporate {clientInfo?.role}
+                Corporate {clientInfo?.role || "Client"}
               </span>
             </div>
 
             {clientInfo?.bio && (
-              <p className="text-xs opacity-75 font-medium max-w-xs pt-2 leading-relaxed bg-current/5 px-4 py-2 rounded-xl border border-current/5">
+              <p className="text-xs text-[var(--muted)] font-medium max-w-xs pt-2 leading-relaxed bg-[var(--surface-strong)] px-4 py-2.5 rounded-xl border border-[var(--border)]">
                 {clientInfo.bio}
               </p>
             )}
           </div>
 
-          <div className="border-t border-current/10 pt-4 space-y-3 text-xs font-bold opacity-75">
+          <div className="border-t border-[var(--border)] pt-4 space-y-3 text-xs font-bold">
             <div className="flex items-center justify-between gap-3">
-              <span className="flex items-center gap-2 shrink-0">
+              <span className="flex items-center gap-2 shrink-0 text-[var(--muted)]">
                 <Mail className="w-3.5 h-3.5 text-amber-400" /> Email
               </span>
-              <span className="truncate opacity-90 max-w-40 font-mono">
+              <span className="truncate text-[var(--text)] max-w-40 font-mono">
                 {clientInfo?.email}
               </span>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-2 text-[var(--muted)]">
                 <Calendar className="w-3.5 h-3.5 text-amber-400" /> Joined
               </span>
-              <span className="opacity-90">
+              <span className="text-[var(--text)] font-semibold">
                 {clientInfo?.createdAt
                   ? new Date(clientInfo.createdAt).toLocaleDateString(
                       undefined,
@@ -262,7 +262,7 @@ const ClientProfilePage = () => {
           {!isEditing && (
             <button
               onClick={() => setIsEditing(true)}
-              className="w-full mt-2 py-3 px-4 amber-gradient amber-glow font-black text-xs uppercase tracking-widest rounded-full hover:opacity-90 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer text-white"
+              className="w-full mt-2 py-3 px-4 amber-gradient amber-glow font-black text-xs uppercase tracking-widest rounded-full hover:opacity-90 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer text-white shadow-lg"
             >
               <Edit3 className="w-3.5 h-3.5 stroke-[2.5]" /> Modify Credentials
             </button>
@@ -272,7 +272,7 @@ const ClientProfilePage = () => {
         {/* ডানে: এডিট ফর্ম অথবা স্পেন্ডিং স্ট্যাটাস সামারি */}
         <div className="lg:col-span-2 space-y-6">
           {isEditing ? (
-            <div className="glass-panel rounded-[2rem] p-6 md:p-8 space-y-6 animate-in fade-in duration-200">
+            <div className="glass-panel rounded-[2rem] p-6 md:p-8 space-y-6 animate-in fade-in duration-200 shadow-xl">
               <h3 className="text-base font-extrabold flex items-center gap-2 uppercase tracking-wider text-amber-400">
                 <Edit3 className="w-4 h-4 stroke-[2.5]" /> Update Profile
               </h3>
@@ -280,7 +280,7 @@ const ClientProfilePage = () => {
               <form onSubmit={handleUpdateProfile} className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-black uppercase tracking-widest opacity-50">
+                    <label className="text-xs font-black uppercase tracking-widest text-[var(--muted)]">
                       Authorized Name
                     </label>
                     <input
@@ -293,7 +293,7 @@ const ClientProfilePage = () => {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-black uppercase tracking-widest opacity-50">
+                    <label className="text-xs font-black uppercase tracking-widest text-[var(--muted)]">
                       Profile Image URL
                     </label>
                     <input
@@ -307,7 +307,7 @@ const ClientProfilePage = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-black uppercase tracking-widest opacity-50">
+                  <label className="text-xs font-black uppercase tracking-widest text-[var(--muted)]">
                     Corporate Bio / Description
                   </label>
                   <textarea
@@ -323,7 +323,7 @@ const ClientProfilePage = () => {
                   <button
                     type="submit"
                     disabled={isUpdating}
-                    className="px-5 py-3 amber-gradient amber-glow text-white font-black text-xs uppercase tracking-widest rounded-full hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer"
+                    className="px-5 py-3 amber-gradient amber-glow text-white font-black text-xs uppercase tracking-widest rounded-full hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer shadow-md"
                   >
                     {isUpdating ? (
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -335,7 +335,7 @@ const ClientProfilePage = () => {
                   <button
                     type="button"
                     onClick={() => setIsEditing(false)}
-                    className="px-5 py-3 border border-[var(--border)] rounded-full text-xs font-black uppercase tracking-widest hover:bg-[var(--surface)] transition cursor-pointer text-[var(--muted)]"
+                    className="px-5 py-3 border border-[var(--border)] rounded-full text-xs font-black uppercase tracking-widest hover:bg-[var(--surface-strong)] transition cursor-pointer text-[var(--muted)]"
                   >
                     Cancel
                   </button>
@@ -346,24 +346,24 @@ const ClientProfilePage = () => {
             /* ড্যাশবোর্ড মেট্রিকেক্স কার্ডস */
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* টোটাল ইনভেস্টেড কার্ড */}
-              <div className="glass-panel rounded-[2rem] p-6 flex items-center justify-between relative overflow-hidden group hover:border-amber-500/40 hover:scale-[1.02] transition-all duration-300">
-                <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-amber-500/5 rounded-full blur-xl group-hover:bg-amber-500/10 transition-all duration-500" />
+              <div className="glass-panel rounded-[2rem] p-6 flex items-center justify-between relative overflow-hidden group hover:border-amber-500/40 hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-amber-500/5 rounded-full blur-xl group-hover:bg-amber-500/10 transition-all duration-500 pointer-events-none" />
                 <div className="flex items-center gap-4">
                   <div className="p-3.5 bg-amber-500/10 rounded-2xl border border-amber-500/20 text-amber-400">
                     <DollarSign className="w-6 h-6 stroke-[2.5]" />
                   </div>
                   <div>
                     <p className="text-[10px] text-[var(--muted)] font-black uppercase tracking-widest">Total Invested</p>
-                    <p className="text-3xl font-black text-amber-400 tracking-tight mt-0.5">${totalSpend}</p>
+                    <p className="text-3xl font-black text-amber-400 tracking-tight mt-0.5">${totalSpend.toLocaleString()}</p>
                   </div>
                 </div>
-                <ArrowUpRight className="w-4 h-4 opacity-20 group-hover:opacity-60 transition-opacity self-start mt-1" />
+                <ArrowUpRight className="w-4 h-4 text-amber-400 opacity-40 group-hover:opacity-100 transition-opacity self-start mt-1" />
               </div>
 
               {/* হায়ারড টাস্কস কার্ড */}
-              <div className="glass-panel rounded-[2rem] p-6 flex items-center justify-between relative overflow-hidden group hover:border-amber-500/40 hover:scale-[1.02] transition-all duration-300">
+              <div className="glass-panel rounded-[2rem] p-6 flex items-center justify-between relative overflow-hidden group hover:border-amber-500/40 hover:scale-[1.02] transition-all duration-300 shadow-lg">
                 <div className="flex items-center gap-4">
-                  <div className="p-3.5 bg-[var(--surface)] rounded-2xl border border-[var(--border)]">
+                  <div className="p-3.5 bg-[var(--surface-strong)] rounded-2xl border border-[var(--border)]">
                     <Briefcase className="w-6 h-6 stroke-2 text-[var(--muted)]" />
                   </div>
                   <div>
@@ -371,7 +371,7 @@ const ClientProfilePage = () => {
                     <p className="text-3xl font-black text-[var(--text)] tracking-tight mt-0.5">{paymentHistory.length}</p>
                   </div>
                 </div>
-                <FileText className="w-4 h-4 opacity-20 self-start mt-1" />
+                <FileText className="w-4 h-4 text-[var(--muted)] opacity-40 self-start mt-1" />
               </div>
             </div>
           )}
@@ -379,45 +379,45 @@ const ClientProfilePage = () => {
       </div>
 
       {/* পেমেন্ট ও ট্রানজেকশন হিস্ট্রি টেবিল */}
-      <div className="glass-panel rounded-[2rem] p-6 space-y-4">
+      <div className="glass-panel rounded-[2rem] p-6 space-y-4 shadow-xl">
         <h3 className="text-base font-extrabold flex items-center gap-2 uppercase tracking-wider text-[var(--text)]">
           <History className="w-5 h-5 text-amber-400 stroke-2" /> Payment History
         </h3>
 
         {paymentHistory.length === 0 ? (
-          <div className="glass-panel rounded-[2rem] py-12 text-center">
+          <div className="glass-panel rounded-[2rem] py-12 text-center border border-[var(--border)]">
             <p className="text-xs text-[var(--muted)] font-bold italic">No payment records found.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto w-full rounded-2xl border border-current/5">
+          <div className="overflow-x-auto w-full rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)]">
             <table className="w-full text-left border-collapse text-xs font-bold">
               <thead>
-                <tr className="border-b border-current/10 bg-current/5 opacity-60 text-[10px] font-black uppercase tracking-widest">
+                <tr className="border-b border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] text-[10px] font-black uppercase tracking-widest">
                   <th className="py-3.5 px-4">Task Title</th>
                   <th className="py-3.5 px-4">Session ID</th>
                   <th className="py-3.5 px-4">Date</th>
                   <th className="py-3.5 px-4 text-right">Amount Paid</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-current/5">
+              <tbody className="divide-y divide-[var(--border)]">
                 {paymentHistory.map((item) => (
                   <tr
                     key={item._id}
-                    className="opacity-85 hover:opacity-100 hover:bg-current/5 transition-all"
+                    className="hover:bg-amber-500/5 transition-all text-[var(--text)]"
                   >
                     <td
-                      className="py-4 px-4 max-w-50 sm:max-w-xs truncate font-extrabold text-inherit"
+                      className="py-4 px-4 max-w-50 sm:max-w-xs truncate font-extrabold text-[var(--text)]"
                       title={item.taskTitle}
                     >
                       {item.taskTitle}
                     </td>
                     <td
-                      className="py-4 px-4 font-mono opacity-50 max-w-30 truncate"
+                      className="py-4 px-4 font-mono text-[var(--muted)] max-w-30 truncate"
                       title={item.sessionId}
                     >
                       {item.sessionId}
                     </td>
-                    <td className="py-4 px-4 opacity-60 font-medium">
+                    <td className="py-4 px-4 text-[var(--muted)] font-medium">
                       {item.createdAt
                         ? new Date(item.createdAt).toLocaleDateString(
                             undefined,

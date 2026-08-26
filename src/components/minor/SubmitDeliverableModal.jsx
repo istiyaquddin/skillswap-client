@@ -126,11 +126,11 @@ export default function SubmitDeliverableModal({
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-linear-to-r from-cyan-400 to-teal-400 text-zinc-950 font-extrabold shadow-[0_4px_14px_rgba(6,182,212,0.3)] hover:opacity-90 active:scale-[0.98] transition-all text-sm cursor-pointer disabled:opacity-50"
+              className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl amber-gradient amber-glow text-white font-extrabold shadow-md hover:opacity-90 active:scale-[0.98] transition-all text-sm cursor-pointer disabled:opacity-50"
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin text-zinc-950" />
+                  <Loader2 className="w-4 h-4 animate-spin text-white" />
                   Submitting...
                 </>
               ) : (
