@@ -55,8 +55,21 @@ const FeaturedTasks = () => {
         </div>
 
         {loading ? (
-          <div className="flex h-48 items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="glass-panel rounded-[2rem] p-6 space-y-4 animate-pulse">
+                <div className="flex justify-between items-center">
+                  <div className="h-6 w-24 bg-amber-500/20 rounded-full" />
+                  <div className="h-6 w-16 bg-emerald-500/20 rounded-full" />
+                </div>
+                <div className="h-6 w-3/4 bg-[var(--border)] rounded-xl" />
+                <div className="h-10 w-full bg-[var(--border)]/50 rounded-xl" />
+                <div className="pt-4 border-t border-[var(--border)] flex justify-between items-center">
+                  <div className="h-6 w-16 bg-amber-500/30 rounded-lg" />
+                  <div className="h-4 w-20 bg-[var(--border)] rounded-lg" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : tasks.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-[var(--border)] p-12 text-center text-sm text-[var(--muted)]">

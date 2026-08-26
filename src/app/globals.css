@@ -253,3 +253,69 @@ select:-webkit-autofill {
   box-shadow: 0 20px 40px -15px rgba(29, 191, 115, 0.2);
 }
 
+/* Eye-Catching Vibrant Colors & Neon Glow System */
+@keyframes dynamicGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes borderGlow {
+  0%, 100% {
+    border-color: rgba(29, 191, 115, 0.4);
+    box-shadow: 0 0 15px rgba(29, 191, 115, 0.2);
+  }
+  50% {
+    border-color: rgba(59, 130, 246, 0.6);
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.35);
+  }
+}
+
+@keyframes floatParticle {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-15px) scale(1.15);
+    opacity: 0.9;
+  }
+}
+
+.amber-text-gradient-vibrant {
+  background: linear-gradient(135deg, #1dbf73 0%, #00f2fe 50%, #10b981 100%);
+  background-size: 200% 200%;
+  animation: dynamicGradient 6s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.neon-glow-emerald {
+  box-shadow: 0 0 25px rgba(29, 191, 115, 0.45), 0 0 50px rgba(29, 191, 115, 0.2);
+}
+
+.neon-glow-cyan {
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.45), 0 0 50px rgba(6, 182, 212, 0.2);
+}
+
+.neon-glow-violet {
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.45), 0 0 50px rgba(139, 92, 246, 0.2);
+}
+
+.glowing-border-card {
+  animation: borderGlow 4s ease-in-out infinite;
+}
+
+.animated-bg-mesh {
+  background: linear-gradient(-45deg, rgba(29, 191, 115, 0.12), rgba(6, 182, 212, 0.1), rgba(139, 92, 246, 0.1), rgba(16, 185, 129, 0.12));
+  background-size: 400% 400%;
+  animation: dynamicGradient 10s ease infinite;
+}
+
+
