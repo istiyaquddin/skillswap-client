@@ -175,8 +175,8 @@ npm start
 | Method | Endpoint             | Description                               |
 | ------ | -------------------- | ----------------------------------------- |
 | POST   | `/api/tasks`         | Creates a new marketplace project         |
- | GET    | `/api/freelancers`    | Get filtered freelancer profiles           |
- | GET    | `/api/my-tasks`       | Fetches active projects posted by client  |
+| GET    | `/api/freelancers`   | Get filtered freelancer profiles          |
+| GET    | `/api/my-tasks`      | Fetches active projects posted by client  |
 | GET    | `/api/tasks/:taskId` | Resolves single comprehensive task detail |
 
 ---
@@ -228,13 +228,7 @@ This project is licensed under the **MIT License**.
 
 # 👨‍💻 Author
 
-### Developed by: Remon Hossen
-
-- GitHub: [remon918](https://github.com/remon918)
-- LinkedIn: [Remon Hossen](https://www.linkedin.com/in/remon-hossen)
-- Project Repository: [skillswap-client](https://github.com/istiyaquddin/skillswap-client)
-
----
+- **Istiyaq Uddin** - [GitHub](https://github.com/istiyaquddin) | [LinkedIn](https://www.linkedin.com/in/mohammad-istiyaq-uddin/) | [Portfolio](https://istiyaquddin.vercel.app/)
 
 # 💬 Support
 
