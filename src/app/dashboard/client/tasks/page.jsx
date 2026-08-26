@@ -41,9 +41,9 @@ const TasksPage = () => {
 
   return (
     <div className="mt-12 md:mt-0 max-w-6xl mx-auto p-4 md:p-0 font-sans text-[var(--text)]">
-      <div className="glass-panel relative mb-8 p-6 md:p-8 rounded-[2.5rem] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
+      <div className="glass-panel relative mb-6 sm:mb-8 p-5 sm:p-6 md:p-8 rounded-[2.5rem] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
         <div>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
             My <span className="amber-text-gradient">Tasks</span>
           </h1>
           <p className="mt-1 text-sm font-medium text-[var(--muted)]">

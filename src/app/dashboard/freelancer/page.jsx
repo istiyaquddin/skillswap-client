@@ -137,17 +137,17 @@ export default function FreelancerDashboard() {
   return (
     <div className="space-y-8 max-w-7xl mx-auto p-4 md:p-6 font-sans">
       {/* Header Banner */}
-      <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 relative overflow-hidden">
+      <div className="glass-panel rounded-[2.5rem] p-5 sm:p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 relative overflow-hidden">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-400 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" /> Freelancer Workspace
             </span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
             Welcome Back,{" "}
             <span className="amber-text-gradient">
-              {session?.user?.name || "Freelancer"}
+              {session?.user?.name?.split(" ")[0] || "Freelancer"}
             </span>
           </h1>
           <p className="text-sm text-[var(--muted)] max-w-lg">
@@ -158,37 +158,37 @@ export default function FreelancerDashboard() {
 
         <Link
           href="/browse-task"
-          className="amber-gradient amber-glow inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-sm font-extrabold text-white transition-all duration-300 hover:scale-105 active:scale-95 shrink-0"
+          className="amber-gradient amber-glow inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full text-sm font-extrabold text-white transition-all duration-300 hover:scale-105 active:scale-95 shrink-0 self-start sm:self-auto"
         >
           <Search className="w-4 h-4" /> Browse Open Tasks
         </Link>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-3 sm:gap-5 grid-cols-2 xl:grid-cols-4">
         {statCards.map((item) => {
           const Icon = item.icon;
           return (
             <div
               key={item.title}
-              className="glass-panel rounded-[2rem] p-6 transition-all duration-300 hover:border-amber-500/40 hover:scale-[1.02]"
+              className="glass-panel rounded-[1.5rem] sm:rounded-[2rem] p-4 sm:p-6 transition-all duration-300 hover:border-amber-500/40 hover:scale-[1.02]"
             >
               <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+                <div className="space-y-1 min-w-0 flex-1">
+                  <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[var(--muted)] line-clamp-2">
                     {item.title}
                   </h3>
-                  <h2 className="text-3xl font-black tracking-tight text-[var(--text)]">
+                  <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-[var(--text)]">
                     {item.value}
                   </h2>
                 </div>
                 <div
-                  className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${item.color}`}
+                  className={`flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border ${item.color}`}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
               </div>
-              <p className="mt-4 text-xs font-medium text-[var(--muted)]">
+              <p className="mt-3 sm:mt-4 text-xs font-medium text-[var(--muted)] hidden sm:block">
                 {item.description}
               </p>
             </div>
@@ -199,20 +199,18 @@ export default function FreelancerDashboard() {
       {/* Tables Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Table 1: Active Contracts */}
-        <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 space-y-6">
+        <div className="glass-panel rounded-[2.5rem] p-5 sm:p-6 md:p-8 space-y-5 sm:space-y-6">
           <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
             <div>
-              <h2 className="text-xl font-extrabold tracking-tight text-[var(--text)]">
+              <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[var(--text)]">
                 In-Progress Contracts
               </h2>
-              <p className="text-xs text-[var(--muted)]">
-                Active projects you are working on.
-              </p>
+              <p className="text-xs text-[var(--muted)]">Active projects you are working on.</p>
             </div>
             {activeProjects.length > 5 && (
               <Link
                 href="/dashboard/freelancer/active-projects"
-                className="rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-3.5 py-1.5 text-xs font-bold text-amber-400 hover:border-amber-400 inline-flex items-center gap-1 transition"
+                className="rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-3.5 py-1.5 text-xs font-bold text-amber-400 hover:border-amber-400 inline-flex items-center gap-1 transition shrink-0"
               >
                 View All <ChevronRight className="w-3.5 h-3.5" />
               </Link>
@@ -220,60 +218,62 @@ export default function FreelancerDashboard() {
           </div>
 
           {recentActiveProjects.length === 0 ? (
-            <div className="text-center py-12 rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface-strong)] text-xs text-[var(--muted)] italic">
+            <div className="text-center py-10 rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface-strong)] text-xs text-[var(--muted)] italic">
               No active contracts running right now.
             </div>
           ) : (
-            <div className="overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)]">
-              <table className="w-full text-left border-collapse text-sm">
-                <thead>
-                  <tr className="border-b border-[var(--border)] text-xs font-bold uppercase tracking-wider bg-[var(--surface)] text-[var(--muted)]">
-                    <th className="p-3.5">Project</th>
-                    <th className="p-3.5">Budget</th>
-                    <th className="p-3.5">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[var(--border)] text-xs font-semibold">
-                  {recentActiveProjects.map((project) => (
-                    <tr
-                      key={project._id}
-                      className="hover:bg-[var(--surface)] transition-colors"
-                    >
-                      <td className="p-3.5 font-bold text-[var(--text)] max-w-45 truncate">
-                        {project.title}
-                      </td>
-                      <td className="p-3.5 font-black text-amber-400">
-                        ${project.budget}
-                      </td>
-                      <td className="p-3.5">
-                        <span className="px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border bg-emerald-500/10 text-emerald-400 border-emerald-500/30 inline-flex items-center gap-1.5">
-                          <Orbit className="w-3 h-3 animate-spin text-emerald-400" />{" "}
-                          Running
-                        </span>
-                      </td>
+            <>
+              {/* Desktop Table */}
+              <div className="hidden sm:block overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)]">
+                <table className="w-full text-left border-collapse text-sm">
+                  <thead>
+                    <tr className="border-b border-[var(--border)] text-xs font-bold uppercase tracking-wider bg-[var(--surface)] text-[var(--muted)]">
+                      <th className="p-3.5">Project</th>
+                      <th className="p-3.5">Budget</th>
+                      <th className="p-3.5">Status</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-[var(--border)] text-xs font-semibold">
+                    {recentActiveProjects.map((project) => (
+                      <tr key={project._id} className="hover:bg-[var(--surface)] transition-colors">
+                        <td className="p-3.5 font-bold text-[var(--text)] max-w-45 truncate">{project.title}</td>
+                        <td className="p-3.5 font-black text-amber-400">${project.budget}</td>
+                        <td className="p-3.5">
+                          <span className="px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border bg-emerald-500/10 text-emerald-400 border-emerald-500/30 inline-flex items-center gap-1.5">
+                            <Orbit className="w-3 h-3 animate-spin text-emerald-400" /> Running
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {/* Mobile Cards */}
+              <div className="sm:hidden space-y-2">
+                {recentActiveProjects.map((project) => (
+                  <div key={project._id} className="flex items-center justify-between bg-[var(--surface-strong)] border border-[var(--border)] rounded-2xl p-3 gap-3">
+                    <p className="font-bold text-sm text-[var(--text)] truncate flex-1">{project.title}</p>
+                    <span className="font-black text-amber-400 text-xs shrink-0">${project.budget}</span>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
 
         {/* Table 2: Pending Bids */}
-        <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 space-y-6">
+        <div className="glass-panel rounded-[2.5rem] p-5 sm:p-6 md:p-8 space-y-5 sm:space-y-6">
           <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
             <div>
-              <h2 className="text-xl font-extrabold tracking-tight text-[var(--text)]">
+              <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[var(--text)]">
                 Submitted Proposals
               </h2>
-              <p className="text-xs text-[var(--muted)]">
-                Recent bids pending client review.
-              </p>
+              <p className="text-xs text-[var(--muted)]">Recent bids pending client review.</p>
             </div>
             {proposals.length > 5 && (
               <Link
                 href="/dashboard/freelancer/my-proposals"
-                className="rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-3.5 py-1.5 text-xs font-bold text-amber-400 hover:border-amber-400 inline-flex items-center gap-1 transition"
+                className="rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-3.5 py-1.5 text-xs font-bold text-amber-400 hover:border-amber-400 inline-flex items-center gap-1 transition shrink-0"
               >
                 View All <ChevronRight className="w-3.5 h-3.5" />
               </Link>
@@ -281,44 +281,53 @@ export default function FreelancerDashboard() {
           </div>
 
           {pendingProposals.length === 0 ? (
-            <div className="text-center py-12 rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface-strong)] text-xs text-[var(--muted)] italic">
+            <div className="text-center py-10 rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface-strong)] text-xs text-[var(--muted)] italic">
               No pending bids submitted.
             </div>
           ) : (
-            <div className="overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)]">
-              <table className="w-full text-left border-collapse text-sm">
-                <thead>
-                  <tr className="border-b border-[var(--border)] text-xs font-bold uppercase tracking-wider bg-[var(--surface)] text-[var(--muted)]">
-                    <th className="p-3.5">Task Title</th>
-                    <th className="p-3.5">Your Bid</th>
-                    <th className="p-3.5 text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[var(--border)] text-xs font-semibold">
-                  {pendingProposals.map((item) => (
-                    <tr
-                      key={item.proposalId}
-                      className="hover:bg-[var(--surface)] transition-colors"
-                    >
-                      <td className="p-3.5 font-bold text-[var(--text)] max-w-45 truncate">
-                        {item.taskTitle}
-                      </td>
-                      <td className="p-3.5 font-black text-amber-400">
-                        ${item.proposedBudget}
-                      </td>
-                      <td className="p-3.5 text-right">
-                        <Link
-                          href={`/dashboard/freelancer/my-proposals/${item.proposalId}`}
-                          className="amber-gradient amber-glow inline-flex items-center gap-1 text-[11px] text-white px-3 py-1 rounded-full font-bold transition hover:scale-105"
-                        >
-                          Review <ArrowUpRight className="w-3 h-3" />
-                        </Link>
-                      </td>
+            <>
+              {/* Desktop Table */}
+              <div className="hidden sm:block overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)]">
+                <table className="w-full text-left border-collapse text-sm">
+                  <thead>
+                    <tr className="border-b border-[var(--border)] text-xs font-bold uppercase tracking-wider bg-[var(--surface)] text-[var(--muted)]">
+                      <th className="p-3.5">Task Title</th>
+                      <th className="p-3.5">Your Bid</th>
+                      <th className="p-3.5 text-right">Action</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-[var(--border)] text-xs font-semibold">
+                    {pendingProposals.map((item) => (
+                      <tr key={item.proposalId} className="hover:bg-[var(--surface)] transition-colors">
+                        <td className="p-3.5 font-bold text-[var(--text)] max-w-45 truncate">{item.taskTitle}</td>
+                        <td className="p-3.5 font-black text-amber-400">${item.proposedBudget}</td>
+                        <td className="p-3.5 text-right">
+                          <Link
+                            href={`/dashboard/freelancer/my-proposals/${item.proposalId}`}
+                            className="amber-gradient amber-glow inline-flex items-center gap-1 text-[11px] text-white px-3 py-1 rounded-full font-bold transition hover:scale-105"
+                          >
+                            Review <ArrowUpRight className="w-3 h-3" />
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {/* Mobile Cards */}
+              <div className="sm:hidden space-y-2">
+                {pendingProposals.map((item) => (
+                  <Link
+                    key={item.proposalId}
+                    href={`/dashboard/freelancer/my-proposals/${item.proposalId}`}
+                    className="flex items-center justify-between bg-[var(--surface-strong)] border border-[var(--border)] rounded-2xl p-3 gap-3 hover:border-amber-500/40 transition"
+                  >
+                    <p className="font-bold text-sm text-[var(--text)] truncate flex-1">{item.taskTitle}</p>
+                    <span className="font-black text-amber-400 text-xs shrink-0">${item.proposedBudget}</span>
+                  </Link>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </div>

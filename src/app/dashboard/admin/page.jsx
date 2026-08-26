@@ -219,14 +219,14 @@ export default function AdminDashboardOverview() {
   return (
     <div className="space-y-8 max-w-7xl mx-auto p-4 md:p-6 font-sans">
       {/* Header Banner */}
-      <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 relative overflow-hidden">
+      <div className="glass-panel rounded-[2.5rem] p-5 sm:p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 relative overflow-hidden">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-400 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" /> Admin Control Center
             </span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
             Platform <span className="amber-text-gradient">Governance</span>{" "}
             Portal
           </h1>
@@ -236,37 +236,37 @@ export default function AdminDashboardOverview() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-full text-xs font-bold text-amber-400 shrink-0">
+        <div className="flex items-center gap-2 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-full text-xs font-bold text-amber-400 shrink-0 self-start sm:self-auto">
           <Activity className="w-4 h-4 animate-pulse text-amber-400" />
           Live Ecosystem Feed
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-3 sm:gap-5 grid-cols-2 xl:grid-cols-4">
         {statCards.map((item) => {
           const Icon = item.icon;
           return (
             <div
               key={item.title}
-              className="glass-panel rounded-[2rem] p-6 transition-all duration-300 hover:border-amber-500/40 hover:scale-[1.02]"
+              className="glass-panel rounded-[1.5rem] sm:rounded-[2rem] p-4 sm:p-6 transition-all duration-300 hover:border-amber-500/40 hover:scale-[1.02]"
             >
               <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+                <div className="space-y-1 min-w-0 flex-1">
+                  <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[var(--muted)] line-clamp-2">
                     {item.title}
                   </h3>
-                  <h2 className="text-3xl font-black tracking-tight text-[var(--text)]">
+                  <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-[var(--text)]">
                     {item.value}
                   </h2>
                 </div>
                 <div
-                  className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${item.color}`}
+                  className={`flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border ${item.color}`}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
               </div>
-              <p className="mt-4 text-xs font-medium text-[var(--muted)]">
+              <p className="mt-3 sm:mt-4 text-xs font-medium text-[var(--muted)] hidden sm:block">
                 {item.description}
               </p>
             </div>
@@ -330,8 +330,8 @@ export default function AdminDashboardOverview() {
         </div>
       </div>
 
-      {/* 📊 3 Analytics Charts Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* 3 Analytics Charts Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Chart 1: Tasks by Status */}
         <div className="glass-panel rounded-[2rem] p-6 flex flex-col justify-between space-y-4">
           <div className="flex items-center gap-2">
@@ -537,41 +537,52 @@ export default function AdminDashboardOverview() {
             No live market task logs found.
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)]">
-            <table className="w-full border-collapse text-left">
-              <thead>
-                <tr className="border-b border-[var(--border)] text-xs font-bold uppercase tracking-wider bg-[var(--surface)] text-[var(--muted)]">
-                  <th className="p-4">Task Title</th>
-                  <th className="p-4">Client Email</th>
-                  <th className="p-4">Category</th>
-                  <th className="p-4 text-right">Budget</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[var(--border)] text-sm font-medium">
-                {recentActivity.map((task) => (
-                  <tr
-                    key={task._id}
-                    className="hover:bg-[var(--surface)] transition-colors"
-                  >
-                    <td className="p-4 font-bold text-[var(--text)] max-w-60 truncate">
-                      {task.title}
-                    </td>
-                    <td className="p-4 font-mono text-xs text-[var(--muted)]">
-                      {task.clientEmail}
-                    </td>
-                    <td className="p-4">
-                      <span className="bg-[var(--surface)] px-3 py-1 rounded-full text-xs font-bold text-amber-400 border border-amber-500/20">
-                        {task.category || "General"}
-                      </span>
-                    </td>
-                    <td className="p-4 text-right font-black text-amber-400">
-                      ${Number(task.budget).toLocaleString()} USD
-                    </td>
+          <>
+            {/* Desktop Table */}
+            <div className="hidden sm:block overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)]">
+              <table className="w-full border-collapse text-left">
+                <thead>
+                  <tr className="border-b border-[var(--border)] text-xs font-bold uppercase tracking-wider bg-[var(--surface)] text-[var(--muted)]">
+                    <th className="p-4">Task Title</th>
+                    <th className="p-4">Client Email</th>
+                    <th className="p-4">Category</th>
+                    <th className="p-4 text-right">Budget</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-[var(--border)] text-sm font-medium">
+                  {recentActivity.map((task) => (
+                    <tr key={task._id} className="hover:bg-[var(--surface)] transition-colors">
+                      <td className="p-4 font-bold text-[var(--text)] max-w-60 truncate">{task.title}</td>
+                      <td className="p-4 font-mono text-xs text-[var(--muted)]">{task.clientEmail}</td>
+                      <td className="p-4">
+                        <span className="bg-[var(--surface)] px-3 py-1 rounded-full text-xs font-bold text-amber-400 border border-amber-500/20">
+                          {task.category || "General"}
+                        </span>
+                      </td>
+                      <td className="p-4 text-right font-black text-amber-400">
+                        ${Number(task.budget).toLocaleString()} USD
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {/* Mobile Cards */}
+            <div className="sm:hidden space-y-3">
+              {recentActivity.map((task) => (
+                <div key={task._id} className="glass-panel rounded-2xl p-4 space-y-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="font-bold text-sm text-[var(--text)] line-clamp-2 flex-1">{task.title}</p>
+                    <span className="font-black text-amber-400 text-sm shrink-0">${Number(task.budget).toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs">
+                    <span className="bg-[var(--surface)] px-2.5 py-0.5 rounded-full font-bold text-amber-400 border border-amber-500/20">{task.category || "General"}</span>
+                    <span className="text-[var(--muted)] font-mono truncate">{task.clientEmail?.split("@")[0]}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
