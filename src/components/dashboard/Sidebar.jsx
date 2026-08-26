@@ -112,37 +112,37 @@ export default function Sidebar() {
                 className={`group flex items-center justify-between rounded-2xl px-3 py-2.5 transition-all duration-300 ${isActive ? "bg-[var(--surface)] text-[var(--primary)] shadow-sm" : "hover:bg-[var(--surface)] hover:text-[var(--primary)]"}`}
               >
                 <div className="flex items-center gap-3">
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all ${isActive ? "bg-[var(--primary)]/10 text-[var(--primary)]" : "group-hover:bg-[var(--primary)]/10 group-hover:text-[var(--primary)]"}`}>
-                    <Icon size={18} />
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-300 ${isActive ? "bg-[#1dbf73]/15 text-[#1dbf73] scale-105" : "group-hover:bg-[#1dbf73]/10 group-hover:text-[#1dbf73] group-hover:scale-110"}`}>
+                    <Icon size={18} className="transition-transform duration-300 group-hover:rotate-6" />
                   </div>
-                  <span className="text-sm font-semibold">{item.name}</span>
+                  <span className={`text-sm font-semibold transition-colors ${isActive ? "text-[#1dbf73] font-bold" : "group-hover:text-[#1dbf73]"}`}>{item.name}</span>
                 </div>
-                <ChevronRight size={16} className={`transition-all ${isActive ? "text-[var(--primary)]" : "group-hover:text-[var(--primary)]"}`} />
+                <ChevronRight size={16} className={`transition-all duration-300 ${isActive ? "text-[#1dbf73] translate-x-0.5" : "text-[var(--muted)] group-hover:text-[#1dbf73] group-hover:translate-x-1"}`} />
               </Link>
             );
           })}
         </div>
 
         <div className="mt-auto space-y-3">
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3 backdrop-blur shadow-sm">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)]">📈</div>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 font-bold animate-pulse">⚡</div>
               <div>
-                <h4 className="text-sm font-semibold text-[var(--text)]">Stay productive</h4>
-                <p className="text-xs text-[var(--muted)]">Your workspace is ready for action.</p>
+                <h4 className="text-sm font-bold text-[var(--text)]">Stay productive</h4>
+                <p className="text-xs text-[var(--muted)]">Your workspace is active.</p>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2.5">
+          <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2.5 shadow-sm">
             <div className="flex items-center gap-3">
-              <Image src={session?.user?.image?.startsWith("https") ? session.user.image : avatar} alt="profile" width={40} height={40} className="rounded-full border border-[var(--border)] object-cover" />
+              <Image src={session?.user?.image?.startsWith("https") ? session.user.image : avatar} alt="profile" width={40} height={40} className="rounded-full border-2 border-amber-500/30 object-cover" />
               <div>
-                <h4 className="max-w-[7rem] truncate text-sm font-semibold text-[var(--text)]">{session?.user?.name}</h4>
-                <p className="text-[11px] font-semibold capitalize text-[var(--accent)]">{session?.user?.role}</p>
+                <h4 className="max-w-[7rem] truncate text-sm font-bold text-[var(--text)]">{session?.user?.name}</h4>
+                <p className="text-[11px] font-bold capitalize text-amber-400">{session?.user?.role}</p>
               </div>
             </div>
-            <button onClick={handleLogout} title="Logout" className="rounded-xl p-2 text-[var(--muted)] transition hover:bg-[var(--surface-strong)] hover:text-[var(--primary)]">
+            <button onClick={handleLogout} title="Logout" className="rounded-xl p-2 text-[var(--muted)] transition-colors hover:bg-amber-500/10 hover:text-amber-400 cursor-pointer">
               <LogOut size={18} />
             </button>
           </div>
@@ -150,4 +150,4 @@ export default function Sidebar() {
       </aside>
     </>
   );
-}
+}

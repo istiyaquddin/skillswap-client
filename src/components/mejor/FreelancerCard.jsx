@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Star, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Star, ArrowRight, CheckCircle2, ShieldCheck } from 'lucide-react';
 
 const FreelancerCard = ({ freelancer }) => {
   const freelancerId = freelancer._id || freelancer.id;
@@ -20,17 +20,23 @@ const FreelancerCard = ({ freelancer }) => {
       href={`/browse-freelancer/${freelancerId}`} 
       className="block h-full text-left no-underline hover:no-underline"
     >
-      <div className="glass-panel rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-amber-500/40 hover:shadow-2xl flex flex-col justify-between h-full cursor-pointer group">
+      <div className="glass-panel rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-2 hover:border-amber-500/40 hover:shadow-2xl flex flex-col justify-between h-full cursor-pointer group relative overflow-hidden">
         <div>
           <div className="flex items-center gap-3.5 mb-4">
-            <div className="amber-gradient amber-glow w-13 h-13 rounded-2xl flex items-center justify-center text-white font-black text-xl uppercase shadow-md transition-transform duration-300 group-hover:scale-105">
-              {freelancer.name ? freelancer.name[0] : 'F'}
+            <div className="relative">
+              <div className="amber-gradient amber-glow w-13 h-13 rounded-2xl flex items-center justify-center text-white font-black text-xl uppercase shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                {freelancer.name ? freelancer.name[0] : 'F'}
+              </div>
+              <span className="absolute -bottom-1 -right-1 bg-emerald-500 text-white rounded-full p-0.5 border-2 border-[var(--surface-strong)]">
+                <CheckCircle2 size={11} />
+              </span>
             </div>
             <div>
               <h3 className="font-extrabold text-base text-[var(--text)] group-hover:text-amber-400 transition-colors leading-tight">
                 {freelancer.name}
               </h3>
-              <p className="text-xs font-semibold text-amber-400 mt-1">
+              <p className="text-xs font-semibold text-amber-400 mt-1 flex items-center gap-1">
+                <ShieldCheck size={12} className="text-amber-400 inline" />
                 {freelancer.title || "Vetted Specialist"}
               </p>
             </div>
@@ -44,7 +50,7 @@ const FreelancerCard = ({ freelancer }) => {
             {skillsList.slice(0, 3).map((skill, index) => (
               <span
                 key={index}
-                className="rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-2.5 py-1 text-[11px] font-semibold text-[var(--muted)]"
+                className="rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-2.5 py-1 text-[11px] font-semibold text-[var(--muted)] transition-colors group-hover:border-amber-500/30 group-hover:text-amber-400"
               >
                 {skill}
               </span>
@@ -54,7 +60,7 @@ const FreelancerCard = ({ freelancer }) => {
 
         <div className="border-t border-[var(--border)] pt-3.5 mt-2 flex items-center justify-between text-xs">
           <div className="flex items-center gap-1.5">
-            <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+            <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400 transition-transform group-hover:scale-110 group-hover:rotate-12" />
             <span className="font-extrabold text-[var(--text)]">{freelancer.rating || "5.0"}</span>
             <span className="text-[var(--muted)] text-[11px]">(Verified)</span>
           </div>
@@ -68,4 +74,5 @@ const FreelancerCard = ({ freelancer }) => {
   );
 };
 
-export default FreelancerCard;
+export default FreelancerCard;
+

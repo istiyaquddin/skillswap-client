@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getAllTasks, getAllFreelancers } from "@/lib/api/tasks";
 import { FaTasks, FaUsers, FaHandHoldingUsd } from "react-icons/fa";
+import { Activity } from "lucide-react";
 
 const PlatformStatistics = () => {
   const [stats, setStats] = useState({
@@ -64,11 +65,11 @@ const PlatformStatistics = () => {
     <section className="relative overflow-hidden py-16">
       <div className="mx-auto w-[95%] lg:w-[78%]">
         <div className="mb-12 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-400">
-            📊 Platform Pulse
+          <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur">
+            <Activity className="h-3.5 w-3.5 animate-pulse text-amber-400" /> Platform Pulse
           </div>
           <h2 className="mt-4 text-3xl font-black tracking-tight text-[var(--text)] md:text-5xl">
-            Trusted by Creators & Enterprise Clients
+            Trusted by Creators & Campus Leaders
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-base text-[var(--muted)]">
             Real-time numbers driving fast project completion and secure freelancer payments.
@@ -81,12 +82,12 @@ const PlatformStatistics = () => {
             return (
               <div
                 key={card.title}
-                className="glass-panel rounded-[2rem] p-8 text-center transition-all duration-300 hover:-translate-y-1.5 hover:border-amber-500/40"
+                className="glass-panel group rounded-[2rem] p-8 text-center transition-all duration-300 hover:-translate-y-2 hover:border-amber-500/40 hover:shadow-2xl cursor-pointer relative overflow-hidden"
               >
-                <div className={`mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl ${card.accent} text-2xl text-white shadow-lg`}>
-                  <Icon />
+                <div className={`mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl ${card.accent} text-2xl text-white shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3`}>
+                  <Icon className="transition-transform duration-300 group-hover:scale-110" />
                 </div>
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">{card.title}</p>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)] group-hover:text-amber-400 transition-colors">{card.title}</p>
                 <h3 className={`mt-3 text-4xl font-black tracking-tight ${card.textColor}`}>{card.value}</h3>
               </div>
             );
@@ -97,4 +98,5 @@ const PlatformStatistics = () => {
   );
 };
 
-export default PlatformStatistics;
+export default PlatformStatistics;
+
