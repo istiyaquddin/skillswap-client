@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Mail, Star, ChevronLeft, Layers, Loader2 } from "lucide-react";
+import { Mail, Star, ChevronLeft, Layers, Loader2, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { getFreelancerDetails } from "@/lib/api/tasks";
 
 const FreelancerDetailsPage = () => {
@@ -37,20 +37,20 @@ const FreelancerDetailsPage = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-2 text-inherit opacity-60 font-sans">
-        <Loader2 className="w-6 h-6 animate-spin text-cyan-500" />
-        <p className="text-sm font-bold tracking-wider uppercase">Loading profile details...</p>
+      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3 font-sans text-[var(--muted)]">
+        <Loader2 className="w-8 h-8 animate-spin text-amber-400" />
+        <p className="text-xs font-bold tracking-widest uppercase">Loading profile details...</p>
       </div>
     );
   }
 
   if (!freelancer) {
     return (
-      <div className="text-center mt-12 text-rose-500 font-sans p-6 border border-rose-500/10 bg-rose-500/5 max-w-md mx-auto rounded-2xl">
-        <p className="text-base font-extrabold">Freelancer Profile Not Found!</p>
+      <div className="glass-panel text-center mt-12 font-sans p-8 max-w-md mx-auto rounded-[2rem] space-y-4">
+        <p className="text-base font-extrabold text-[var(--text)]">Freelancer Profile Not Found!</p>
         <button 
           onClick={() => router.back()} 
-          className="mt-4 text-xs uppercase font-black tracking-widest text-inherit opacity-60 hover:opacity-100 hover:text-cyan-500 transition cursor-pointer"
+          className="px-5 py-2 amber-gradient amber-glow text-white text-xs uppercase font-black tracking-widest rounded-full transition cursor-pointer"
         >
           Go Back
         </button>
@@ -67,73 +67,80 @@ const FreelancerDetailsPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-6 font-sans text-inherit min-h-screen antialiased selection:bg-cyan-500/20 selection:text-cyan-500">
+    <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-6 font-sans text-[var(--text)] min-h-screen">
       
       {/* Back Button */}
       <button 
         onClick={() => router.back()}
-        className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest opacity-60 hover:opacity-100 hover:text-cyan-500 transition-all mb-4 cursor-pointer text-inherit"
+        className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-amber-400 transition-all mb-4 cursor-pointer"
       >
         <ChevronLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" /> 
         Back to Freelancers
       </button>
 
-      {/* মেইন প্রোফাইল কার্ড */}
-      <div className="border border-current/10 bg-current/5 rounded-3xl p-6 md:p-8 backdrop-blur-md shadow-sm">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-current/10">
+      {/* Main Profile Card */}
+      <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 shadow-xl space-y-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-[var(--border)]">
           
-          {/* লেফট সাইড: অ্যাভাটার এবং নাম/টাইটেল */}
+          {/* Avatar & Info */}
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-linear-to-br from-cyan-400 to-teal-400 flex items-center justify-center text-zinc-950 font-black text-2xl md:text-3xl uppercase shadow-[0_4px_14px_rgba(6,182,212,0.25)] shrink-0">
-              {freelancer.name ? freelancer.name[0] : 'F'}
+            <div className="relative">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl amber-gradient amber-glow flex items-center justify-center text-white font-black text-2xl md:text-3xl uppercase shadow-md shrink-0">
+                {freelancer.name ? freelancer.name[0] : 'F'}
+              </div>
+              <span className="absolute -bottom-1 -right-1 bg-emerald-500 text-white rounded-full p-0.5 border-2 border-[var(--surface-strong)]">
+                <CheckCircle2 size={12} />
+              </span>
             </div>
             <div className="space-y-1">
-              <h1 className="text-2xl font-extrabold text-inherit leading-tight">{freelancer.name}</h1>
-              <p className="text-sm text-cyan-500 font-extrabold tracking-wide">{freelancer.title || "Professional Freelancer"}</p>
+              <h1 className="text-2xl font-extrabold text-[var(--text)] leading-tight">{freelancer.name}</h1>
+              <p className="text-xs text-amber-400 font-extrabold tracking-wide flex items-center gap-1">
+                <ShieldCheck size={13} /> {freelancer.title || "Vetted Specialist"}
+              </p>
               
-              {/* মেটা ইনফো */}
-              <div className="flex flex-wrap items-center gap-4 pt-1 text-xs opacity-60 font-bold">
+              {/* Meta Info */}
+              <div className="flex flex-wrap items-center gap-4 pt-1 text-xs text-[var(--muted)] font-bold">
                 <span className="flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                  <span className="text-inherit opacity-90">{freelancer.rating || "5.0"}</span> (0 reviews)
+                  <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                  <span className="text-[var(--text)]">{freelancer.rating || "5.0"}</span> (0 reviews)
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Mail className="w-3.5 h-3.5 opacity-70" />
+                  <Mail className="w-3.5 h-3.5 text-amber-400" />
                   {freelancer.email || freelancer.client_email}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* রাইট সাইড: হায়ার বাটন */}
+          {/* Hire Button */}
           <a 
             href={`mailto:${freelancer.email || freelancer.client_email}`}
-            className="w-full md:w-auto text-center bg-linear-to-r from-cyan-400 to-teal-400 text-zinc-950 font-extrabold text-xs uppercase tracking-widest px-6 py-3 rounded-xl shadow-[0_4px_14px_rgba(6,182,212,0.25)] hover:opacity-95 active:scale-[0.98] transition-all cursor-pointer"
+            className="w-full md:w-auto text-center amber-gradient amber-glow shine-button text-white font-extrabold text-xs uppercase tracking-widest px-6 py-3.5 rounded-full shadow-lg transition-all hover:scale-105 active:scale-95 cursor-pointer"
           >
             Hire {freelancer.name?.split(" ")[0]}
           </a>
         </div>
 
-        {/* বায়ো বা ডেসক্রিপশন সেকশন */}
-        <div className="py-6 space-y-2">
-          <h3 className="text-xs font-black uppercase tracking-widest opacity-50 flex items-center gap-1.5">
+        {/* Bio / Description */}
+        <div className="py-2 space-y-2">
+          <h3 className="text-xs font-black uppercase tracking-widest text-[var(--muted)]">
             About Me
           </h3>
-          <p className="opacity-80 text-sm md:text-base leading-relaxed">
+          <p className="text-[var(--text)] text-sm md:text-base leading-relaxed bg-[var(--surface-strong)] p-5 rounded-2xl border border-[var(--border)]">
             {freelancer.bio || "This freelancer hasn't added a bio yet. Hire them to discuss your project guidelines directly!"}
           </p>
         </div>
 
-        {/* স্কিল সেকশন */}
-        <div className="pt-4 space-y-3 border-t border-current/5">
-          <h3 className="text-xs font-black uppercase tracking-widest opacity-50">
+        {/* Skills Section */}
+        <div className="pt-4 space-y-3 border-t border-[var(--border)]">
+          <h3 className="text-xs font-black uppercase tracking-widest text-[var(--muted)]">
             Skills & Expertise
           </h3>
           <div className="flex flex-wrap gap-2">
             {renderSkills().map((skill, index) => (
               <span 
                 key={index} 
-                className="bg-current/5 border border-current/10 text-inherit px-3 py-1.5 rounded-xl text-xs font-bold transition hover:bg-current/10"
+                className="bg-[var(--surface-strong)] border border-[var(--border)] text-[var(--text)] px-3.5 py-1.5 rounded-xl text-xs font-bold"
               >
                 {skill}
               </span>
@@ -143,14 +150,14 @@ const FreelancerDetailsPage = () => {
 
       </div>
 
-      {/* বটম সেকশন: ওয়ার্ক হিস্টোরি */}
-      <div className="border border-current/10 bg-current/5 rounded-3xl p-6 md:p-8 backdrop-blur-md shadow-sm">
-        <h3 className="text-[11px] font-black uppercase tracking-widest text-cyan-500 flex items-center gap-2 border-b border-current/10 pb-4">
+      {/* Work History */}
+      <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 shadow-sm">
+        <h3 className="text-xs font-black uppercase tracking-widest text-amber-400 flex items-center gap-2 border-b border-[var(--border)] pb-4">
           <Layers className="w-3.5 h-3.5" />
           Work History & Reviews
         </h3>
-        <p className="opacity-40 text-xs font-bold uppercase tracking-widest mt-4">
-          No projects completed yet on FreelanceTerminal.
+        <p className="text-[var(--muted)] text-xs font-bold uppercase tracking-widest mt-4">
+          No completed projects recorded yet on SkillSwap.
         </p>
       </div>
 

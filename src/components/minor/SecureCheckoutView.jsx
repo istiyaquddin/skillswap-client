@@ -5,11 +5,11 @@ import { CreditCard, ArrowLeft, Lock, Layers, Calendar } from "lucide-react";
 
 const SecureCheckoutView = ({ proposal, onBack }) => {
   return (
-    <div className="mx-auto max-w-4xl p-4 md:p-8 text-inherit min-h-screen antialiased font-sans selection:bg-cyan-500/20 selection:text-cyan-500">
+    <div className="mx-auto max-w-4xl p-4 md:p-8 text-[var(--text)] min-h-screen font-sans">
       {/* Back Button */}
       <button
         onClick={onBack}
-        className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest opacity-60 hover:opacity-100 hover:text-cyan-500 transition-all mb-10 cursor-pointer text-inherit"
+        className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-amber-400 transition-all mb-10 cursor-pointer"
       >
         <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
         Back to proposals
