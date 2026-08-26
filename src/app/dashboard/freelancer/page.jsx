@@ -1,22 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
 import { getFreelancerProposals } from "@/lib/actions/actions";
+import { authClient } from "@/lib/auth-client";
 import {
-  FileText,
-  Clock3,
-  CheckCircle2,
-  DollarSign,
-  Search,
   ArrowUpRight,
-  Orbit,
-  Loader2,
-  Sparkles,
+  CheckCircle2,
   ChevronRight,
-  Briefcase,
+  Clock3,
+  DollarSign,
+  FileText,
+  Loader2,
+  Orbit,
+  Search,
+  Sparkles,
 } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function FreelancerDashboard() {
   const { data: session } = authClient.useSession();
@@ -33,8 +32,9 @@ export default function FreelancerDashboard() {
 
     const loadDashboardData = async () => {
       try {
-        const apiUrl =
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+        const apiUrl = (
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+        ).replace(/\/$/, "");
 
         const { data: tokenData } = await authClient.token();
         const headers = {
@@ -46,10 +46,14 @@ export default function FreelancerDashboard() {
           getFreelancerProposals(freelancerEmail),
           fetch(`${apiUrl}/api/freelancer-projects?email=${freelancerEmail}`, {
             headers,
-          }).then((res) => res.json()).catch(() => ({ success: false })),
+          })
+            .then((res) => res.json())
+            .catch(() => ({ success: false })),
           fetch(`${apiUrl}/api/freelancer-earnings?email=${freelancerEmail}`, {
             headers,
-          }).then((res) => res.json()).catch(() => ({ success: false })),
+          })
+            .then((res) => res.json())
+            .catch(() => ({ success: false })),
         ]);
 
         setProposals(proposalsData || []);
@@ -123,7 +127,9 @@ export default function FreelancerDashboard() {
     return (
       <div className="flex flex-col h-96 items-center justify-center gap-3">
         <Loader2 className="w-10 h-10 animate-spin text-amber-500" />
-        <p className="text-xs font-semibold uppercase tracking-widest text-[var(--muted)]">Loading Freelancer Workspace...</p>
+        <p className="text-xs font-semibold uppercase tracking-widest text-[var(--muted)]">
+          Loading Freelancer Workspace...
+        </p>
       </div>
     );
   }
@@ -139,10 +145,14 @@ export default function FreelancerDashboard() {
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
-            Welcome Back, <span className="amber-text-gradient">{session?.user?.name || "Freelancer"}</span>
+            Welcome Back,{" "}
+            <span className="amber-text-gradient">
+              {session?.user?.name || "Freelancer"}
+            </span>
           </h1>
           <p className="text-sm text-[var(--muted)] max-w-lg">
-            Track active client contracts, evaluate pending bids, and monitor your earnings.
+            Track active client contracts, evaluate pending bids, and monitor
+            your earnings.
           </p>
         </div>
 
@@ -172,11 +182,15 @@ export default function FreelancerDashboard() {
                     {item.value}
                   </h2>
                 </div>
-                <div className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${item.color}`}>
+                <div
+                  className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${item.color}`}
+                >
                   <Icon className="w-5 h-5" />
                 </div>
               </div>
-              <p className="mt-4 text-xs font-medium text-[var(--muted)]">{item.description}</p>
+              <p className="mt-4 text-xs font-medium text-[var(--muted)]">
+                {item.description}
+              </p>
             </div>
           );
         })}
@@ -184,7 +198,6 @@ export default function FreelancerDashboard() {
 
       {/* Tables Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        
         {/* Table 1: Active Contracts */}
         <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 space-y-6">
           <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
@@ -192,7 +205,9 @@ export default function FreelancerDashboard() {
               <h2 className="text-xl font-extrabold tracking-tight text-[var(--text)]">
                 In-Progress Contracts
               </h2>
-              <p className="text-xs text-[var(--muted)]">Active projects you are working on.</p>
+              <p className="text-xs text-[var(--muted)]">
+                Active projects you are working on.
+              </p>
             </div>
             {activeProjects.length > 5 && (
               <Link
@@ -232,7 +247,8 @@ export default function FreelancerDashboard() {
                       </td>
                       <td className="p-3.5">
                         <span className="px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border bg-emerald-500/10 text-emerald-400 border-emerald-500/30 inline-flex items-center gap-1.5">
-                          <Orbit className="w-3 h-3 animate-spin text-emerald-400" /> Running
+                          <Orbit className="w-3 h-3 animate-spin text-emerald-400" />{" "}
+                          Running
                         </span>
                       </td>
                     </tr>
@@ -250,7 +266,9 @@ export default function FreelancerDashboard() {
               <h2 className="text-xl font-extrabold tracking-tight text-[var(--text)]">
                 Submitted Proposals
               </h2>
-              <p className="text-xs text-[var(--muted)]">Recent bids pending client review.</p>
+              <p className="text-xs text-[var(--muted)]">
+                Recent bids pending client review.
+              </p>
             </div>
             {proposals.length > 5 && (
               <Link
@@ -303,9 +321,7 @@ export default function FreelancerDashboard() {
             </div>
           )}
         </div>
-
       </div>
     </div>
   );
 }
-

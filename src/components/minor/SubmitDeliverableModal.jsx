@@ -1,9 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
 import { Loader2, X } from "lucide-react";
+import { useState } from "react";
 
-export default function SubmitDeliverableModal({ isOpen, onClose, task, onSubmissionSuccess }) {
+export default function SubmitDeliverableModal({
+  isOpen,
+  onClose,
+  task,
+  onSubmissionSuccess,
+}) {
   const [deliverableUrl, setDeliverableUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -12,7 +18,7 @@ export default function SubmitDeliverableModal({ isOpen, onClose, task, onSubmis
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!deliverableUrl.trim()) {
       setError("Please provide a deliverable submission.");
       return;
@@ -21,13 +27,18 @@ export default function SubmitDeliverableModal({ isOpen, onClose, task, onSubmis
     setLoading(true);
     setError("");
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    const apiUrl = (
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+    ).replace(/\/$/, "");
+
+    const { data: tokenData } = await authClient.token();
 
     try {
       const response = await fetch(`${apiUrl}/api/tasks/complete/${task._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${tokenData?.token}`,
         },
         body: JSON.stringify({ deliverableUrl }),
       });
@@ -36,8 +47,8 @@ export default function SubmitDeliverableModal({ isOpen, onClose, task, onSubmis
 
       if (data.success) {
         setDeliverableUrl("");
-        onSubmissionSuccess(); 
-        onClose(); 
+        onSubmissionSuccess();
+        onClose();
       } else {
         setError(data.message || "Something went wrong.");
       }
@@ -53,9 +64,8 @@ export default function SubmitDeliverableModal({ isOpen, onClose, task, onSubmis
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md p-4 text-inherit font-sans">
       {/* 🌟 bg-zinc-900 বদলে প্রজেক্টের থিম-অ্যাডাপ্টিভ ব্যাকগ্রাউন্ড দেওয়া হলো */}
       <div className="w-full max-w-137.5 rounded-2xl border border-current/10 bg-current/5 p-6 shadow-2xl backdrop-blur-xl relative mx-4">
-        
         {/* Close Button */}
-        <button 
+        <button
           type="button"
           onClick={onClose}
           className="absolute top-5 right-5 opacity-50 hover:opacity-100 transition duration-200 cursor-pointer text-inherit"
@@ -64,17 +74,22 @@ export default function SubmitDeliverableModal({ isOpen, onClose, task, onSubmis
         </button>
 
         {/* Header */}
-        <h2 className="text-xl font-extrabold mb-2 text-inherit">Submit Deliverable</h2>
+        <h2 className="text-xl font-extrabold mb-2 text-inherit">
+          Submit Deliverable
+        </h2>
         <p className="text-sm opacity-80 leading-relaxed mb-6">
-          Provide a link or details to your completed work for <span className="font-bold text-cyan-500">{task.title}</span>.
+          Provide a link or details to your completed work for{" "}
+          <span className="font-bold text-cyan-500">{task.title}</span>.
         </p>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-bold opacity-90 mb-1.5 text-inherit">Deliverable Link / Text</label>
+            <label className="block text-sm font-bold opacity-90 mb-1.5 text-inherit">
+              Deliverable Link / Text
+            </label>
             <input
-              type="text" 
+              type="text"
               placeholder="Paste your link or submission details here..."
               value={deliverableUrl}
               onChange={(e) => setDeliverableUrl(e.target.value)}
@@ -82,14 +97,17 @@ export default function SubmitDeliverableModal({ isOpen, onClose, task, onSubmis
               required
             />
             <p className="text-xs opacity-60 mt-1.5">
-              You can paste Google Docs, GitHub, Figma links, or any text reference.
+              You can paste Google Docs, GitHub, Figma links, or any text
+              reference.
             </p>
           </div>
 
           {/* Warning Note */}
           <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
             <p className="text-xs text-amber-500 leading-relaxed font-normal">
-              <span className="font-extrabold text-amber-500">Note:</span> Once you mark this task as completed, the status cannot be reverted. Make sure your work is ready for client review.
+              <span className="font-extrabold text-amber-500">Note:</span> Once
+              you mark this task as completed, the status cannot be reverted.
+              Make sure your work is ready for client review.
             </p>
           </div>
 
