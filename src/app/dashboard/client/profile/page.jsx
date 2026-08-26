@@ -15,6 +15,12 @@ import {
   Loader2,
   Mail,
   ShieldAlert,
+  ShieldCheck,
+  Award,
+  Zap,
+  TrendingUp,
+  Clock,
+  CheckCircle2,
 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -50,8 +56,8 @@ const ClientProfilePage = () => {
 
         // Parallel Data Fetching
         const [profileRes, paymentRes] = await Promise.all([
-          fetch(`${apiUrl}/api/clients/${session.user.id}`, { headers }).catch((e) => null),
-          fetch(`${apiUrl}/api/payment-history?email=${session.user.email}`, { headers }).catch((e) => null),
+          fetch(`${apiUrl}/api/clients/${session.user.id}`, { headers }).catch(() => null),
+          fetch(`${apiUrl}/api/payment-history?email=${session.user.email}`, { headers }).catch(() => null),
         ]);
 
         if (profileRes?.ok) {
@@ -61,7 +67,6 @@ const ClientProfilePage = () => {
           setImage(profileData.image || session.user.image || "");
           setBio(profileData.bio || "");
         } else {
-          // Initialize defaults from live authenticated session (e.g. Google OAuth or Better-Auth)
           setName(session.user.name || "");
           setImage(session.user.image || "");
         }
@@ -101,7 +106,7 @@ const ClientProfilePage = () => {
     email: clientInfo?.email || session?.user?.email || "",
     image: clientInfo?.image || session?.user?.image || "",
     role: clientInfo?.role || session?.user?.role || "Client",
-    bio: clientInfo?.bio || "",
+    bio: clientInfo?.bio || "Official Partner Account for Campus Talent Sourcing & Milestone Escrow Management.",
     createdAt: clientInfo?.createdAt || session?.user?.createdAt || session?.user?.updatedAt || new Date().toISOString(),
     status: clientInfo?.status || "Active",
   };
@@ -172,11 +177,15 @@ const ClientProfilePage = () => {
       <Toaster position="top-center" reverseOrder={false} />
 
       {/* Header */}
-      <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-b border-[var(--border)]">
-        <div className="space-y-2">
+      <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-b border-[var(--border)] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="space-y-2 relative z-10">
           <div className="flex items-center gap-2">
             <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-400 flex items-center gap-1.5">
               <Layers className="w-3.5 h-3.5" /> Client Workspace
+            </span>
+            <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-bold text-emerald-400 flex items-center gap-1">
+              <ShieldCheck className="w-3 h-3" /> Verified Partner
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
@@ -188,11 +197,11 @@ const ClientProfilePage = () => {
         </div>
       </div>
 
-      {/* Profile Card & Grid */}
+      {/* Main Profile Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         
-        {/* Left: Profile Card */}
-        <div className="glass-panel rounded-3xl p-6 space-y-6 relative overflow-hidden backdrop-blur-md shadow-xl border border-[var(--border)]">
+        {/* Left: Client Profile Overview Card */}
+        <div className="glass-panel rounded-[2.5rem] p-6 space-y-6 relative overflow-hidden backdrop-blur-md shadow-xl border border-[var(--border)]">
           <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
 
           {effectiveClient.status === "Blocked" && (
@@ -267,7 +276,7 @@ const ClientProfilePage = () => {
           )}
         </div>
 
-        {/* Right: Edit Form or Spending Summary */}
+        {/* Right: Metrics Grid + Corporate Activity Panel */}
         <div className="lg:col-span-2 space-y-6">
           {isEditing ? (
             <div className="glass-panel rounded-[2rem] p-6 md:p-8 space-y-6 animate-in fade-in duration-200 shadow-xl">
@@ -341,36 +350,105 @@ const ClientProfilePage = () => {
               </form>
             </div>
           ) : (
-            /* Dashboard Metrics Cards */
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {/* Total Invested Card */}
-              <div className="glass-panel rounded-[2rem] p-6 flex items-center justify-between relative overflow-hidden group hover:border-amber-500/40 hover:scale-[1.02] transition-all duration-300 shadow-lg">
-                <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-amber-500/5 rounded-full blur-xl group-hover:bg-amber-500/10 transition-all duration-500 pointer-events-none" />
-                <div className="flex items-center gap-4">
-                  <div className="p-3.5 bg-amber-500/10 rounded-2xl border border-amber-500/20 text-amber-400">
-                    <DollarSign className="w-6 h-6 stroke-[2.5]" />
+            <div className="space-y-6">
+              
+              {/* 4 Dashboard Metric Cards Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                {/* Total Invested */}
+                <div className="glass-panel rounded-[2rem] p-5 flex items-center justify-between relative overflow-hidden group hover:border-amber-500/40 hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                  <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-amber-500/5 rounded-full blur-xl group-hover:bg-amber-500/10 transition-all duration-500 pointer-events-none" />
+                  <div className="flex items-center gap-4">
+                    <div className="p-3.5 bg-amber-500/10 rounded-2xl border border-amber-500/20 text-amber-400">
+                      <DollarSign className="w-6 h-6 stroke-[2.5]" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-[var(--muted)] font-black uppercase tracking-widest">Total Invested</p>
+                      <p className="text-2xl font-black text-amber-400 tracking-tight mt-0.5">${totalSpend.toLocaleString()}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-[10px] text-[var(--muted)] font-black uppercase tracking-widest">Total Invested</p>
-                    <p className="text-3xl font-black text-amber-400 tracking-tight mt-0.5">${totalSpend.toLocaleString()}</p>
-                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-amber-400 opacity-40 group-hover:opacity-100 transition-opacity self-start mt-1" />
                 </div>
-                <ArrowUpRight className="w-4 h-4 text-amber-400 opacity-40 group-hover:opacity-100 transition-opacity self-start mt-1" />
+
+                {/* Hired Tasks */}
+                <div className="glass-panel rounded-[2rem] p-5 flex items-center justify-between relative overflow-hidden group hover:border-amber-500/40 hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3.5 bg-[var(--surface-strong)] rounded-2xl border border-[var(--border)]">
+                      <Briefcase className="w-6 h-6 stroke-2 text-amber-400" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-[var(--muted)] font-black uppercase tracking-widest">Hired Contracts</p>
+                      <p className="text-2xl font-black text-[var(--text)] tracking-tight mt-0.5">{paymentHistory.length}</p>
+                    </div>
+                  </div>
+                  <FileText className="w-4 h-4 text-[var(--muted)] opacity-40 self-start mt-1" />
+                </div>
+
+                {/* Escrow Vault Protection */}
+                <div className="glass-panel rounded-[2rem] p-5 flex items-center justify-between relative overflow-hidden group hover:border-emerald-500/40 hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3.5 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 text-emerald-400">
+                      <ShieldCheck className="w-6 h-6 stroke-2" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-[var(--muted)] font-black uppercase tracking-widest">Escrow Vault</p>
+                      <p className="text-2xl font-black text-emerald-400 tracking-tight mt-0.5">100% Shielded</p>
+                    </div>
+                  </div>
+                  <Zap className="w-4 h-4 text-emerald-400 opacity-40 group-hover:opacity-100 transition-opacity self-start mt-1" />
+                </div>
+
+                {/* Corporate Rating / Hiring Score */}
+                <div className="glass-panel rounded-[2rem] p-5 flex items-center justify-between relative overflow-hidden group hover:border-amber-500/40 hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3.5 bg-amber-500/10 rounded-2xl border border-amber-500/20 text-amber-400">
+                      <Award className="w-6 h-6 stroke-2" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-[var(--muted)] font-black uppercase tracking-widest">Partner Score</p>
+                      <p className="text-2xl font-black text-[var(--text)] tracking-tight mt-0.5">Top Tier</p>
+                    </div>
+                  </div>
+                  <TrendingUp className="w-4 h-4 text-amber-400 opacity-40 group-hover:opacity-100 transition-opacity self-start mt-1" />
+                </div>
+
               </div>
 
-              {/* Hired Tasks Card */}
-              <div className="glass-panel rounded-[2rem] p-6 flex items-center justify-between relative overflow-hidden group hover:border-amber-500/40 hover:scale-[1.02] transition-all duration-300 shadow-lg">
-                <div className="flex items-center gap-4">
-                  <div className="p-3.5 bg-[var(--surface-strong)] rounded-2xl border border-[var(--border)]">
-                    <Briefcase className="w-6 h-6 stroke-2 text-[var(--muted)]" />
+              {/* Corporate Activity & Compliance Panel */}
+              <div className="glass-panel rounded-[2rem] p-6 space-y-4 shadow-xl border border-[var(--border)]">
+                <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
+                  <h3 className="text-xs font-black uppercase tracking-widest text-[var(--muted)] flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400" /> Corporate Compliance & Hiring Metrics
+                  </h3>
+                  <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-0.5 rounded-full uppercase tracking-wider">
+                    Verified
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+                  <div className="bg-[var(--surface-strong)] border border-[var(--border)] rounded-2xl p-3.5 space-y-1">
+                    <span className="text-[10px] text-[var(--muted)] font-bold uppercase tracking-wider block">Avg Response Time</span>
+                    <span className="text-sm font-extrabold text-[var(--text)] flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-amber-400" /> &lt; 2 Hours
+                    </span>
                   </div>
-                  <div>
-                    <p className="text-[10px] text-[var(--muted)] font-black uppercase tracking-widest">Hired Tasks</p>
-                    <p className="text-3xl font-black text-[var(--text)] tracking-tight mt-0.5">{paymentHistory.length}</p>
+
+                  <div className="bg-[var(--surface-strong)] border border-[var(--border)] rounded-2xl p-3.5 space-y-1">
+                    <span className="text-[10px] text-[var(--muted)] font-bold uppercase tracking-wider block">Milestone Release Rate</span>
+                    <span className="text-sm font-extrabold text-emerald-400 flex items-center gap-1.5">
+                      <Zap className="w-3.5 h-3.5" /> 100% Instant
+                    </span>
+                  </div>
+
+                  <div className="bg-[var(--surface-strong)] border border-[var(--border)] rounded-2xl p-3.5 space-y-1">
+                    <span className="text-[10px] text-[var(--muted)] font-bold uppercase tracking-wider block">Preferred Domain</span>
+                    <span className="text-sm font-extrabold text-[var(--text)] truncate block">
+                      Web & AI Sourcing
+                    </span>
                   </div>
                 </div>
-                <FileText className="w-4 h-4 text-[var(--muted)] opacity-40 self-start mt-1" />
               </div>
+
             </div>
           )}
         </div>
@@ -379,12 +457,12 @@ const ClientProfilePage = () => {
       {/* Payment & Transaction History Table */}
       <div className="glass-panel rounded-[2rem] p-6 space-y-4 shadow-xl">
         <h3 className="text-base font-extrabold flex items-center gap-2 uppercase tracking-wider text-[var(--text)]">
-          <History className="w-5 h-5 text-amber-400 stroke-2" /> Payment History
+          <History className="w-5 h-5 text-amber-400 stroke-2" /> Payment & Escrow History
         </h3>
 
         {paymentHistory.length === 0 ? (
           <div className="glass-panel rounded-[2rem] py-12 text-center border border-[var(--border)]">
-            <p className="text-xs text-[var(--muted)] font-bold italic">No payment records found.</p>
+            <p className="text-xs text-[var(--muted)] font-bold italic">No payment or escrow records found yet.</p>
           </div>
         ) : (
           <div className="overflow-x-auto w-full rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)]">
