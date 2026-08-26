@@ -232,8 +232,9 @@ This project is licensed under the **MIT License**.
 
 ### Developed by: Remon Hossen
 
-- GitHub: https://github.com/remon918
-- LinkedIn: https://www.linkedin.com/in/remon-hossen
+- GitHub: [remon918](https://github.com/remon918)
+- LinkedIn: [Remon Hossen](https://www.linkedin.com/in/remon-hossen)
+- Project Repository: [skillswap-client](https://github.com/istiyaquddin/skillswap-client)
 
 ---
 
@@ -241,14 +242,14 @@ This project is licensed under the **MIT License**.
 
 If you like this project, consider giving it a ⭐ on GitHub.
 
-📧 mdremonhossen7778@gmail.com
+For support or feedback, email [mdremonhossen7778@gmail.com](mailto:mdremonhossen7778@gmail.com).
 
 ---
 
 <div align="center">
 
-## ⭐ Thank You For Visiting FreelanceTerminal ⭐
+## ⭐ Thank You For Visiting SkillSwap ⭐
 
-### Empowering Learning Through Smart Freelance Workspace
+### Empowering students to learn, teach, and grow together
 
 </div>
