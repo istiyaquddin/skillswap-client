@@ -136,7 +136,15 @@ export default function Sidebar() {
 
           <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2.5 shadow-sm">
             <div className="flex items-center gap-3">
-              <Image src={session?.user?.image?.startsWith("https") ? session.user.image : avatar} alt="profile" width={40} height={40} className="rounded-full border-2 border-amber-500/30 object-cover" />
+              <div className="h-10 w-10 min-w-10 min-h-10 shrink-0 aspect-square overflow-hidden rounded-full border-2 border-amber-500/30 bg-amber-500/10 flex items-center justify-center">
+                <Image 
+                  src={session?.user?.image?.startsWith("http") ? session.user.image : avatar} 
+                  alt="profile" 
+                  width={40} 
+                  height={40} 
+                  className="h-full w-full rounded-full object-cover aspect-square" 
+                />
+              </div>
               <div>
                 <h4 className="max-w-[7rem] truncate text-sm font-bold text-[var(--text)]">{session?.user?.name}</h4>
                 <p className="text-[11px] font-bold capitalize text-amber-400">{session?.user?.role}</p>

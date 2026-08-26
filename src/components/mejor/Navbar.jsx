@@ -100,24 +100,27 @@ const Navbar = () => {
             <>
               <Link
                 href={getProfileHref(session.user.role)}
-                className="flex items-center group"
+                className="flex items-center justify-center group shrink-0"
+                title="View Profile"
               >
-                <Image
-                  src={userImage}
-                  alt="User"
-                  width={36}
-                  height={36}
-                  className="rounded-full border-2 border-amber-500/40 object-cover group-hover:border-amber-400 group-hover:scale-105 transition-all shadow-md"
-                  onError={(e) => {
-                    e.currentTarget.src = avatar.src || avatar;
-                  }}
-                />
+                <div className="relative h-10 w-10 min-w-10 min-h-10 shrink-0 aspect-square overflow-hidden rounded-full border-2 border-amber-500/40 group-hover:border-amber-400 group-hover:scale-105 transition-all shadow-md bg-amber-500/10 flex items-center justify-center">
+                  <Image
+                    src={userImage}
+                    alt="User Profile"
+                    width={40}
+                    height={40}
+                    className="h-full w-full rounded-full object-cover aspect-square"
+                    onError={(e) => {
+                      e.currentTarget.src = avatar.src || avatar;
+                    }}
+                  />
+                </div>
               </Link>
 
               <button
                 type="button"
                 onClick={handleLogout}
-                className="rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-1.5 text-xs font-semibold text-amber-400 transition hover:bg-amber-500/20 hover:scale-105 active:scale-95 cursor-pointer"
+                className="rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-1.5 text-xs font-semibold text-amber-400 transition hover:bg-amber-500/20 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
               >
                 Logout
               </button>
