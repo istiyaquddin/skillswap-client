@@ -1,7 +1,7 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { Loader2, X } from "lucide-react";
+import { Loader2, X, Send, AlertCircle, Link as LinkIcon } from "lucide-react";
 import { useState } from "react";
 
 export default function SubmitDeliverableModal({
@@ -61,72 +61,79 @@ export default function SubmitDeliverableModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md p-4 text-inherit font-sans">
-      {/* 🌟 bg-zinc-900 বদলে প্রজেক্টের থিম-অ্যাডাপ্টিভ ব্যাকগ্রাউন্ড দেওয়া হলো */}
-      <div className="w-full max-w-137.5 rounded-2xl border border-current/10 bg-current/5 p-6 shadow-2xl backdrop-blur-xl relative mx-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4 font-sans text-[var(--text)]">
+      <div className="glass-panel w-full max-w-lg rounded-[2.5rem] border border-[var(--border)] bg-[var(--surface-strong)] p-6 md:p-8 shadow-2xl backdrop-blur-2xl relative animate-in fade-in zoom-in-95 duration-200">
+        
         {/* Close Button */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-5 right-5 opacity-50 hover:opacity-100 transition duration-200 cursor-pointer text-inherit"
+          className="absolute top-6 right-6 rounded-full p-2 text-[var(--muted)] hover:bg-amber-500/10 hover:text-amber-400 transition cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Header */}
-        <h2 className="text-xl font-extrabold mb-2 text-inherit">
-          Submit Deliverable
-        </h2>
-        <p className="text-sm opacity-80 leading-relaxed mb-6">
-          Provide a link or details to your completed work for{" "}
-          <span className="font-bold text-cyan-500">{task.title}</span>.
+        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-[var(--border)]">
+          <div className="amber-gradient amber-glow flex h-10 w-10 items-center justify-center rounded-2xl text-white shadow-md">
+            <Send className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 className="text-xl font-black tracking-tight text-[var(--text)]">
+              Submit <span className="amber-text-gradient">Deliverable</span>
+            </h2>
+            <p className="text-xs text-[var(--muted)] font-medium">Deliver completed work for client review</p>
+          </div>
+        </div>
+
+        <p className="text-xs text-[var(--muted)] leading-relaxed mb-4">
+          Provide submission links or details for task: <span className="font-bold text-amber-400">{task.title}</span>.
         </p>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-sm font-bold opacity-90 mb-1.5 text-inherit">
-              Deliverable Link / Text
+          <div className="space-y-1.5">
+            <label className="text-xs font-black uppercase tracking-widest text-[var(--muted)] flex items-center gap-1.5">
+              <LinkIcon className="w-3.5 h-3.5 text-amber-400" /> Deliverable Link / Text Details
             </label>
             <input
               type="text"
-              placeholder="Paste your link or submission details here..."
+              placeholder="Paste Google Drive, GitHub, Figma URL, or text notes..."
               value={deliverableUrl}
               onChange={(e) => setDeliverableUrl(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-current/20 bg-current/5 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all text-sm text-inherit placeholder:opacity-50"
+              className="w-full px-4 py-3 bg-[var(--surface-strong)] border border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition placeholder:text-[var(--muted)]"
               required
             />
-            <p className="text-xs opacity-60 mt-1.5">
-              You can paste Google Docs, GitHub, Figma links, or any text
-              reference.
+            <p className="text-[11px] text-[var(--muted)]">
+              Support links: GitHub repositories, Google Docs, Figma designs, or hosted demo URLs.
             </p>
           </div>
 
           {/* Warning Note */}
-          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
-            <p className="text-xs text-amber-500 leading-relaxed font-normal">
-              <span className="font-extrabold text-amber-500">Note:</span> Once
-              you mark this task as completed, the status cannot be reverted.
-              Make sure your work is ready for client review.
+          <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 flex items-start gap-2.5">
+            <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+            <p className="text-xs text-[var(--muted)] leading-relaxed">
+              <strong className="text-amber-400 uppercase font-black tracking-wider">Note:</strong> Marking task completed initiates escrow settlement. Verify deliverables before submitting.
             </p>
           </div>
 
-          {error && <p className="text-xs text-rose-500 font-bold">{error}</p>}
+          {error && <p className="text-xs text-rose-400 font-bold">{error}</p>}
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-3 pt-2">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-[var(--border)]">
             <button
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="flex-1 py-3 px-4 rounded-xl border border-current/20 font-bold text-inherit hover:bg-current/10 active:bg-current/10 transition text-center text-sm cursor-pointer disabled:opacity-40"
+              className="px-6 py-2.5 rounded-full border border-[var(--border)] text-xs font-black uppercase tracking-widest text-[var(--muted)] hover:bg-[var(--surface-strong)] transition cursor-pointer disabled:opacity-40"
             >
               Cancel
             </button>
+            
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl amber-gradient amber-glow text-white font-extrabold shadow-md hover:opacity-90 active:scale-[0.98] transition-all text-sm cursor-pointer disabled:opacity-50"
+              className="px-6 py-2.5 rounded-full amber-gradient amber-glow shine-button text-white font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-md transition hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-50"
             >
               {loading ? (
                 <>

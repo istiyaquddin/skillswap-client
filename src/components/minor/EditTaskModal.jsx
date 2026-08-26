@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { X, Loader2 } from "lucide-react";
+import { X, Loader2, Edit3, DollarSign, Calendar, Tag, FileText, CheckCircle2 } from "lucide-react";
 import { updateTask } from "@/lib/actions/actions";
 
 const EditTaskModal = ({ task, onClose, onSuccess }) => {
@@ -24,120 +24,142 @@ const EditTaskModal = ({ task, onClose, onSuccess }) => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
+      const result = await updateTask(task._id, formData);
 
-    console.log("Task ID:", task._id);
-    console.log("Form Data:", formData);
-
-    const result = await updateTask(task._id, formData);
-
-    console.log("Update Result:", result);
-
-    if (result.success) {
-      toast.success("Task updated");
-
-      onSuccess({
-        ...task,
-        ...formData,
-      });
-    } else {
-      toast.error(result.message || "Update failed");
+      if (result.success) {
+        toast.success("Task updated successfully");
+        onSuccess({
+          ...task,
+          ...formData,
+        });
+      } else {
+        toast.error(result.message || "Update failed");
+      }
+    } catch (error) {
+      console.error("Update Error:", error);
+      toast.error("Failed to update task");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Update Error:", error);
-    toast.error("Failed to update task");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl rounded-2xl border border-gray-700 bg-[#0f172a] p-6 shadow-2xl">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold">Edit Task</h2>
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 font-sans text-[var(--text)]">
+      <div className="glass-panel w-full max-w-2xl rounded-[2.5rem] border border-[var(--border)] bg-[var(--surface-strong)] p-6 md:p-8 shadow-2xl backdrop-blur-2xl relative animate-in fade-in zoom-in-95 duration-200">
+        
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-[var(--border)]">
+          <div className="flex items-center gap-2.5">
+            <div className="amber-gradient amber-glow flex h-10 w-10 items-center justify-center rounded-2xl text-white shadow-md">
+              <Edit3 className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-xl font-black tracking-tight text-[var(--text)]">
+                Edit <span className="amber-text-gradient">Task Opportunity</span>
+              </h2>
+              <p className="text-xs text-[var(--muted)] font-medium">Update title, budget, and project requirements</p>
+            </div>
+          </div>
 
-          <button onClick={onClose}>
+          <button
+            onClick={onClose}
+            className="rounded-full p-2 text-[var(--muted)] hover:bg-amber-500/10 hover:text-amber-400 transition cursor-pointer"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="text-sm block mb-2">Title</label>
-
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Title */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-black uppercase tracking-widest text-[var(--muted)] flex items-center gap-1.5">
+              <FileText className="w-3.5 h-3.5 text-amber-400" /> Task Title
+            </label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full border border-gray-700 rounded-xl px-4 py-3 bg-transparent"
+              placeholder="e.g. Build a Full-Stack E-Commerce App"
+              className="w-full px-4 py-3 bg-[var(--surface-strong)] border border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition placeholder:text-[var(--muted)]"
               required
             />
           </div>
 
-          <div>
-            <label className="text-sm block mb-2">Description</label>
-
+          {/* Description */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-black uppercase tracking-widest text-[var(--muted)] flex items-center gap-1.5">
+              Description & Scope
+            </label>
             <textarea
-              rows={5}
+              rows={4}
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full border border-gray-700 rounded-xl px-4 py-3 bg-transparent resize-none"
+              placeholder="Provide a clear description of deliverables..."
+              className="w-full px-4 py-3 bg-[var(--surface-strong)] border border-[var(--border)] rounded-2xl text-sm font-medium leading-relaxed text-[var(--text)] focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition placeholder:text-[var(--muted)] resize-none"
               required
             />
           </div>
 
+          {/* Grid Metadata Inputs */}
           <div className="grid md:grid-cols-3 gap-4">
-            <div>
-              <label className="text-sm block mb-2">Budget</label>
-
+            <div className="space-y-1.5">
+              <label className="text-xs font-black uppercase tracking-widest text-[var(--muted)] flex items-center gap-1.5">
+                <DollarSign className="w-3.5 h-3.5 text-amber-400" /> Budget (USD)
+              </label>
               <input
                 type="number"
                 name="budget"
                 value={formData.budget}
                 onChange={handleChange}
-                className="w-full border border-gray-700 rounded-xl px-4 py-3 bg-transparent"
+                placeholder="450"
+                className="w-full px-4 py-3 bg-[var(--surface-strong)] border border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition"
                 required
               />
             </div>
 
-            <div>
-              <label className="text-sm block mb-2">Deadline</label>
-
+            <div className="space-y-1.5">
+              <label className="text-xs font-black uppercase tracking-widest text-[var(--muted)] flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-amber-400" /> Deadline
+              </label>
               <input
                 type="date"
                 name="deadline"
                 value={formData.deadline}
                 onChange={handleChange}
-                className="w-full border border-gray-700 rounded-xl px-4 py-3 bg-transparent"
+                className="w-full px-4 py-3 bg-[var(--surface-strong)] border border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition"
                 required
               />
             </div>
 
-            <div>
-              <label className="text-sm block mb-2">Category</label>
-
+            <div className="space-y-1.5">
+              <label className="text-xs font-black uppercase tracking-widest text-[var(--muted)] flex items-center gap-1.5">
+                <Tag className="w-3.5 h-3.5 text-amber-400" /> Category
+              </label>
               <input
                 type="text"
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full border border-gray-700 rounded-xl px-4 py-3 bg-transparent"
+                placeholder="Web Development"
+                className="w-full px-4 py-3 bg-[var(--surface-strong)] border border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition"
                 required
               />
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-3 pt-4 border-t border-[var(--border)]">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2 rounded-xl border border-gray-700"
+              className="px-6 py-2.5 rounded-full border border-[var(--border)] text-xs font-black uppercase tracking-widest text-[var(--muted)] hover:bg-[var(--surface-strong)] transition cursor-pointer"
             >
               Cancel
             </button>
@@ -145,10 +167,19 @@ const EditTaskModal = ({ task, onClose, onSuccess }) => {
             <button
               disabled={loading}
               type="submit"
-              className="px-5 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 flex items-center gap-2"
+              className="px-6 py-2.5 rounded-full amber-gradient amber-glow shine-button text-white font-black text-xs uppercase tracking-widest flex items-center gap-2 shadow-md transition hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-50"
             >
-              {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-              Save Changes
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin text-white" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="w-4 h-4" />
+                  Save Changes
+                </>
+              )}
             </button>
           </div>
         </form>
