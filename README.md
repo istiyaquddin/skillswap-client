@@ -1,6 +1,6 @@
 <!-- Repository maintenance note -->
 
-# 🛠️ Skill Swap
+# 🛠️ SkillSwap Client
 
 <div align="center">
 
@@ -16,7 +16,7 @@ A high-performance full-stack marketplace web application where clients can post
 
 # 📖 Project Overview
 
-**Freelance Terminal** is a modern and easy-to-use freelance marketplace that connects clients, freelancers, and admins in one smart platform.
+**SkillSwap** is a modern freelance marketplace that connects clients, freelancers, and admins in one smart platform.
 
 - **Clients** can easily post jobs, review proposals, and make secure payments using **Stripe**.
 - **Freelancers** can apply for jobs, track their applications, and manage their profiles on a smooth, fast dashboard.
@@ -119,24 +119,22 @@ This project was built using **Next.js (App Router), MongoDB, Express.js, Better
 # 📂 Project Structure
 
 ```bash
-freelance-terminal/
+skillswap-client/
 │
-├── frontend/             # Next.js Application Node
-│   ├── src/
-│   │   ├── app/         # Dynamic Routes, Modals & Main Dashboards
-│   │   ├── components/  # Reusable UI Blocks & Action Containers
-│   │   ├── hooks/       # Session Controllers & Context Core
-│   │   └── lib/         # Better Auth System Configs
-│   └── .env       # Client Environment Variables
-│
-├── backend/              # Express Server Engine
-│   ├── middleware/      # verifyToken Validation Layers
-│   ├── index.js         # API Handlers & MongoDB Intersections
-│   └── .env             # Secure Database Connection Keys
-│
-└── README.md             # Global Platform Documentation
+├── public/               # Static assets
+├── src/
+│   ├── app/              # App Router pages, dashboards, and API routes
+│   ├── components/       # Shared dashboard, navigation, and modal components
+│   ├── lib/              # Auth, API, payment, and server action helpers
+│   └── proxy.js          # Protected dashboard route guard
+├── next.config.mjs
+├── package.json
+└── .env                  # Local client environment variables
 
 ```
+
+The Express backend is maintained separately in the sibling
+`../skillswap-server` repository.
 
 ---
 
@@ -145,7 +143,7 @@ freelance-terminal/
 ## 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/remon918/Freelance-Terminal.git
+git clone https://github.com/istiyaquddin/skillswap-client.git
 ```
 
 ---
@@ -153,7 +151,7 @@ git clone https://github.com/remon918/Freelance-Terminal.git
 ## 2️⃣ Frontend Setup
 
 ```bash
-cd client
+cd skillswap-client
 npm install
 npm run dev
 ```
@@ -163,7 +161,7 @@ npm run dev
 ## 3️⃣ Backend Setup
 
 ```bash
-cd server
+cd skillswap-server
 npm install
 npm start
 ```
@@ -177,8 +175,8 @@ npm start
 | Method | Endpoint             | Description                               |
 | ------ | -------------------- | ----------------------------------------- |
 | POST   | `/api/tasks`         | Creates a new marketplace project         |
-| GET    | `/api/freelancer`    | Get featured freelancer                   |
-| GET    | `/api/my-tasks`      | Fetches active projects posted by client  |
+ | GET    | `/api/freelancers`    | Get filtered freelancer profiles           |
+ | GET    | `/api/my-tasks`       | Fetches active projects posted by client  |
 | GET    | `/api/tasks/:taskId` | Resolves single comprehensive task detail |
 
 ---
@@ -242,7 +240,7 @@ This project is licensed under the **MIT License**.
 
 If you like this project, consider giving it a ⭐ on GitHub.
 
-For support or feedback, email [mdremonhossen7778@gmail.com](mailto:mdremonhossen7778@gmail.com).
+For support or feedback, email [istiyaqspc@gmail.com](mailto:istiyaqspc@gmail.com).
 
 ---
 
