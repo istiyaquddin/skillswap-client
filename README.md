@@ -114,6 +114,28 @@ This project was built using **Next.js (App Router), MongoDB, Express.js, Better
 - Vercel (Frontend Optimization Architecture)
 - Vercel (High Availability Backend Hosting)
 
+### Required Vercel Environment Variables
+
+Set these variables in the frontend Vercel project before deploying. Replace the
+API value with the actual public URL of the separately deployed Express server.
+
+```env
+BETTER_AUTH_URL=https://skillswap-client-blush-two.vercel.app
+NEXT_PUBLIC_BETTER_AUTH_URL=https://skillswap-client-blush-two.vercel.app
+NEXT_PUBLIC_APP_URL=https://skillswap-client-blush-two.vercel.app
+NEXT_PUBLIC_API_URL=https://your-server-project.vercel.app
+```
+
+Set this variable in the backend Vercel project:
+
+```env
+CLIENT_URL=https://skillswap-client-blush-two.vercel.app
+```
+
+After changing any `NEXT_PUBLIC_*` variable, redeploy the frontend because those
+values are embedded into the browser bundle at build time. Never use
+`localhost` values in a production deployment.
+
 ---
 
 # 📂 Project Structure
