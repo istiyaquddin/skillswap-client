@@ -3,7 +3,7 @@
 
 :root {
   color-scheme: light;
-  --bg: #ffffff;
+  --bg: #f7faf9;
   --surface: rgba(255, 255, 255, 0.84);
   --surface-strong: #ffffff;
   --text: #222325;
@@ -13,6 +13,7 @@
   --primary-amber-hover: #19a463;
   --emerald-accent: #1dbf73;
   --shadow: 0 20px 50px rgba(34, 35, 37, 0.08);
+  --blue-accent: #3b82f6;
 }
 
 [data-theme="dark"] {
@@ -33,7 +34,18 @@ html {
 }
 
 body {
-  background: transparent;
+  background:
+    radial-gradient(
+      circle at 8% 0%,
+      rgba(29, 191, 115, 0.1),
+      transparent 28rem
+    ),
+    radial-gradient(
+      circle at 92% 18%,
+      rgba(59, 130, 246, 0.07),
+      transparent 24rem
+    ),
+    var(--bg);
   color: var(--text);
   min-height: 100vh;
   font-family: var(--font-geist-sans), sans-serif;
@@ -64,7 +76,7 @@ body {
 }
 
 .amber-glow-lg {
-  box-shadow: 0 0 50px rgba(245, 158, 11, 0.25);
+  box-shadow: 0 0 50px rgba(29, 191, 115, 0.22);
 }
 
 .amber-gradient {
@@ -82,7 +94,30 @@ body {
 }
 
 .emerald-glow {
-  box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 10px 30px -10px rgba(29, 191, 115, 0.4);
+}
+
+.text-amber-400,
+.text-amber-500 {
+  color: #1dbf73 !important;
+}
+
+.bg-amber-500\/10 {
+  background-color: rgba(29, 191, 115, 0.1) !important;
+}
+
+.border-amber-500\/20,
+.border-amber-500\/30,
+.border-amber-500\/40 {
+  border-color: rgba(29, 191, 115, 0.28) !important;
+}
+
+.hover\:text-amber-400:hover {
+  color: #19a463 !important;
+}
+
+.hover\:border-amber-400:hover {
+  border-color: #1dbf73 !important;
 }
 
 input:-webkit-autofill,

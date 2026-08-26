@@ -2,7 +2,7 @@
 
 import avatar from "@/assets/user.png";
 import { authClient } from "@/lib/auth-client";
-import { Briefcase } from "lucide-react";
+import { GraduationCap, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -64,13 +64,19 @@ const Navbar = () => {
           </div>
 
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="amber-gradient flex h-9 w-9 items-center justify-center rounded-xl text-white shadow-md transition-transform duration-300 group-hover:scale-105">
-              <Briefcase className="h-5 w-5 stroke-[2.5]" />
+            <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-[#222325] text-white shadow-[0_10px_24px_rgba(29,191,115,0.28)] transition-transform duration-300 group-hover:rotate-3 group-hover:scale-105">
+              <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-[#3b82f6] ring-4 ring-white" />
+              <span className="absolute bottom-1.5 left-1.5 h-2 w-2 rounded-full bg-[#1dbf73]" />
+              <GraduationCap className="relative z-10 h-5 w-5 stroke-[2.2]" />
+              <Sparkles className="absolute -bottom-1 -right-1 h-4 w-4 text-[#1dbf73]" />
             </div>
             <div className="leading-tight">
-              <h2 className="text-lg font-extrabold tracking-tight text-[var(--text)]">
+              <h2 className="text-[1.1rem] font-black tracking-tight text-[var(--text)]">
                 Skill<span className="amber-text-gradient">Swap</span>
               </h2>
+              <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+                Campus exchange
+              </span>
             </div>
           </Link>
         </div>
