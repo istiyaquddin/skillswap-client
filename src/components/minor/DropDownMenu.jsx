@@ -5,7 +5,6 @@ import NavLink from "./NavLink";
 
 const DropDownMenu = ({ menus }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -37,60 +36,57 @@ const DropDownMenu = ({ menus }) => {
   }, [menuOpen]);
 
   return (
-    <div ref={menuRef} className="lg:hidden relative z-999999">
+    <div ref={menuRef} className="lg:hidden relative z-50">
       <button
         onClick={() => setMenuOpen(!menuOpen)}
-        className="relative z-999999 flex flex-col justify-center items-center gap-1 w-9 h-9 rounded-xl bg-base-content border-teal-200"
+        aria-label="Toggle navigation menu"
+        className="relative z-50 flex flex-col justify-center items-center gap-1 w-9 h-9 rounded-xl border border-[var(--border)] bg-[var(--surface-strong)] text-[var(--text)] transition hover:border-amber-400 cursor-pointer shadow-sm"
       >
         <span
-          className={`w-5 h-0.5 bg-teal-600 rounded-full transition-all duration-300 ${
-            menuOpen ? "rotate-45 translate-y-2" : ""
+          className={`w-4.5 h-0.5 bg-amber-400 rounded-full transition-all duration-300 ${
+            menuOpen ? "rotate-45 translate-y-1.5" : ""
           }`}
         />
 
         <span
-          className={`w-5 h-0.5 bg-teal-600 rounded-full transition-all duration-300 ${
+          className={`w-4.5 h-0.5 bg-amber-400 rounded-full transition-all duration-300 ${
             menuOpen ? "opacity-0" : ""
           }`}
         />
 
         <span
-          className={`w-5 h-0.5 bg-teal-600 rounded-full transition-all duration-300 ${
-            menuOpen ? "-rotate-45 -translate-y-2" : ""
+          className={`w-4.5 h-0.5 bg-amber-400 rounded-full transition-all duration-300 ${
+            menuOpen ? "-rotate-45 -translate-y-1.5" : ""
           }`}
         />
       </button>
 
       <div
-        className={`fixed inset-0 bg-black/40 transition-all duration-300 z-999997
+        className={`fixed inset-0 bg-black/50 backdrop-blur-xs transition-all duration-300 z-40
         ${menuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
       />
 
       <div
-        className={`absolute top-14 left-0 w-64 rounded-3xl
-        bg-white/95 backdrop-blur-2xl border border-white/20
-        shadow-[0_20px_60px_rgba(0,0,0,0.25)]
-        transition-all duration-300 z-999998
+        className={`absolute top-12 left-0 w-64 rounded-3xl
+        glass-panel border border-[var(--border)]
+        shadow-2xl transition-all duration-300 z-50 overflow-hidden
         ${
           menuOpen
             ? "opacity-100 translate-y-0 scale-100 visible"
-            : "opacity-0 -translate-y-5 scale-95 invisible"
+            : "opacity-0 -translate-y-4 scale-95 invisible"
         }`}
       >
         <div className="p-3">
-          <div className="mb-3 px-4 py-3 rounded-2xl bg-linear-to-r from-teal-500 to-teal-300 text-white">
-            <h3 className="font-semibold text-lg">Welcome 👋</h3>
-
-            <p className="text-sm text-white/80 mt-1">
-              Explore services
-            </p>
+          <div className="mb-3 px-4 py-3 rounded-2xl amber-gradient amber-glow text-white shadow-md">
+            <h3 className="font-extrabold text-base">Welcome 👋</h3>
+            <p className="text-xs text-white/90 mt-0.5">Campus Skill Exchange</p>
           </div>
 
-          <ul className="space-y-2">
+          <ul className="space-y-1">
             {menus.map((menu) => (
               <li key={menu.href}>
                 <NavLink href={menu.href} onClick={() => setMenuOpen(false)}>
-                  <span className="flex items-center gap-3 rounded-2xl px-4 py-3 text-gray-700 font-medium hover:bg-teal-500/10 hover:text-teal-700 transition-all duration-200">
+                  <span className="flex items-center gap-3 rounded-2xl px-4 py-2.5 text-xs font-bold text-[var(--text)] hover:bg-amber-500/10 hover:text-amber-400 transition-all duration-200">
                     {menu.icon} {menu.name}
                   </span>
                 </NavLink>
