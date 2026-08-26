@@ -30,8 +30,7 @@ export default function ClientDashboard() {
       if (!session?.user?.id || !session?.user?.email) return;
 
       try {
-        const apiUrl =
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+        const apiUrl = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
         const { data: tokenData } = await authClient.token();
         const headers = {
