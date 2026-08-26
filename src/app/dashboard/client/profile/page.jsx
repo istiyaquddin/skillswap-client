@@ -2,7 +2,6 @@
 
 import { authClient } from "@/lib/auth-client";
 import { useEffect, useState } from "react";
-// টোস্ট ইম্পোর্ট করা হলো
 import {
   ArrowUpRight,
   Briefcase,
@@ -40,7 +39,6 @@ const ClientProfilePage = () => {
       if (!session?.user?.id || !session?.user?.email) return;
 
       try {
-        // Better Auth থেকে টোকেন নেওয়া হচ্ছে
         const { data: tokenData } = await authClient.token();
         const headers = {
           "Content-Type": "application/json",
@@ -50,7 +48,7 @@ const ClientProfilePage = () => {
         const apiUrl =
           process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-        // Parallel Data Fetching for 2x Faster Loading
+        // Parallel Data Fetching
         const [profileRes, paymentRes] = await Promise.all([
           fetch(`${apiUrl}/api/clients/${session.user.id}`, { headers }).catch((e) => null),
           fetch(`${apiUrl}/api/payment-history?email=${session.user.email}`, { headers }).catch((e) => null),
@@ -59,9 +57,13 @@ const ClientProfilePage = () => {
         if (profileRes?.ok) {
           const profileData = await profileRes.json();
           setClientInfo(profileData);
-          setName(profileData.name || "");
-          setImage(profileData.image || "");
+          setName(profileData.name || session.user.name || "");
+          setImage(profileData.image || session.user.image || "");
           setBio(profileData.bio || "");
+        } else {
+          // Initialize defaults from live authenticated session (e.g. Google OAuth or Better-Auth)
+          setName(session.user.name || "");
+          setImage(session.user.image || "");
         }
 
         if (paymentRes?.ok) {
@@ -80,7 +82,6 @@ const ClientProfilePage = () => {
 
     if (!authLoading) {
       if (!session?.user) {
-        // ক্যাসকেডিং রেন্ডার ওয়ার্নিং এড়াতে সরাসরি setLoading না করে টাইমাউট ট্রিক
         const timeoutId = setTimeout(() => setLoading(false), 0);
         return () => clearTimeout(timeoutId);
       }
@@ -94,24 +95,31 @@ const ClientProfilePage = () => {
     }
   }, [session, authLoading]);
 
-  // প্রোফাইল আপডেট হ্যান্ডলার
+  // Merge database clientInfo with live session user data so Google OAuth & email users always see real profile info
+  const effectiveClient = {
+    name: clientInfo?.name || session?.user?.name || "Corporate Client",
+    email: clientInfo?.email || session?.user?.email || "",
+    image: clientInfo?.image || session?.user?.image || "",
+    role: clientInfo?.role || session?.user?.role || "Client",
+    bio: clientInfo?.bio || "",
+    createdAt: clientInfo?.createdAt || session?.user?.createdAt || session?.user?.updatedAt || new Date().toISOString(),
+    status: clientInfo?.status || "Active",
+  };
+
+  // Profile Update Handler
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setIsUpdating(true);
 
-    // একটি লোডিং টোস্ট স্টার্ট হবে
     const toastId = toast.loading("Updating profile...");
 
     try {
-      // Better Auth থেকে টোকেন নেওয়া হচ্ছে
       const { data: tokenData } = await authClient.token();
-
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
       const response = await fetch(`${apiUrl}/api/clients/${session.user.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          // Authorization হেডারে Bearer টোকেন পাস করা হলো
           authorization: `Bearer ${tokenData?.token}`,
         },
         body: JSON.stringify({ name, image, bio }),
@@ -120,20 +128,14 @@ const ClientProfilePage = () => {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        setClientInfo((prev) => ({ ...prev, name, image, bio }));
+        setClientInfo((prev) => ({ ...(prev || {}), name, image, bio }));
         setIsEditing(false);
-
-        // সাকসেস টোস্ট
         toast.success("Profile updated successfully!", { id: toastId });
       } else {
-        // এরর টোস্ট
-        toast.error(result.message || "Failed to update profile", {
-          id: toastId,
-        });
+        toast.error(result.message || "Failed to update profile", { id: toastId });
       }
     } catch (error) {
       console.error("Update error:", error);
-      // নেটওয়ার্ক এরর টোস্ট
       toast.error("Network error, please try again.", { id: toastId });
     } finally {
       setIsUpdating(false);
@@ -166,11 +168,10 @@ const ClientProfilePage = () => {
   }
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto p-4 md:p-6 font-sans relative selection:bg-amber-500/20 selection:text-amber-500">
-      {/* ২. টোস্ট কন্টেইনার এড করা হলো */}
+    <div className="space-y-8 max-w-6xl mx-auto p-4 md:p-6 font-sans relative selection:bg-amber-500/20 selection:text-amber-500 text-[var(--text)]">
       <Toaster position="top-center" reverseOrder={false} />
 
-      {/* প্রোফাইল হেডার */}
+      {/* Header */}
       <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-b border-[var(--border)]">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
@@ -187,13 +188,14 @@ const ClientProfilePage = () => {
         </div>
       </div>
 
-      {/* টপ প্রোফাইল কার্ড এবং এডিট ফর্ম লেআউট গ্রিড */}
+      {/* Profile Card & Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* বামে: প্রিমিয়াম প্রোফাইল ওভারভিউ কার্ড */}
+        
+        {/* Left: Profile Card */}
         <div className="glass-panel rounded-3xl p-6 space-y-6 relative overflow-hidden backdrop-blur-md shadow-xl border border-[var(--border)]">
           <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
 
-          {clientInfo?.status === "Blocked" && (
+          {effectiveClient.status === "Blocked" && (
             <div className="absolute top-0 right-0 bg-gradient-to-r from-rose-500 to-red-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-bl-xl flex items-center gap-1 shadow-sm">
               <ShieldAlert className="w-3.5 h-3.5" /> Restricted
             </div>
@@ -202,31 +204,31 @@ const ClientProfilePage = () => {
           <div className="flex flex-col items-center text-center space-y-3 pt-4">
             <div className="relative p-1 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-full shadow-[0_4px_12px_rgba(245,158,11,0.25)]">
               <div className="w-24 h-24 rounded-full overflow-hidden bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-3xl font-black text-amber-400">
-                {clientInfo?.image?.startsWith("http") ? (
+                {effectiveClient.image?.startsWith("http") ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={clientInfo.image}
-                    alt={clientInfo.name}
+                    src={effectiveClient.image}
+                    alt={effectiveClient.name}
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  clientInfo?.name?.charAt(0) || "C"
+                  effectiveClient.name.charAt(0).toUpperCase()
                 )}
               </div>
             </div>
 
             <div className="space-y-1">
               <h2 className="text-xl font-extrabold tracking-tight text-[var(--text)]">
-                {clientInfo?.name || "Corporate Client"}
+                {effectiveClient.name}
               </h2>
-              <span className="inline-block mt-1 text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">
-                Corporate {clientInfo?.role || "Client"}
+              <span className="inline-block mt-1 text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full capitalize">
+                Corporate {effectiveClient.role}
               </span>
             </div>
 
-            {clientInfo?.bio && (
+            {effectiveClient.bio && (
               <p className="text-xs text-[var(--muted)] font-medium max-w-xs pt-2 leading-relaxed bg-[var(--surface-strong)] px-4 py-2.5 rounded-xl border border-[var(--border)]">
-                {clientInfo.bio}
+                {effectiveClient.bio}
               </p>
             )}
           </div>
@@ -237,7 +239,7 @@ const ClientProfilePage = () => {
                 <Mail className="w-3.5 h-3.5 text-amber-400" /> Email
               </span>
               <span className="truncate text-[var(--text)] max-w-40 font-mono">
-                {clientInfo?.email}
+                {effectiveClient.email}
               </span>
             </div>
             <div className="flex items-center justify-between gap-3">
@@ -245,8 +247,8 @@ const ClientProfilePage = () => {
                 <Calendar className="w-3.5 h-3.5 text-amber-400" /> Joined
               </span>
               <span className="text-[var(--text)] font-semibold">
-                {clientInfo?.createdAt
-                  ? new Date(clientInfo.createdAt).toLocaleDateString(
+                {effectiveClient.createdAt
+                  ? new Date(effectiveClient.createdAt).toLocaleDateString(
                       undefined,
                       { year: "numeric", month: "short", day: "numeric" },
                     )
@@ -265,7 +267,7 @@ const ClientProfilePage = () => {
           )}
         </div>
 
-        {/* ডানে: এডিট ফর্ম অথবা স্পেন্ডিং স্ট্যাটাস সামারি */}
+        {/* Right: Edit Form or Spending Summary */}
         <div className="lg:col-span-2 space-y-6">
           {isEditing ? (
             <div className="glass-panel rounded-[2rem] p-6 md:p-8 space-y-6 animate-in fade-in duration-200 shadow-xl">
@@ -339,9 +341,9 @@ const ClientProfilePage = () => {
               </form>
             </div>
           ) : (
-            /* ড্যাশবোর্ড মেট্রিকেক্স কার্ডস */
+            /* Dashboard Metrics Cards */
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {/* টোটাল ইনভেস্টেড কার্ড */}
+              {/* Total Invested Card */}
               <div className="glass-panel rounded-[2rem] p-6 flex items-center justify-between relative overflow-hidden group hover:border-amber-500/40 hover:scale-[1.02] transition-all duration-300 shadow-lg">
                 <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-amber-500/5 rounded-full blur-xl group-hover:bg-amber-500/10 transition-all duration-500 pointer-events-none" />
                 <div className="flex items-center gap-4">
@@ -356,7 +358,7 @@ const ClientProfilePage = () => {
                 <ArrowUpRight className="w-4 h-4 text-amber-400 opacity-40 group-hover:opacity-100 transition-opacity self-start mt-1" />
               </div>
 
-              {/* হায়ারড টাস্কস কার্ড */}
+              {/* Hired Tasks Card */}
               <div className="glass-panel rounded-[2rem] p-6 flex items-center justify-between relative overflow-hidden group hover:border-amber-500/40 hover:scale-[1.02] transition-all duration-300 shadow-lg">
                 <div className="flex items-center gap-4">
                   <div className="p-3.5 bg-[var(--surface-strong)] rounded-2xl border border-[var(--border)]">
@@ -374,7 +376,7 @@ const ClientProfilePage = () => {
         </div>
       </div>
 
-      {/* পেমেন্ট ও ট্রানজেকশন হিস্ট্রি টেবিল */}
+      {/* Payment & Transaction History Table */}
       <div className="glass-panel rounded-[2rem] p-6 space-y-4 shadow-xl">
         <h3 className="text-base font-extrabold flex items-center gap-2 uppercase tracking-wider text-[var(--text)]">
           <History className="w-5 h-5 text-amber-400 stroke-2" /> Payment History
