@@ -50,35 +50,31 @@ const ClientProfilePage = () => {
         const apiUrl =
           process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-        // ১. ক্লায়েন্ট বেসিক প্রোফাইল ডেটা লোড
-        const profileRes = await fetch(
-          `${apiUrl}/api/clients/${session.user.id}`,
-          { headers },
-        );
-        const profileData = await profileRes.json();
+        // Parallel Data Fetching for 2x Faster Loading
+        const [profileRes, paymentRes] = await Promise.all([
+          fetch(`${apiUrl}/api/clients/${session.user.id}`, { headers }).catch((e) => null),
+          fetch(`${apiUrl}/api/payment-history?email=${session.user.email}`, { headers }).catch((e) => null),
+        ]);
 
-        if (profileRes.ok) {
+        if (profileRes?.ok) {
+          const profileData = await profileRes.json();
           setClientInfo(profileData);
           setName(profileData.name || "");
           setImage(profileData.image || "");
           setBio(profileData.bio || "");
         }
 
-        // ২. ক্লায়েন্টের পেমেন্ট হিস্ট্রি ও টোটাল স্পেন্ড লোড
-        const paymentRes = await fetch(
-          `${apiUrl}/api/payment-history?email=${session.user.email}`,
-          { headers },
-        );
-        const paymentData = await paymentRes.json();
-
-        if (paymentRes.ok && paymentData.success) {
-          setPaymentHistory(paymentData.history || []);
-          setTotalSpend(paymentData.totalSpend || 0);
+        if (paymentRes?.ok) {
+          const paymentData = await paymentRes.json();
+          if (paymentData.success) {
+            setPaymentHistory(paymentData.history || []);
+            setTotalSpend(paymentData.totalSpend || 0);
+          }
         }
       } catch (error) {
         console.error("Error fetching client profile data:", error);
       } finally {
-        setLoading(false); // async ব্লকের শেষে রান হওয়ায় এটি সম্পূর্ণ সেফ
+        setLoading(false);
       }
     };
 
