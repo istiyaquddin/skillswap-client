@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "@heroui/styles";
 
+@theme {
+  --breakpoint-xs: 475px;
+}
+
 :root {
   color-scheme: light;
   --bg: #f7faf9;
@@ -31,6 +35,7 @@ html {
   background: var(--bg);
   color: var(--text);
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -49,6 +54,7 @@ body {
   color: var(--text);
   min-height: 100vh;
   font-family: var(--font-geist-sans), sans-serif;
+  overflow-x: hidden;
 }
 
 ::selection {

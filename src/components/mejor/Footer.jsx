@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="mt-20 border-t border-[var(--border)]/80 relative overflow-hidden bg-[var(--surface)]/30 backdrop-blur">
       <div className="mx-auto w-[95%] py-14 lg:w-[76%]">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-8 sm:gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <Link href="/" className="mb-6 flex items-center gap-3 group inline-flex">
               <div className="amber-gradient amber-glow flex h-11 w-11 items-center justify-center rounded-2xl text-white font-black shadow-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110 relative">
@@ -33,7 +33,7 @@ const Footer = () => {
                 <input
                   type="email"
                   placeholder="Enter your student email..."
-                  className="w-full rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-2 text-xs text-[var(--text)] placeholder-[var(--muted)] focus:border-amber-500/50 focus:outline-none transition"
+                  className="w-full rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-2 text-xs text-[var(--text)] placeholder-[var(--muted)] focus:border-amber-500/50 focus:outline-none transition min-w-0"
                 />
                 <button
                   type="button"

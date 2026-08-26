@@ -64,19 +64,19 @@ const PlatformStatistics = () => {
   return (
     <section className="relative overflow-hidden py-16">
       <div className="mx-auto w-[95%] lg:w-[78%]">
-        <div className="mb-12 text-center">
+        <div className="mb-10 sm:mb-12 text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur">
             <Activity className="h-3.5 w-3.5 animate-pulse text-amber-400" /> Platform Pulse
           </div>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-[var(--text)] md:text-5xl">
+          <h2 className="mt-4 text-2xl sm:text-3xl font-black tracking-tight text-[var(--text)] md:text-5xl">
             Trusted by Creators & Campus Leaders
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-base text-[var(--muted)]">
+          <p className="mx-auto mt-3 max-w-xl text-sm sm:text-base text-[var(--muted)]">
             Real-time numbers driving fast project completion and secure freelancer payments.
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-3">
           {cards.map((card) => {
             const Icon = card.icon;
             return (

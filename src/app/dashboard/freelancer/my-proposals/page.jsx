@@ -94,21 +94,21 @@ const MyProposalsPage = () => {
   return (
     <div className="space-y-8 max-w-5xl mx-auto p-4 md:p-6 font-sans">
       {/* Header Banner */}
-      <div className="glass-panel rounded-[2.5rem] p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+      <div className="glass-panel rounded-[2.5rem] p-5 sm:p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-400 flex items-center gap-1.5">
               <FileText className="w-3.5 h-3.5" /> My Proposals
             </span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-[var(--text)]">
             Submitted <span className="amber-text-gradient">Proposals</span>
           </h1>
           <p className="text-sm text-[var(--muted)]">
             Track your bids, monitor client responses, and review cover notes.
           </p>
         </div>
-        <div className="flex items-center gap-2 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-full text-xs font-bold text-amber-400 shrink-0">
+        <div className="flex items-center gap-2 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-full text-xs font-bold text-amber-400 shrink-0 self-start sm:self-auto">
           <FileText className="w-4 h-4" />
           {proposals.length} Proposals
         </div>

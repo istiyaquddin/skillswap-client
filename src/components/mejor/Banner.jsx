@@ -30,7 +30,7 @@ const Banner = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden py-10 md:py-16">
+    <section className="relative overflow-hidden py-8 md:py-16">
       <div className="absolute inset-0">
         <div className="bg-grid-pattern absolute inset-0 opacity-40" />
         <div className="absolute left-1/4 top-10 h-[28rem] w-[28rem] rounded-full bg-amber-500/15 blur-[150px] animate-pulse-glow" />
@@ -38,7 +38,7 @@ const Banner = () => {
       </div>
 
       <div className="relative mx-auto w-[95%] lg:w-[78%]">
-        <div className="glass-panel overflow-hidden rounded-[2.5rem] p-6 md:p-12 lg:p-16 transition-all duration-300 relative">
+        <div className="glass-panel overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-8 md:p-12 lg:p-16 transition-all duration-300 relative">
           
           {/* Floating Badges for Visual Depth */}
           <div className="hidden xl:flex items-center gap-2 absolute top-8 right-12 bg-[var(--surface-strong)]/90 backdrop-blur border border-amber-500/30 px-3.5 py-1.5 rounded-2xl shadow-lg animate-float text-xs font-bold text-[var(--text)]">
@@ -51,9 +51,9 @@ const Banner = () => {
             <span>98.4% Completion Rate</span>
           </div>
 
-          <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="grid items-center gap-8 md:gap-12 lg:grid-cols-[1.15fr_0.85fr]">
             <div className="text-center lg:text-left">
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur">
+              <div className="mb-4 sm:mb-5 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 sm:px-4 py-1 sm:py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
@@ -61,20 +61,20 @@ const Banner = () => {
                 Campus-powered learning
               </div>
 
-              <h1 className="text-4xl font-black tracking-tight leading-[1.15] text-[var(--text)] md:text-5xl lg:text-6xl">
+              <h1 className="text-3xl sm:text-4xl font-black tracking-tight leading-[1.15] text-[var(--text)] md:text-5xl lg:text-6xl">
                 Trade skills.{" "}
                 <span className="amber-text-gradient inline-flex items-center gap-2">
                   Learn together.
-                  <Sparkles className="h-7 w-7 text-amber-400 animate-float hidden md:inline-block" />
+                  <Sparkles className="h-6 w-6 sm:h-7 sm:w-7 text-amber-400 animate-float hidden md:inline-block" />
                 </span>
               </h1>
 
-              <p className="mt-6 max-w-2xl text-base leading-7 text-[var(--muted)] md:text-lg">
+              <p className="mt-4 sm:mt-6 max-w-2xl text-sm sm:text-base leading-7 text-[var(--muted)] md:text-lg">
                 SkillSwap helps students teach what they know, learn from their
                 peers, and grow through a simple token-based campus community.
               </p>
 
-              <div className="mt-8 flex flex-wrap justify-center gap-4 lg:justify-start">
+              <div className="mt-6 sm:mt-8 flex flex-wrap justify-center gap-3 sm:gap-4 lg:justify-start">
                 {session?.user && session.user.role === "client" && (
                   <>
                     <Link
@@ -131,7 +131,7 @@ const Banner = () => {
                 )}
               </div>
 
-              <div className="mt-10 flex flex-wrap justify-center gap-2.5 lg:justify-start">
+              <div className="mt-7 sm:mt-10 flex flex-wrap justify-center gap-2 sm:gap-2.5 lg:justify-start">
                 {categories.map(({ label, icon: CategoryIcon }) => {
                   const categoryQuery = label.includes("Development")
                     ? "Development"
@@ -144,7 +144,7 @@ const Banner = () => {
                     <Link
                       key={label}
                       href={`/browse-task?category=${encodeURIComponent(categoryQuery)}`}
-                      className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-2 text-xs font-semibold text-[var(--muted)] transition-all duration-200 hover:border-amber-500/40 hover:text-amber-400 hover:scale-105 cursor-pointer group"
+                      className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-semibold text-[var(--muted)] transition-all duration-200 hover:border-amber-500/40 hover:text-amber-400 hover:scale-105 cursor-pointer group"
                     >
                       <CategoryIcon className="h-3.5 w-3.5 text-amber-400 group-hover:rotate-12 transition-transform" />
                       <span>{label}</span>
@@ -154,7 +154,7 @@ const Banner = () => {
               </div>
             </div>
 
-            <div className="rounded-[2rem] border border-[var(--border)] bg-[var(--surface-strong)] p-6 shadow-2xl transition-all duration-300 hover:border-amber-500/30">
+            <div className="rounded-[1.5rem] sm:rounded-[2rem] border border-[var(--border)] bg-[var(--surface-strong)] p-4 sm:p-6 shadow-2xl transition-all duration-300 hover:border-amber-500/30">
               <div className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--surface)] p-5">
                 <div className="flex items-center justify-between">
                   <div>

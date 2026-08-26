@@ -37,14 +37,14 @@ const HowItWorks = () => {
   return (
     <section className="relative py-16 md:py-24">
       <div className="relative mx-auto w-[95%] lg:w-[78%]">
-        <div className="text-center mb-14">
+        <div className="text-center mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur">
             <Zap className="h-3.5 w-3.5 animate-pulse text-amber-400" /> Learn by exchange
           </div>
-          <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[var(--text)] md:text-5xl">
+          <h2 className="mt-4 text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text)] md:text-5xl">
             How <span className="amber-text-gradient">SkillSwap</span> Works
           </h2>
-          <p className="mt-3 text-base text-[var(--muted)] max-w-xl mx-auto">
+          <p className="mt-3 text-sm sm:text-base text-[var(--muted)] max-w-xl mx-auto">
             A simple loop that keeps knowledge moving across campus.
           </p>
         </div>

@@ -93,9 +93,9 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {isPending ? (
-            <div className="h-9 w-24 animate-pulse rounded-full bg-[var(--surface-strong)]" />
+            <div className="h-9 w-20 sm:w-24 animate-pulse rounded-full bg-[var(--surface-strong)]" />
           ) : session?.user ? (
             <>
               <Link
@@ -103,7 +103,7 @@ const Navbar = () => {
                 className="flex items-center justify-center group shrink-0"
                 title="View Profile"
               >
-                <div className="relative h-10 w-10 min-w-10 min-h-10 shrink-0 aspect-square overflow-hidden rounded-full border-2 border-amber-500/40 group-hover:border-amber-400 group-hover:scale-105 transition-all shadow-md bg-amber-500/10 flex items-center justify-center">
+                <div className="relative h-9 w-9 sm:h-10 sm:w-10 min-w-9 sm:min-w-10 min-h-9 sm:min-h-10 shrink-0 aspect-square overflow-hidden rounded-full border-2 border-amber-500/40 group-hover:border-amber-400 group-hover:scale-105 transition-all shadow-md bg-amber-500/10 flex items-center justify-center">
                   <Image
                     src={userImage}
                     alt="User Profile"
@@ -120,7 +120,7 @@ const Navbar = () => {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-1.5 text-xs font-semibold text-amber-400 transition hover:bg-amber-500/20 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+                className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 sm:px-4 py-1.5 text-xs font-semibold text-amber-400 transition hover:bg-amber-500/20 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
               >
                 Logout
               </button>
@@ -129,16 +129,17 @@ const Navbar = () => {
             <>
               <Link
                 href="/login"
-                className="rounded-full px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:text-amber-400"
+                className="rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-[var(--text)] transition hover:text-amber-400 hidden xs:block"
               >
                 Sign In
               </Link>
 
               <Link
                 href="/signup"
-                className="amber-gradient amber-glow shine-button rounded-full px-5 py-2 text-sm font-bold text-white transition-all duration-300 hover:scale-105 active:scale-95"
+                className="amber-gradient amber-glow shine-button rounded-full px-4 sm:px-5 py-2 text-xs sm:text-sm font-bold text-white transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap"
               >
-                Get Started
+                <span className="hidden sm:inline">Get Started</span>
+                <span className="sm:hidden">Join</span>
               </Link>
             </>
           )}
