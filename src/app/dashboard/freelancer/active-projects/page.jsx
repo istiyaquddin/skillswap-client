@@ -214,8 +214,8 @@ export default function ActiveProjectsPage() {
                 </div>
 
                 {task.deliverableUrl && (
-                  <div className="pt-3 border-t border-current/10 flex items-center gap-2 text-xs">
-                    <span className="opacity-50">Submitted Deliverable:</span>
+                  <div className="pt-3 border-t border-[var(--border)] flex items-center gap-2 text-xs">
+                    <span className="text-[var(--muted)]">Submitted Deliverable:</span>
                     {task.deliverableUrl.startsWith("http") ? (
                       <a
                         href={task.deliverableUrl}
@@ -226,7 +226,7 @@ export default function ActiveProjectsPage() {
                         {task.deliverableUrl}
                       </a>
                     ) : (
-                      <span className="font-semibold break-all max-w-md text-inherit">
+                      <span className="font-semibold break-all max-w-md text-[var(--text)]">
                         {task.deliverableUrl}
                       </span>
                     )}
