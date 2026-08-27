@@ -78,6 +78,7 @@ const Footer = () => {
             <h3 className="mb-4 font-bold text-[var(--text)] text-sm tracking-wider uppercase">Platform</h3>
             <ul className="space-y-3 text-sm text-[var(--muted)]">
               <li><Link href="/about" className="transition hover:text-amber-400 hover:translate-x-1 inline-block">About Us</Link></li>
+              <li><Link href="/pricing" className="transition hover:text-amber-400 hover:translate-x-1 inline-block">Pricing</Link></li>
               <li><Link href="/contact" className="transition hover:text-amber-400 hover:translate-x-1 inline-block">Contact Support</Link></li>
               <li><Link href="/careers" className="transition hover:text-amber-400 hover:translate-x-1 inline-block">Careers</Link></li>
               <li><Link href="/blog" className="transition hover:text-amber-400 hover:translate-x-1 inline-block">Campus Blog</Link></li>

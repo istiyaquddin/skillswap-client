@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import TaskCard from "./TaskCard";
-import { Loader2, ArrowRight } from "lucide-react";
+import { ArrowRight, Briefcase } from "lucide-react";
 import { getAllTasks } from "@/lib/api/tasks";
 
 const FeaturedTasks = () => {
@@ -32,40 +32,43 @@ const FeaturedTasks = () => {
   }, []);
 
   return (
-    <section className="py-12">
-      <div className="mx-auto w-[95%] lg:w-[76%]">
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+    <section className="py-14">
+      <div className="mx-auto w-[95%] lg:w-[78%]">
+        {/* Section Header */}
+        <div className="mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
           <div>
-            <span className="text-xs font-extrabold uppercase tracking-widest text-[var(--accent)]">
+            <div className="section-badge mb-4">
+              <Briefcase className="h-3.5 w-3.5" />
               Latest Opportunities
-            </span>
-            <h2 className="mt-1 text-3xl font-black text-[var(--text)]">
-              Latest Featured Tasks
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-[var(--text)]">
+              Featured Tasks
             </h2>
-            <p className="mt-1 text-sm text-[var(--muted)]">
+            <p className="mt-1.5 text-sm text-[var(--muted)] max-w-md">
               Explore open projects posted by clients and submit your proposal today.
             </p>
           </div>
           <Link
             href="/browse-task"
-            className="inline-flex items-center gap-2 text-sm font-bold text-[var(--primary)] hover:underline"
+            className="inline-flex items-center gap-2 rounded-full border border-[#1dbf73]/30 bg-[#1dbf73]/10 px-4 py-2 text-sm font-bold text-[#1dbf73] transition-all hover:bg-[#1dbf73]/18 hover:scale-105 active:scale-95 shrink-0 group"
           >
-            Explore All Tasks <ArrowRight size={16} />
+            Explore All Tasks
+            <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
 
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="glass-panel rounded-[2rem] p-6 space-y-4 animate-pulse">
+              <div key={i} className="glass-panel rounded-[2rem] p-6 space-y-4 skeleton-shimmer">
                 <div className="flex justify-between items-center">
-                  <div className="h-6 w-24 bg-amber-500/20 rounded-full" />
-                  <div className="h-6 w-16 bg-emerald-500/20 rounded-full" />
+                  <div className="h-6 w-24 bg-[var(--border)] rounded-full" />
+                  <div className="h-6 w-16 bg-[var(--border)] rounded-full" />
                 </div>
                 <div className="h-6 w-3/4 bg-[var(--border)] rounded-xl" />
-                <div className="h-10 w-full bg-[var(--border)]/50 rounded-xl" />
+                <div className="h-10 w-full bg-[var(--border)]/60 rounded-xl" />
                 <div className="pt-4 border-t border-[var(--border)] flex justify-between items-center">
-                  <div className="h-6 w-16 bg-amber-500/30 rounded-lg" />
+                  <div className="h-6 w-16 bg-[var(--border)] rounded-lg" />
                   <div className="h-4 w-20 bg-[var(--border)] rounded-lg" />
                 </div>
               </div>
