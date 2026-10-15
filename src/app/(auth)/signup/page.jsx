@@ -22,6 +22,8 @@ import {
   ShieldAlert,
   X,
   Info,
+  UserCheck,
+  LogOut,
 } from "lucide-react";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
@@ -181,6 +183,69 @@ function SignupContent() {
       window.location.href = "/dashboard/client";
     }
   };
+
+  const { data: session } = authClient.useSession();
+
+  if (session?.user) {
+    const userRole = session.user.role || "client";
+    const dashboardHref = `/dashboard/${userRole}`;
+    return (
+      <div className="min-h-screen relative flex flex-col justify-center px-4 py-8 items-center bg-grid-pattern text-[var(--text)]">
+        <div className="glass-panel w-full max-w-md rounded-[2.5rem] p-8 text-center space-y-6 shadow-2xl border border-[var(--border)] relative z-10 animate-in fade-in duration-300">
+          <div className="w-16 h-16 rounded-3xl amber-gradient mx-auto flex items-center justify-center text-white shadow-[0_8px_25px_rgba(245,158,11,0.35)]">
+            <UserCheck className="w-8 h-8" />
+          </div>
+
+          <div className="space-y-2">
+            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3.5 py-1 rounded-full border border-emerald-500/20">
+              Active Session Detected
+            </span>
+            <h2 className="text-2xl font-black text-[var(--text)] tracking-tight">
+              Welcome back, {session.user.name || "User"}!
+            </h2>
+            <p className="text-xs text-[var(--muted)] leading-relaxed max-w-xs mx-auto">
+              You already have an active account as an authorized <strong className="text-amber-400 capitalize">{userRole}</strong>.
+            </p>
+          </div>
+
+          <div className="p-3.5 bg-[var(--surface-strong)] rounded-2xl border border-[var(--border)] text-xs flex items-center justify-between font-mono">
+            <span className="text-[var(--muted)]">Active Account:</span>
+            <span className="text-amber-400 font-bold truncate max-w-44">{session.user.email}</span>
+          </div>
+
+          <div className="space-y-3 pt-2">
+            <Link href={dashboardHref} className="block w-full">
+              <button className="w-full py-3.5 px-6 amber-gradient amber-glow text-white font-extrabold text-xs uppercase tracking-widest rounded-full hover:scale-[1.02] active:scale-95 transition shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+                <span>Go to {userRole.toUpperCase()} Dashboard</span>
+                <ChevronRight size={15} />
+              </button>
+            </Link>
+
+            <button
+              onClick={async () => {
+                await authClient.signOut({
+                  fetchOptions: {
+                    onSuccess: () => {
+                      toast.success("Signed out successfully");
+                      window.location.reload();
+                    },
+                  },
+                });
+              }}
+              className="w-full py-3 px-6 border border-[var(--border)] bg-[var(--surface-strong)] rounded-full text-xs font-bold text-[var(--muted)] hover:text-rose-400 hover:border-rose-400/30 transition cursor-pointer flex items-center justify-center gap-2"
+            >
+              <LogOut size={14} />
+              Sign Out & Register New Account
+            </button>
+          </div>
+
+          <Link href="/" className="inline-block text-xs font-bold text-[var(--muted)] hover:text-amber-400 transition">
+            ← Return to Homepage
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-grid-pattern px-3 py-8 flex flex-col justify-center text-[var(--text)]">

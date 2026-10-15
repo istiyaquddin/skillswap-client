@@ -47,15 +47,19 @@ export async function POST(request) {
       },
       mode: 'payment',
       success_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/dashboard/client/proposals`,
+      cancel_url: `${origin}/payment/cancel?reason=Escrow%20authorization%20was%20cancelled%20by%20client.`,
     });
 
     return NextResponse.redirect(session.url, 303)
   } catch (err) {
     console.error("Stripe Session Error: ", err);
-    return NextResponse.json(
-      { error: err.message },
-      { status: err.statusCode || 500 }
-    )
+    const headersList = await headers();
+    const origin = headersList.get('origin') || process.env.NEXT_PUBLIC_BETTER_AUTH_URL || 'http://localhost:3000';
+    return NextResponse.redirect(
+      `${origin}/payment/cancel?reason=${encodeURIComponent(
+        err.message || "Payment gateway could not initialize. Please verify card credentials."
+      )}`,
+      303
+    );
   }
 }
