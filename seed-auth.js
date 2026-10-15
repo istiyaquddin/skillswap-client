@@ -28,6 +28,16 @@ async function main() {
       status: "Active",
     },
     {
+      email: "admin@skillswap.edu",
+      password: "Admin123!",
+      name: "Alex Sterling (Campus Admin)",
+      role: "admin",
+      title: "Root Systems Administrator",
+      bio: "Supervising campus exchange operations, security audit protocols, user verifications, and financial escrow clearing.",
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400",
+      status: "Active",
+    },
+    {
       email: "client@demo.com",
       password: "DemoClient123",
       name: "Sarah Jenkins",
