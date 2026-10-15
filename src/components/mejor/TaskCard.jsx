@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock, Orbit, Send, Tag, Code, Palette, Megaphone, Flame } from "lucide-react";
+import { CheckCircle2, Clock, Orbit, Send, Tag, Code, Palette, Megaphone, Flame, AlertTriangle } from "lucide-react";
 
 const TaskCard = ({ task }) => {
   const taskDate = task.deadline || task.createdAt;
@@ -16,7 +16,10 @@ const TaskCard = ({ task }) => {
           .length
       : 0;
 
-  const isCompleted = task.status?.toLowerCase() === "completed";
+  const statusLower = (task.status || "open").toLowerCase();
+  const isPending = statusLower === "pending" || statusLower === "pending approval";
+  const isRejected = statusLower === "rejected";
+  const isCompleted = statusLower === "completed";
 
   const getCategoryMeta = (category) => {
     const catLower = (category || "").toLowerCase();
@@ -54,15 +57,23 @@ const TaskCard = ({ task }) => {
             className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full border flex items-center gap-1.5 backdrop-blur-md whitespace-nowrap ${
               isCompleted
                 ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                : isPending
+                ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
+                : isRejected
+                ? "bg-rose-500/10 text-rose-400 border-rose-500/20"
                 : "bg-[#1dbf73]/10 text-[#1dbf73] border-[#1dbf73]/20"
             }`}
           >
             {isCompleted ? (
               <CheckCircle2 size={13} />
+            ) : isPending ? (
+              <Clock size={13} className="text-amber-400" />
+            ) : isRejected ? (
+              <AlertTriangle size={13} className="text-rose-400" />
             ) : (
               <Orbit size={13} className="animate-spin" style={{ animationDuration: "3s" }} />
             )}
-            {task.status}
+            {isPending ? "Pending Review" : task.status}
           </span>
         </div>
 

@@ -5,7 +5,7 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { PlusCircle, Sparkles, Calendar, DollarSign, Tag, FileText, ArrowLeft, Loader2 } from "lucide-react";
+import { PlusCircle, Sparkles, Calendar, DollarSign, Tag, FileText, ArrowLeft, Loader2, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
 const TaskPostingPage = () => {
@@ -42,7 +42,9 @@ const TaskPostingPage = () => {
       client_email: session?.user?.email,
       client_name: session?.user?.name,
 
-      status: "open",
+      status: "pending",
+      approvalStatus: "pending",
+      escrowStatus: "unfunded",
       proposals: [],
       deliverable_url: "",
       createdAt: new Date().toISOString(),
@@ -52,7 +54,9 @@ const TaskPostingPage = () => {
       const res = await createTask(taskData);
 
       if (res.success && res.insertedId) {
-        toast.success("Task posted successfully!");
+        toast.success("Task submitted for Admin Review! It will appear live once approved by an Admin.", {
+          duration: 5000,
+        });
         e.target.reset();
         router.push("/dashboard/client/tasks");
       } else {
@@ -94,6 +98,19 @@ const TaskPostingPage = () => {
       {/* Form Card */}
       <div className="glass-panel rounded-[2.5rem] p-6 md:p-10 shadow-2xl space-y-6">
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Admin Moderation Notice */}
+          <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 flex items-start gap-3">
+            <ShieldCheck className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400">
+                Admin Quality &amp; Security Verification
+              </h3>
+              <p className="text-xs text-[var(--muted)] leading-relaxed">
+                All new project postings require Platform Admin authorization before appearing publicly to campus talent. Once submitted, your post will be reviewed promptly.
+              </p>
+            </div>
+          </div>
+
           {/* Title */}
           <div className="space-y-2">
             <label className="text-xs font-black uppercase tracking-widest text-[var(--muted)] flex items-center gap-1.5">

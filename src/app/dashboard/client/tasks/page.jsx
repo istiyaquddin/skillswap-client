@@ -36,7 +36,9 @@ const TasksPage = () => {
   // 🔥 ফিল্টার লজিক প্রয়োগ (স্ট্যাটাস ছোট হাতের বা বড় হাতের যাই হোক হ্যান্ডেল করবে)
   const filteredTasks = tasks.filter((task) => {
     if (filterStatus === "All") return true;
-    return task.status?.toLowerCase() === filterStatus.toLowerCase();
+    const taskStatus = (task.status || "open").toLowerCase();
+    if (filterStatus === "Pending") return taskStatus === "pending" || taskStatus === "pending approval";
+    return taskStatus === filterStatus.toLowerCase();
   });
 
   return (
@@ -53,23 +55,24 @@ const TasksPage = () => {
 
         {tasks.length > 0 && (
           <div className="flex gap-1.5 bg-[var(--surface-strong)] border border-[var(--border)] p-1.5 rounded-2xl w-fit backdrop-blur-md">
-            {["All", "Open", "Completed"].map((status) => (
-              <button
-                key={status}
-                onClick={() => setFilterStatus(status)}
-                className={`px-4 py-2 text-xs font-bold rounded-xl transition duration-300 cursor-pointer ${
-                  filterStatus === status
-                    ? "amber-gradient amber-glow text-white shadow-md"
-                    : "text-[var(--muted)] hover:text-[var(--text)]"
-                }`}
-              >
-                {status} (
-                {status === "All"
-                  ? tasks.length
-                  : tasks.filter((t) => t.status?.toLowerCase() === status.toLowerCase()).length}
-                )
-              </button>
-            ))}
+            {["All", "Pending", "Open", "Completed", "Rejected"].map((status) => {
+              const count = status === "All"
+                ? tasks.length
+                : tasks.filter((t) => (t.status || "").toLowerCase() === status.toLowerCase() || (status === "Pending" && (t.status || "").toLowerCase() === "pending approval")).length;
+              return (
+                <button
+                  key={status}
+                  onClick={() => setFilterStatus(status)}
+                  className={`px-3 sm:px-4 py-2 text-xs font-bold rounded-xl transition duration-300 cursor-pointer ${
+                    filterStatus === status
+                      ? "amber-gradient amber-glow text-white shadow-md"
+                      : "text-[var(--muted)] hover:text-[var(--text)]"
+                  }`}
+                >
+                  {status} ({count})
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
