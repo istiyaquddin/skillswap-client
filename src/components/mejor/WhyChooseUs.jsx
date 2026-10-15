@@ -137,7 +137,7 @@ export default function WhyChooseUs() {
                   {pillar.description}
                 </p>
 
-                <div className="pt-3 border-t border-[var(--border)] flex justify-between items-baseline">
+                <div className="pt-3 border-t border-[var(--border)] flex justify-between items-baseline relative z-10">
                   <span className="text-xl font-black text-[#1dbf73] font-mono">
                     {pillar.metric}
                   </span>
@@ -145,6 +145,11 @@ export default function WhyChooseUs() {
                     {pillar.metricLabel}
                   </span>
                 </div>
+
+                {/* Credosis-style oversized watermark number */}
+                <span className="absolute -bottom-3 -right-1 text-6xl font-black font-mono text-[var(--muted)]/10 select-none pointer-events-none">
+                  0{index + 1}
+                </span>
               </div>
             );
           })}
