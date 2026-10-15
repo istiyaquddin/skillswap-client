@@ -64,20 +64,37 @@ export default function AdminDashboardOverview() {
       ).replace(/\/$/, "");
 
       try {
-        const { data: tokenData } = await authClient.token();
+        let overview = null;
 
-        const requestHeaders = {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${tokenData?.token}`,
-        };
+        // 1. Try native same-origin Next.js route first
+        try {
+          const res = await fetch("/api/admin/overview", { method: "GET" });
+          if (res.ok) {
+            overview = await res.json();
+          }
+        } catch (e) {
+          console.warn("Direct Next.js overview route fallback triggered:", e);
+        }
 
-        const overviewRes = await fetch(`${apiUrl}/api/admin/overview`, {
-          method: "GET",
-          headers: requestHeaders,
-        });
-        const overview = await overviewRes.json();
+        // 2. Try external Express API if not resolved
+        if (!overview?.success && apiUrl) {
+          try {
+            const { data: tokenData } = await authClient.token();
+            const requestHeaders = {
+              "Content-Type": "application/json",
+              ...(tokenData?.token ? { authorization: `Bearer ${tokenData.token}` } : {}),
+            };
+            const overviewRes = await fetch(`${apiUrl}/api/admin/overview`, {
+              method: "GET",
+              headers: requestHeaders,
+            });
+            if (overviewRes.ok) {
+              overview = await overviewRes.json();
+            }
+          } catch (e) {}
+        }
 
-        if (overview.success) {
+        if (overview && overview.success) {
           const users = overview.users || [];
           const activeUsers = users.filter(
             (u) => u.status !== "Blocked",
