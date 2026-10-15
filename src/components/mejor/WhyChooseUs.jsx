@@ -156,7 +156,7 @@ export default function WhyChooseUs() {
         </div>
 
         {/* Dynamic Comparison Matrix */}
-        <div className="rounded-[2.5rem] border border-[var(--border)] bg-[var(--surface-strong)]/80 backdrop-blur-xl p-6 sm:p-10 shadow-xl">
+        <div className="rounded-[2rem] sm:rounded-[2.5rem] border border-[var(--border)] bg-[var(--surface-strong)]/80 backdrop-blur-xl p-4 sm:p-8 md:p-10 shadow-xl">
           <div className="text-center mb-8">
             <h3 className="text-xl sm:text-2xl font-black text-[var(--text)]">
               SkillSwap vs. Commercial Platforms

@@ -26,20 +26,20 @@ const SecureCheckoutView = ({ proposal, onBack }) => {
   )}&title=${encodeURIComponent(proposal.taskTitle || "")}`;
 
   return (
-    <div className="mx-auto max-w-4xl p-4 md:p-8 text-[var(--text)] min-h-screen font-sans">
+    <div className="mx-auto max-w-4xl p-3 sm:p-4 md:p-8 text-[var(--text)] min-h-screen font-sans">
       {/* Back Button */}
       <button
         onClick={onBack}
-        className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-amber-400 transition-all mb-8 cursor-pointer"
+        className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-amber-400 transition-all mb-6 sm:mb-8 cursor-pointer"
       >
         <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
         Back to proposals
       </button>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
         
         {/* Left Side: Summary & Escrow Guarantee */}
-        <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
+        <div className="lg:col-span-5 space-y-5 sm:space-y-6 lg:sticky lg:top-8">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl amber-gradient amber-glow flex items-center justify-center text-white font-black text-xs tracking-wider shadow-md">
               SS
@@ -50,10 +50,10 @@ const SecureCheckoutView = ({ proposal, onBack }) => {
             </div>
           </div>
 
-          <div className="p-6 glass-panel rounded-3xl shadow-xl space-y-2 border border-[var(--border)]">
+          <div className="p-5 sm:p-6 glass-panel rounded-2xl sm:rounded-3xl shadow-xl space-y-2 border border-[var(--border)]">
             <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] block">Total Payable to Escrow</span>
             <div className="flex items-baseline gap-1 text-amber-400">
-              <span className="text-5xl font-black tracking-tight">${proposal.proposedBudget}</span>
+              <span className="text-4xl sm:text-5xl font-black tracking-tight">${proposal.proposedBudget}</span>
               <span className="text-xs font-bold text-[var(--muted)] uppercase tracking-wider">USD</span>
             </div>
             <p className="text-[11px] text-[var(--muted)] pt-1 leading-relaxed">
@@ -72,7 +72,7 @@ const SecureCheckoutView = ({ proposal, onBack }) => {
         </div>
 
         {/* Right Side: Contract Parameters & Submission */}
-        <div className="lg:col-span-7 glass-panel rounded-3xl p-6 md:p-8 flex flex-col justify-between shadow-xl border border-[var(--border)] space-y-6">
+        <div className="lg:col-span-7 glass-panel rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 flex flex-col justify-between shadow-xl border border-[var(--border)] space-y-6">
           <div className="space-y-6">
             <h3 className="text-xs font-black uppercase tracking-widest text-amber-400 flex items-center gap-2 border-b border-[var(--border)] pb-4">
               <Layers className="w-3.5 h-3.5" />

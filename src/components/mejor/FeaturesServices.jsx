@@ -88,7 +88,7 @@ export default function FeaturesServices() {
         </div>
 
         {/* Interactive Category Tabs */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 sm:mb-10">
           {categories.map((cat) => {
             const Icon = cat.icon;
             const isActive = activeTab === cat.id;
@@ -96,7 +96,7 @@ export default function FeaturesServices() {
               <button
                 key={cat.id}
                 onClick={() => setActiveTab(cat.id)}
-                className={`flex items-center gap-2 px-5 py-3 rounded-full text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                className={`flex items-center gap-2 px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                   isActive
                     ? "bg-[#1dbf73] text-white shadow-[0_8px_20px_rgba(29,191,115,0.35)] scale-105"
                     : "glass-panel text-[var(--muted)] hover:text-[var(--text)] hover:border-[#1dbf73]/30"
@@ -110,7 +110,7 @@ export default function FeaturesServices() {
         </div>
 
         {/* Dynamic Detail & Interactive Showcase Card */}
-        <div className="glass-panel rounded-[2.5rem] p-6 sm:p-10 border border-[var(--border)] shadow-2xl relative overflow-hidden">
+        <div className="glass-panel rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-10 border border-[var(--border)] shadow-2xl relative overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Content */}
             <div className="lg:col-span-7 space-y-6">

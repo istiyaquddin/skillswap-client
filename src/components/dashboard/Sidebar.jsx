@@ -107,14 +107,15 @@ export default function Sidebar() {
       )}
 
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-screen w-72 flex-col border-r border-[var(--border)] bg-[var(--surface-strong)] p-4 transition-transform duration-300 ${
+        className={`fixed left-0 top-0 z-50 flex h-screen w-72 max-w-[85vw] flex-col border-r border-[var(--border)] bg-[var(--surface-strong)] p-4 transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:static md:translate-x-0`}
+        } md:static md:translate-x-0 md:max-w-none`}
       >
         {/* Close button (mobile) */}
         <button
           onClick={() => setIsOpen(false)}
-          className="absolute right-4 top-4 text-[var(--muted)] hover:text-[#1dbf73] transition-colors md:hidden"
+          aria-label="Close sidebar menu"
+          className="absolute right-3.5 top-3.5 p-2 rounded-xl text-[var(--muted)] hover:text-[#1dbf73] hover:bg-[var(--surface)] transition-all md:hidden cursor-pointer"
         >
           <X size={20} />
         </button>
@@ -141,7 +142,7 @@ export default function Sidebar() {
         </Link>
 
         {/* Nav Items */}
-        <nav className="space-y-1.5 flex-1">
+        <nav className="space-y-1.5 flex-1 overflow-y-auto no-scrollbar py-1">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
@@ -193,24 +194,24 @@ export default function Sidebar() {
         </nav>
 
         {/* Bottom: User Card */}
-        <div className="mt-auto space-y-3 pt-4">
+        <div className="mt-auto space-y-3 pt-3 pb-6 md:pb-2">
           {/* Workspace tip */}
           <div className="rounded-2xl border border-[#1dbf73]/20 bg-[#1dbf73]/6 p-3">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#1dbf73]/15 text-[#1dbf73] font-bold text-base">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#1dbf73]/15 text-[#1dbf73] font-bold text-sm">
                 ⚡
               </div>
-              <div>
-                <h4 className="text-sm font-bold text-[var(--text)]">Stay productive</h4>
-                <p className="text-xs text-[var(--muted)]">Your workspace is active.</p>
+              <div className="min-w-0">
+                <h4 className="text-xs font-bold text-[var(--text)]">Stay productive</h4>
+                <p className="text-[11px] text-[var(--muted)] truncate">Your workspace is active.</p>
               </div>
             </div>
           </div>
 
           {/* User profile row */}
-          <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2.5 shadow-sm">
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="h-10 w-10 min-w-10 min-h-10 shrink-0 aspect-square overflow-hidden rounded-full border-2 border-[#1dbf73]/30 bg-[#1dbf73]/10 flex items-center justify-center">
+          <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-sm">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="h-9 w-9 min-w-9 min-h-9 shrink-0 aspect-square overflow-hidden rounded-full border-2 border-[#1dbf73]/30 bg-[#1dbf73]/10 flex items-center justify-center">
                 <Image
                   src={
                     session?.user?.image?.startsWith("http")
@@ -218,30 +219,30 @@ export default function Sidebar() {
                       : avatar
                   }
                   alt="profile"
-                  width={40}
-                  height={40}
+                  width={36}
+                  height={36}
                   className="h-full w-full rounded-full object-cover aspect-square"
                 />
               </div>
               <div className="min-w-0">
-                <h4 className="max-w-[7rem] truncate text-sm font-bold text-[var(--text)]">
+                <h4 className="max-w-[4.8rem] sm:max-w-[6.5rem] truncate text-xs font-bold text-[var(--text)]">
                   {session?.user?.name}
                 </h4>
                 <span
-                  className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-bold mt-0.5 ${badge.cls}`}
+                  className={`inline-flex items-center rounded-full border px-1.5 py-0.5 text-[9px] font-bold mt-0.5 ${badge.cls}`}
                 >
                   {badge.label}
                 </span>
               </div>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5 shrink-0">
               <ThemeToggle />
               <button
                 onClick={handleLogout}
                 title="Logout"
-                className="rounded-xl p-2 text-[var(--muted)] transition-all hover:bg-rose-500/10 hover:text-rose-400 cursor-pointer"
+                className="rounded-xl p-1.5 text-[var(--muted)] transition-all hover:bg-rose-500/10 hover:text-rose-400 cursor-pointer"
               >
-                <LogOut size={17} />
+                <LogOut size={16} />
               </button>
             </div>
           </div>

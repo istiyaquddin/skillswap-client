@@ -97,32 +97,32 @@ export default function HowItWorks() {
           </p>
 
           {/* Dynamic Role Switcher */}
-          <div className="mt-8 inline-flex items-center p-1.5 rounded-full bg-[var(--surface-strong)] border border-[var(--border)] shadow-md">
+          <div className="mt-6 sm:mt-8 inline-flex items-center p-1 sm:p-1.5 rounded-full bg-[var(--surface-strong)] border border-[var(--border)] shadow-md max-w-full">
             <button
               onClick={() => setActiveRole("client")}
-              className={`px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              className={`px-3.5 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
                 activeRole === "client"
                   ? "bg-[#1dbf73] text-white shadow-[0_4px_16px_rgba(29,191,115,0.4)]"
                   : "text-[var(--muted)] hover:text-[var(--text)]"
               }`}
             >
-              For Clients (Post Tasks)
+              For Clients <span className="hidden sm:inline">(Post Tasks)</span>
             </button>
             <button
               onClick={() => setActiveRole("freelancer")}
-              className={`px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              className={`px-3.5 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
                 activeRole === "freelancer"
                   ? "bg-[#1dbf73] text-white shadow-[0_4px_16px_rgba(29,191,115,0.4)]"
                   : "text-[var(--muted)] hover:text-[var(--text)]"
               }`}
             >
-              For Freelancers (Earn Money)
+              For Freelancers <span className="hidden sm:inline">(Earn Money)</span>
             </button>
           </div>
         </div>
 
         {/* Step Cards */}
-        <div className="relative grid gap-8 md:grid-cols-3">
+        <div className="relative grid gap-5 sm:gap-8 md:grid-cols-3">
           {/* Connector Line (desktop) */}
           <div className="hidden md:block absolute top-[3.5rem] left-[calc(33.33%+1.5rem)] right-[calc(33.33%+1.5rem)] h-px bg-gradient-to-r from-[#1dbf73]/30 via-[#1dbf73]/60 to-[#1dbf73]/30" />
 
@@ -131,7 +131,7 @@ export default function HowItWorks() {
             return (
               <div
                 key={step.number}
-                className="glass-panel relative overflow-hidden rounded-[2rem] p-8 transition-all duration-300 hover:-translate-y-2 hover:border-[#1dbf73]/40 hover:shadow-2xl group block cursor-pointer"
+                className="glass-panel relative overflow-hidden rounded-[2rem] p-6 sm:p-8 transition-all duration-300 hover:-translate-y-2 hover:border-[#1dbf73]/40 hover:shadow-2xl group block cursor-pointer"
               >
                 {/* Top accent bar */}
                 <div

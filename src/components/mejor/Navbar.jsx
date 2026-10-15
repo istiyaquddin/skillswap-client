@@ -67,32 +67,32 @@ const Navbar = () => {
   return (
     <header className="sticky top-4 z-50 py-3">
       <nav
-        className={`glass-panel mx-auto flex w-[95%] items-center justify-between rounded-full px-4 py-2.5 lg:w-[78%] transition-all duration-300 ${
+        className={`glass-panel mx-auto flex w-[96%] sm:w-[95%] items-center justify-between rounded-full px-2.5 sm:px-4 py-2 sm:py-2.5 lg:w-[78%] transition-all duration-300 ${
           scrolled
             ? "shadow-[0_8px_32px_rgba(29,191,115,0.14),0_2px_12px_rgba(0,0,0,0.07)]"
             : "shadow-xl"
         }`}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           <div className="block md:hidden">
             <DropDownMenu menus={menus} />
           </div>
 
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-[#1a1c1e] text-white shadow-[0_8px_20px_rgba(29,191,115,0.32)] transition-all duration-300 group-hover:rotate-6 group-hover:scale-110">
-              <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-[#3b82f6] ring-[3px] ring-white/80 animate-pulse" />
-              <span className="absolute bottom-1.5 left-1.5 h-2 w-2 rounded-full bg-[#1dbf73]" />
-              <GraduationCap className="relative z-10 h-5 w-5 stroke-[2.2] group-hover:scale-110 transition-transform" />
+          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group">
+            <div className="relative flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-[#1a1c1e] text-white shadow-[0_8px_20px_rgba(29,191,115,0.32)] transition-all duration-300 group-hover:rotate-6 group-hover:scale-110">
+              <span className="absolute -right-1 -top-1 h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-[#3b82f6] ring-[2px] sm:ring-[3px] ring-white/80 animate-pulse" />
+              <span className="absolute bottom-1 left-1 sm:bottom-1.5 sm:left-1.5 h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-[#1dbf73]" />
+              <GraduationCap className="relative z-10 h-4 w-4 sm:h-5 sm:w-5 stroke-[2.2] group-hover:scale-110 transition-transform" />
               <Sparkles
-                className="absolute -bottom-1 -right-1 h-4 w-4 text-[#1dbf73] animate-spin"
+                className="absolute -bottom-1 -right-1 h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#1dbf73] animate-spin"
                 style={{ animationDuration: "4s" }}
               />
             </div>
             <div className="leading-tight">
-              <h2 className="text-[1.1rem] font-black tracking-tight text-[var(--text)]">
+              <h2 className="text-sm sm:text-[1.1rem] font-black tracking-tight text-[var(--text)]">
                 Skill<span className="amber-text-gradient">Swap</span>
               </h2>
-              <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--muted)] group-hover:text-[#1dbf73] transition-colors">
+              <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--muted)] group-hover:text-[#1dbf73] transition-colors hidden xs:block">
                 Campus exchange
               </span>
             </div>
@@ -113,7 +113,7 @@ const Navbar = () => {
         </ul>
 
         {/* Auth / User Actions */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           {isPending ? (
             <div className="h-9 w-20 sm:w-24 animate-pulse rounded-full bg-[var(--surface-strong)]" />
           ) : session?.user ? (
@@ -122,7 +122,7 @@ const Navbar = () => {
               <ThemeToggle />
 
               {/* Subtle divider separating global utilities from user account actions */}
-              <span className="h-5 w-[1px] bg-[var(--border)] opacity-60 shrink-0" aria-hidden="true" />
+              <span className="h-4 sm:h-5 w-[1px] bg-[var(--border)] opacity-60 shrink-0" aria-hidden="true" />
 
               {/* User Account Cluster: Avatar + Logout */}
               <Link
@@ -130,7 +130,7 @@ const Navbar = () => {
                 className="flex items-center justify-center group shrink-0"
                 title="View Profile"
               >
-                <div className="relative h-9 w-9 sm:h-10 sm:w-10 min-w-9 sm:min-w-10 min-h-9 sm:min-h-10 shrink-0 aspect-square overflow-hidden rounded-full border-2 border-[#1dbf73]/35 group-hover:border-[#1dbf73] group-hover:scale-105 transition-all shadow-md bg-[#1dbf73]/10 flex items-center justify-center">
+                <div className="relative h-8 w-8 sm:h-10 sm:w-10 min-w-8 sm:min-w-10 min-h-8 sm:min-h-10 shrink-0 aspect-square overflow-hidden rounded-full border-2 border-[#1dbf73]/35 group-hover:border-[#1dbf73] group-hover:scale-105 transition-all shadow-md bg-[#1dbf73]/10 flex items-center justify-center">
                   <Image
                     src={userImage}
                     alt="User Profile"
@@ -147,7 +147,7 @@ const Navbar = () => {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="rounded-full border border-[#1dbf73]/25 bg-[#1dbf73]/10 px-3 sm:px-4 py-1.5 text-xs font-semibold text-[#1dbf73] transition-all hover:bg-[#1dbf73]/20 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+                className="rounded-full border border-[#1dbf73]/25 bg-[#1dbf73]/10 px-2.5 sm:px-4 py-1.5 text-[11px] sm:text-xs font-semibold text-[#1dbf73] transition-all hover:bg-[#1dbf73]/20 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
               >
                 Logout
               </button>
