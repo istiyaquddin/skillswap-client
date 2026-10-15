@@ -118,6 +118,13 @@ const Navbar = () => {
             <div className="h-9 w-20 sm:w-24 animate-pulse rounded-full bg-[var(--surface-strong)]" />
           ) : session?.user ? (
             <>
+              {/* Day / Night Mode Switcher (Global Utility) */}
+              <ThemeToggle />
+
+              {/* Subtle divider separating global utilities from user account actions */}
+              <span className="h-5 w-[1px] bg-[var(--border)] opacity-60 shrink-0" aria-hidden="true" />
+
+              {/* User Account Cluster: Avatar + Logout */}
               <Link
                 href={getProfileHref(session.user.role)}
                 className="flex items-center justify-center group shrink-0"
@@ -137,9 +144,6 @@ const Navbar = () => {
                 </div>
               </Link>
 
-              {/* Day / Night Mode Switcher */}
-              <ThemeToggle />
-
               <button
                 type="button"
                 onClick={handleLogout}
@@ -152,6 +156,8 @@ const Navbar = () => {
             <>
               {/* Day / Night Mode Switcher */}
               <ThemeToggle />
+
+              <span className="h-5 w-[1px] bg-[var(--border)] opacity-60 hidden xs:block shrink-0" aria-hidden="true" />
 
               <Link
                 href="/login"
