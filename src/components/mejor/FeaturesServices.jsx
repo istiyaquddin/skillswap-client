@@ -159,10 +159,12 @@ export default function FeaturesServices() {
               <div className="pt-2">
                 <Link
                   href={`/browse-task?category=${encodeURIComponent(current.label)}`}
-                  className="amber-gradient amber-glow inline-flex items-center gap-2 rounded-full px-6 py-3 text-xs sm:text-sm font-bold text-white transition-all hover:scale-105 active:scale-95 group"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-full p-1.5 transition-all duration-300 focus-visible:outline-none cursor-pointer bg-gradient-to-r from-[#1dbf73] to-[#10b981] text-white shadow-[0_4px_20px_rgba(29,191,115,0.35)] hover:shadow-[0_8px_28px_rgba(29,191,115,0.5)] hover:scale-105 active:scale-95 pl-5 pr-1.5 py-2 text-xs sm:text-sm font-bold"
                 >
-                  Browse {current.label} Tasks
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <span className="pr-2">Browse {current.label} Tasks</span>
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-[#1dbf73] transition-transform duration-300 group-hover:translate-x-1">
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
                 </Link>
               </div>
             </div>

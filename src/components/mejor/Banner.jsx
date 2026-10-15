@@ -141,17 +141,19 @@ const Banner = () => {
                   <>
                     <Link
                       href="/login"
-                      className="amber-gradient amber-glow shine-button inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:scale-105 active:scale-95 group"
+                      className="group relative inline-flex items-center justify-center overflow-hidden rounded-full p-1.5 transition-all duration-300 focus-visible:outline-none cursor-pointer bg-gradient-to-r from-[#1dbf73] to-[#10b981] text-white shadow-[0_6px_25px_rgba(29,191,115,0.4)] hover:shadow-[0_10px_35px_rgba(29,191,115,0.6)] hover:scale-105 active:scale-95 pl-6 pr-2 py-2"
                     >
-                      Post a Task{" "}
-                      <FaArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                      <span className="font-bold text-sm pr-3">Post a Task</span>
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-[#1dbf73] transition-transform duration-300 group-hover:translate-x-1">
+                        <FaArrowRight className="h-3.5 w-3.5" />
+                      </span>
                     </Link>
                     <Link
                       href="/browse-task"
-                      className="rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-6 py-3.5 text-sm font-semibold text-[var(--text)] transition-all hover:border-[#1dbf73]/40 hover:text-[#1dbf73] hover:shadow-md group"
+                      className="group inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-6 py-3 text-sm font-bold text-[var(--text)] transition-all hover:border-[#1dbf73]/50 hover:text-[#1dbf73] hover:shadow-md hover:scale-105 active:scale-95"
                     >
-                      Browse Tasks{" "}
-                      <FaArrowRight className="inline-block ml-1 h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+                      Browse Tasks
+                      <FaArrowRight className="h-3 w-3 text-[var(--muted)] group-hover:text-[#1dbf73] transition-transform duration-300 group-hover:translate-x-1" />
                     </Link>
                   </>
                 )}

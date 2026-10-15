@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import DropDownMenu from "../minor/DropDownMenu";
 import NavLink from "../minor/NavLink";
+import ThemeToggle from "../minor/ThemeToggle";
 
 const Navbar = () => {
   const { data: session, isPending } = authClient.useSession();
@@ -136,6 +137,9 @@ const Navbar = () => {
                 </div>
               </Link>
 
+              {/* Day / Night Mode Switcher */}
+              <ThemeToggle />
+
               <button
                 type="button"
                 onClick={handleLogout}
@@ -146,6 +150,9 @@ const Navbar = () => {
             </>
           ) : (
             <>
+              {/* Day / Night Mode Switcher */}
+              <ThemeToggle />
+
               <Link
                 href="/login"
                 className="rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-[var(--muted)] transition-all hover:text-[#1dbf73] hidden xs:block"
@@ -155,11 +162,15 @@ const Navbar = () => {
 
               <Link
                 href="/signup"
-                className="amber-gradient amber-glow shine-button rounded-full px-4 sm:px-5 py-2 text-xs sm:text-sm font-bold text-white transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap flex items-center gap-1.5"
+                className="group relative inline-flex items-center justify-center overflow-hidden rounded-full p-1 transition-all duration-300 focus-visible:outline-none cursor-pointer bg-gradient-to-r from-[#1dbf73] to-[#10b981] text-white shadow-[0_4px_20px_rgba(29,191,115,0.35)] hover:shadow-[0_6px_28px_rgba(29,191,115,0.5)] hover:scale-105 active:scale-95 whitespace-nowrap pl-4 pr-1.5 py-1.5"
               >
-                <span className="hidden sm:inline">Get Started</span>
-                <span className="sm:hidden">Join</span>
-                <Sparkles className="h-3.5 w-3.5 opacity-80" />
+                <span className="font-bold text-xs sm:text-sm pr-2">
+                  <span className="hidden sm:inline">Get Started</span>
+                  <span className="sm:hidden">Join</span>
+                </span>
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-[#1dbf73] transition-transform duration-300 group-hover:translate-x-0.5">
+                  <Sparkles className="h-3.5 w-3.5" />
+                </span>
               </Link>
             </>
           )}

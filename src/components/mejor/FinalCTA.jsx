@@ -112,16 +112,21 @@ export default function FinalCTA() {
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <Link
                   href={`/signup?role=${selectedRole}`}
-                  className="amber-gradient amber-glow inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold text-white transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl group"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-full p-2 transition-all duration-300 focus-visible:outline-none cursor-pointer bg-gradient-to-r from-[#1dbf73] to-[#10b981] text-white shadow-[0_8px_30px_rgba(29,191,115,0.45)] hover:shadow-[0_12px_45px_rgba(29,191,115,0.65)] hover:scale-105 active:scale-95 pl-7 pr-2.5 py-3 text-sm font-bold"
                 >
-                  Get Started as a {selectedRole === "client" ? "Client" : "Freelancer"}
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <span className="pr-3">
+                    Get Started as a {selectedRole === "client" ? "Client" : "Freelancer"}
+                  </span>
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-[#1dbf73] transition-transform duration-300 group-hover:translate-x-1">
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
                 </Link>
                 <Link
                   href="/login"
-                  className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-7 py-4 text-sm font-bold text-[var(--text)] hover:border-[#1dbf73]/40 hover:text-[#1dbf73] transition-all"
+                  className="group inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-7 py-3.5 text-sm font-bold text-[var(--text)] hover:border-[#1dbf73]/50 hover:text-[#1dbf73] hover:shadow-md transition-all hover:scale-105 active:scale-95"
                 >
                   Sign In
+                  <ArrowRight className="h-3.5 w-3.5 text-[var(--muted)] group-hover:text-[#1dbf73] transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </div>
             </div>
