@@ -19,6 +19,11 @@ import {
   DollarSign,
   FileText,
   Calendar,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  Tag,
+  SlidersHorizontal,
 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
@@ -32,6 +37,10 @@ export default function TaskManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+
+  // Pagination states for data scaling
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(8);
 
   // Delete modal state
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -73,6 +82,11 @@ export default function TaskManagement() {
   useEffect(() => {
     loadTasks();
   }, [API_URL]);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, categoryFilter, statusFilter, pageSize]);
 
   // Admin approves or rejects task post
   const handleApproveOrRejectTask = async (task, action) => {
@@ -252,7 +266,8 @@ export default function TaskManagement() {
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch =
       task?.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      task?.clientEmail?.toLowerCase().includes(searchQuery.toLowerCase());
+      task?.clientEmail?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      task?.category?.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesCategory =
       categoryFilter === "all"
@@ -272,6 +287,12 @@ export default function TaskManagement() {
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
+  // Pagination calculation
+  const totalPages = Math.ceil(filteredTasks.length / pageSize) || 1;
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = Math.min(startIndex + pageSize, filteredTasks.length);
+  const paginatedTasks = filteredTasks.slice(startIndex, endIndex);
+
   // Telemetry counts
   const pendingCount = tasks.filter((t) => {
     const s = (t.status || "open").toLowerCase();
@@ -287,10 +308,10 @@ export default function TaskManagement() {
 
   if (loading) {
     return (
-      <div className="flex flex-col h-96 w-full items-center justify-center gap-3">
+      <div className="flex flex-col h-96 w-full items-center justify-center gap-3 font-sans">
         <Loader2 className="w-10 h-10 animate-spin text-amber-500" />
         <p className="text-xs font-semibold uppercase tracking-widest text-[var(--muted)]">
-          Loading Task Registry &amp; Moderation Telemetry...
+          Loading Scaled Task Registry &amp; Telemetry...
         </p>
       </div>
     );
@@ -312,7 +333,7 @@ export default function TaskManagement() {
             Job Posts &amp; <span className="amber-text-gradient">Moderation</span>
           </h1>
           <p className="text-sm text-[var(--muted)] max-w-xl">
-            Control job posting permissions, review unapproved tasks, award or revoke freelancer contracts, and oversee all platform assignments.
+            Control job posting permissions, approve or decline pending tasks, award or revoke student contracts, and audit platform assignments.
           </p>
         </div>
         <div className="flex items-center gap-2 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-full text-xs font-bold text-amber-400 shrink-0">
@@ -321,7 +342,7 @@ export default function TaskManagement() {
         </div>
       </div>
 
-      {/* Telemetry Cards */}
+      {/* Telemetry Metric Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {/* Pending Review */}
         <div
@@ -402,17 +423,17 @@ export default function TaskManagement() {
 
       {/* Search & Filter Toolbar */}
       <div className="glass-panel rounded-[2rem] p-5 space-y-4 shadow-md">
-        {/* Row 1: Search */}
-        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
-          <div className="relative flex-1 max-w-sm">
+        {/* Row 1: Search & Page size selector */}
+        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+          <div className="relative flex-1 max-w-md w-full">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--muted)]" />
             <input
               type="text"
               id="task-search-input"
-              placeholder="Search tasks by title or client email..."
+              placeholder="Search tasks by title, category, or client email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-full border border-[var(--border)] bg-[var(--surface-strong)] py-2.5 pl-11 pr-10 text-sm text-[var(--text)] outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 placeholder:text-[var(--muted)]"
+              className="w-full rounded-full border border-[var(--border)] bg-[var(--surface-strong)] py-2.5 pl-11 pr-10 text-xs font-semibold text-[var(--text)] outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 placeholder:text-[var(--muted)]"
             />
             {searchQuery && (
               <button
@@ -424,9 +445,23 @@ export default function TaskManagement() {
               </button>
             )}
           </div>
-          <span className="text-xs font-semibold text-[var(--muted)] shrink-0 md:ml-auto">
-            Showing {filteredTasks.length} of {tasks.length} tasks
-          </span>
+
+          <div className="flex items-center gap-3 shrink-0 text-xs font-bold text-[var(--muted)]">
+            <span>Show:</span>
+            <select
+              value={pageSize}
+              onChange={(e) => setPageSize(Number(e.target.value))}
+              className="bg-[var(--surface-strong)] border border-[var(--border)] rounded-full px-3 py-1.5 text-xs font-bold text-[var(--text)] outline-none cursor-pointer focus:border-amber-400 transition"
+            >
+              <option value={8}>8 per page</option>
+              <option value={15}>15 per page</option>
+              <option value={25}>25 per page</option>
+              <option value={50}>50 per page</option>
+            </select>
+            <span className="hidden sm:inline">
+              Showing {filteredTasks.length === 0 ? 0 : startIndex + 1}–{endIndex} of {filteredTasks.length}
+            </span>
+          </div>
         </div>
 
         {/* Row 2: Status pills */}
@@ -476,23 +511,23 @@ export default function TaskManagement() {
         </div>
       </div>
 
-      {/* Tasks Table */}
-      <div className="glass-panel rounded-[2rem] overflow-hidden shadow-xl">
+      {/* DESKTOP TABLE VIEW (Properly Scaled with explicit column proportions) */}
+      <div className="hidden md:block glass-panel rounded-[2rem] overflow-hidden shadow-xl border border-[var(--border)]">
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-left">
+          <table className="w-full border-collapse text-left min-w-[1050px]">
             <thead>
               <tr className="border-b border-[var(--border)] bg-[var(--surface-strong)] text-[11px] font-black uppercase tracking-wider text-[var(--muted)]">
-                <th className="px-5 py-4">Task Details</th>
-                <th className="px-5 py-4">Client</th>
-                <th className="px-5 py-4">Budget</th>
-                <th className="px-5 py-4">Status</th>
-                <th className="px-5 py-4">Proposals / Candidates</th>
-                <th className="px-5 py-4">Post Approval Actions</th>
-                <th className="px-5 py-4 text-right">Delete</th>
+                <th className="py-4 px-5 w-[28%] min-w-[260px]">Task Details</th>
+                <th className="py-4 px-5 w-[18%] min-w-[170px]">Client</th>
+                <th className="py-4 px-5 w-[10%] min-w-[90px]">Budget</th>
+                <th className="py-4 px-5 w-[14%] min-w-[130px]">Status</th>
+                <th className="py-4 px-5 w-[15%] min-w-[150px]">Candidates</th>
+                <th className="py-4 px-5 w-[11%] min-w-[130px]">Admin Decision</th>
+                <th className="py-4 px-4 w-[4%] text-right min-w-[50px]">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--border)] text-xs font-medium">
-              {filteredTasks.length === 0 ? (
+              {paginatedTasks.length === 0 ? (
                 <tr>
                   <td colSpan="7" className="px-6 py-16 text-center">
                     <div className="flex flex-col items-center gap-3">
@@ -504,7 +539,7 @@ export default function TaskManagement() {
                   </td>
                 </tr>
               ) : (
-                filteredTasks.map((task) => {
+                paginatedTasks.map((task) => {
                   const rawStatus = (task.status || "open").toLowerCase();
                   const isPending = rawStatus === "pending" || rawStatus === "pending approval";
                   const isRejected = rawStatus === "rejected";
@@ -532,12 +567,12 @@ export default function TaskManagement() {
                       className="hover:bg-[var(--surface)] transition-colors duration-150"
                     >
                       {/* Task Info */}
-                      <td className="px-5 py-4 max-w-xs">
-                        <div className="font-extrabold text-sm text-[var(--text)] line-clamp-1">
+                      <td className="py-4 px-5">
+                        <div className="font-extrabold text-sm text-[var(--text)] line-clamp-1" title={task.title}>
                           {task.title || "Untitled Task"}
                         </div>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="inline-flex rounded-full border border-amber-500/20 bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-bold text-amber-400 capitalize">
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <span className="inline-flex rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[10px] font-bold text-amber-400 capitalize">
                             {task.category || "General"}
                           </span>
                           <span className="text-[10px] text-[var(--muted)]">
@@ -547,30 +582,35 @@ export default function TaskManagement() {
                       </td>
 
                       {/* Client */}
-                      <td className="px-5 py-4 font-mono text-[11px] text-[var(--muted)]">
-                        {task.clientEmail}
+                      <td className="py-4 px-5">
+                        <div className="font-mono text-xs text-[var(--text)] truncate max-w-[180px]" title={task.clientEmail}>
+                          {task.clientEmail}
+                        </div>
+                        <span className="text-[10px] text-[var(--muted)] block">Job Poster</span>
                       </td>
 
                       {/* Budget */}
-                      <td className="px-5 py-4 font-black text-amber-400 text-sm">
-                        ${task.budget ? Number(task.budget).toLocaleString() : "0"}
+                      <td className="py-4 px-5">
+                        <span className="text-sm font-black text-amber-400">
+                          ${task.budget ? Number(task.budget).toLocaleString() : "0"}
+                        </span>
                       </td>
 
                       {/* Status */}
-                      <td className="px-5 py-4">
+                      <td className="py-4 px-5">
                         <span
-                          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold border ${badgeStyles}`}
+                          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold border whitespace-nowrap ${badgeStyles}`}
                         >
                           <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                          {isPending ? "Pending Admin Approval" : task.status}
+                          {isPending ? "Pending Approval" : task.status}
                         </span>
                       </td>
 
                       {/* Proposals Moderation */}
-                      <td className="px-5 py-4">
+                      <td className="py-4 px-5">
                         <button
                           onClick={() => setSelectedTaskForProposals(task)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface-strong)] text-xs font-bold text-[var(--text)] hover:border-amber-400 hover:text-amber-400 transition cursor-pointer shadow-sm group"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface-strong)] text-xs font-bold text-[var(--text)] hover:border-amber-400 hover:text-amber-400 transition cursor-pointer shadow-sm group whitespace-nowrap"
                         >
                           <Users className="w-3.5 h-3.5 text-amber-400" />
                           <span>{proposalsCount} Applicant{proposalsCount !== 1 ? "s" : ""}</span>
@@ -582,63 +622,73 @@ export default function TaskManagement() {
                         </button>
                       </td>
 
-                      {/* Moderation Approval Controls */}
-                      <td className="px-5 py-4">
-                        <div className="flex items-center gap-1.5">
-                          {isPending ? (
-                            <>
-                              <button
-                                onClick={() => handleApproveOrRejectTask(task, "approve")}
-                                disabled={isBusy}
-                                className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-400 hover:bg-emerald-500/20 transition cursor-pointer shadow-sm disabled:opacity-50"
-                                title="Approve Post & Make Live to Freelancers"
-                              >
-                                {isBusy ? (
-                                  <Loader2 className="w-3 h-3 animate-spin" />
-                                ) : (
-                                  <CheckCircle2 className="w-3.5 h-3.5" />
-                                )}
-                                Approve Post
-                              </button>
-                              <button
-                                onClick={() => handleApproveOrRejectTask(task, "reject")}
-                                disabled={isBusy}
-                                className="inline-flex items-center gap-1 rounded-full border border-rose-500/30 bg-rose-500/10 px-3 py-1 text-xs font-bold text-rose-400 hover:bg-rose-500/20 transition cursor-pointer shadow-sm disabled:opacity-50"
-                                title="Reject Post"
-                              >
-                                <XCircle className="w-3.5 h-3.5" />
-                                Reject
-                              </button>
-                            </>
-                          ) : isRejected ? (
+                      {/* Moderation Approval Decision Controls */}
+                      <td className="py-4 px-5">
+                        {isPending ? (
+                          <div className="flex items-center gap-1.5">
                             <button
                               onClick={() => handleApproveOrRejectTask(task, "approve")}
                               disabled={isBusy}
-                              className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-400 hover:bg-emerald-500/20 transition cursor-pointer shadow-sm disabled:opacity-50"
-                              title="Re-Approve Post"
+                              className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-3 py-1.5 text-xs font-bold text-emerald-400 hover:bg-emerald-500/25 transition cursor-pointer shadow-sm disabled:opacity-50 whitespace-nowrap"
+                              title="Approve Post & Make Live"
                             >
-                              <CheckCircle2 className="w-3.5 h-3.5" />
-                              Re-Approve
+                              {isBusy ? <Loader2 className="w-3 h-3 animate-spin" /> : <CheckCircle2 className="w-3.5 h-3.5" />}
+                              Approve
                             </button>
-                          ) : (
                             <button
                               onClick={() => handleApproveOrRejectTask(task, "reject")}
                               disabled={isBusy}
-                              className="inline-flex items-center gap-1 rounded-full border border-rose-500/20 bg-[var(--surface-strong)] px-2.5 py-1 text-[11px] font-semibold text-[var(--muted)] hover:text-rose-400 hover:border-rose-500/40 transition cursor-pointer shadow-sm"
-                              title="Revoke and mark as rejected"
+                              className="inline-flex items-center gap-1 rounded-full border border-rose-500/30 bg-rose-500/15 px-2.5 py-1.5 text-xs font-bold text-rose-400 hover:bg-rose-500/25 transition cursor-pointer shadow-sm disabled:opacity-50 whitespace-nowrap"
+                              title="Reject Post"
                             >
-                              <XCircle className="w-3 h-3" />
-                              Revoke Post
+                              <XCircle className="w-3.5 h-3.5" />
+                              Reject
                             </button>
-                          )}
-                        </div>
+                          </div>
+                        ) : isRejected ? (
+                          <button
+                            onClick={() => handleApproveOrRejectTask(task, "approve")}
+                            disabled={isBusy}
+                            className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-bold text-emerald-400 hover:bg-emerald-500/20 transition cursor-pointer shadow-sm disabled:opacity-50 whitespace-nowrap"
+                            title="Re-Approve Post"
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            Re-Approve
+                          </button>
+                        ) : isOpen ? (
+                          <div className="flex items-center gap-2">
+                            <span className="text-[11px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full whitespace-nowrap inline-flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> Live
+                            </span>
+                            <button
+                              onClick={() => handleApproveOrRejectTask(task, "reject")}
+                              disabled={isBusy}
+                              className="text-[10px] font-bold text-[var(--muted)] hover:text-rose-400 transition cursor-pointer underline whitespace-nowrap"
+                              title="Deactivate / Revoke this post"
+                            >
+                              Deactivate
+                            </button>
+                          </div>
+                        ) : isAccepted ? (
+                          <span className="text-[11px] font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2.5 py-1 rounded-full whitespace-nowrap inline-flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-blue-400" /> Active Contract
+                          </span>
+                        ) : isCompleted ? (
+                          <span className="text-[11px] font-bold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-2.5 py-1 rounded-full whitespace-nowrap inline-flex items-center gap-1">
+                            <CheckCircle2 className="w-3 h-3 text-violet-400" /> Settled
+                          </span>
+                        ) : (
+                          <span className="text-[11px] font-semibold text-[var(--muted)] capitalize">
+                            {task.status}
+                          </span>
+                        )}
                       </td>
 
                       {/* Action: Delete */}
-                      <td className="px-5 py-4 text-right">
+                      <td className="py-4 px-4 text-right">
                         <button
                           onClick={() => openDeleteModal(task)}
-                          className="inline-flex items-center gap-1 p-2 rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 transition cursor-pointer shadow-sm"
+                          className="inline-flex items-center p-2 rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 transition cursor-pointer shadow-sm"
                           title="Delete Task Record"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -651,6 +701,177 @@ export default function TaskManagement() {
             </tbody>
           </table>
         </div>
+
+        {/* Scaled Pagination Controls */}
+        <div className="p-4 border-t border-[var(--border)] bg-[var(--surface-strong)] flex items-center justify-between">
+          <p className="text-xs text-[var(--muted)] font-semibold">
+            Showing <span className="font-bold text-[var(--text)]">{filteredTasks.length === 0 ? 0 : startIndex + 1}</span> to{" "}
+            <span className="font-bold text-[var(--text)]">{endIndex}</span> of{" "}
+            <span className="font-bold text-[var(--text)]">{filteredTasks.length}</span> total entries
+          </p>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
+              className="p-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] hover:border-amber-400 transition disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
+              .map((p, idx, arr) => {
+                const prev = arr[idx - 1];
+                const showEllipsis = prev && p - prev > 1;
+
+                return (
+                  <div key={p} className="flex items-center">
+                    {showEllipsis && <span className="px-1 text-xs text-[var(--muted)]">…</span>}
+                    <button
+                      onClick={() => setCurrentPage(p)}
+                      className={`w-8 h-8 rounded-xl text-xs font-black transition cursor-pointer ${
+                        currentPage === p
+                          ? "amber-gradient amber-glow text-white shadow-md"
+                          : "border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--text)]"
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  </div>
+                );
+              })}
+
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="p-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] hover:border-amber-400 transition disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* MOBILE SCALED CARD VIEW (Clean Responsive Layout) */}
+      <div className="md:hidden space-y-4">
+        {paginatedTasks.length === 0 ? (
+          <div className="glass-panel p-8 text-center text-xs text-[var(--muted)] italic rounded-3xl">
+            No matching tasks found.
+          </div>
+        ) : (
+          paginatedTasks.map((task) => {
+            const rawStatus = (task.status || "open").toLowerCase();
+            const isPending = rawStatus === "pending" || rawStatus === "pending approval";
+            const isRejected = rawStatus === "rejected";
+            const isOpen = rawStatus === "open";
+            const isAccepted = rawStatus === "accepted" || rawStatus === "in progress";
+            const isCompleted = rawStatus === "completed";
+
+            const proposalsCount = Array.isArray(task.proposals) ? task.proposals.length : 0;
+            const acceptedProposal = Array.isArray(task.proposals)
+              ? task.proposals.find((p) => String(p.status).toLowerCase() === "accepted")
+              : null;
+
+            return (
+              <div key={task._id} className="glass-panel p-5 rounded-3xl space-y-4 border border-[var(--border)] shadow-md">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1 min-w-0">
+                    <span className="px-2.5 py-0.5 rounded-full border border-amber-500/20 bg-amber-500/10 text-[10px] font-bold text-amber-400 capitalize">
+                      {task.category || "General"}
+                    </span>
+                    <h3 className="font-black text-sm text-[var(--text)] leading-snug line-clamp-2">
+                      {task.title || "Untitled Task"}
+                    </h3>
+                    <p className="text-[11px] font-mono text-[var(--muted)] truncate">{task.clientEmail}</p>
+                  </div>
+
+                  <span className="text-base font-black text-amber-400 shrink-0">
+                    ${Number(task.budget || 0).toLocaleString()}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between text-xs pt-2 border-t border-[var(--border)]">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--muted)]">Status</span>
+                  <span
+                    className={`px-3 py-0.5 rounded-full text-xs font-bold border ${
+                      isPending
+                        ? "bg-amber-500/20 text-amber-400 border-amber-500/30"
+                        : isCompleted
+                        ? "bg-violet-500/20 text-violet-400 border-violet-500/30"
+                        : isAccepted
+                        ? "bg-blue-500/20 text-blue-400 border-blue-500/30"
+                        : isOpen
+                        ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                        : "bg-rose-500/20 text-rose-400 border-rose-500/30"
+                    }`}
+                  >
+                    {isPending ? "Pending Review" : task.status}
+                  </span>
+                </div>
+
+                {/* Candidate button & Action Controls */}
+                <div className="grid grid-cols-2 gap-2 pt-2">
+                  <button
+                    onClick={() => setSelectedTaskForProposals(task)}
+                    className="p-2.5 rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] text-xs font-bold text-[var(--text)] flex items-center justify-center gap-1.5"
+                  >
+                    <Users className="w-3.5 h-3.5 text-amber-400" />
+                    <span>{proposalsCount} Applicants</span>
+                    {acceptedProposal && <span className="text-emerald-400">✓</span>}
+                  </button>
+
+                  {isPending ? (
+                    <div className="flex gap-1.5">
+                      <button
+                        onClick={() => handleApproveOrRejectTask(task, "approve")}
+                        className="flex-1 p-2 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-bold text-xs"
+                      >
+                        Approve
+                      </button>
+                      <button
+                        onClick={() => handleApproveOrRejectTask(task, "reject")}
+                        className="p-2 rounded-2xl bg-rose-500/20 border border-rose-500/30 text-rose-400 font-bold text-xs"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => openDeleteModal(task)}
+                      className="p-2.5 rounded-2xl border border-rose-500/20 bg-rose-500/10 text-rose-400 text-xs font-bold flex items-center justify-center gap-1.5"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" /> Delete
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        )}
+
+        {/* Mobile Pagination */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between p-4 glass-panel rounded-2xl">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 rounded-xl text-xs font-bold border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] disabled:opacity-30"
+            >
+              Previous
+            </button>
+            <span className="text-xs font-bold text-[var(--muted)]">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 rounded-xl text-xs font-bold border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] disabled:opacity-30"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
 
       {/* PROPOSAL MODERATION MODAL ("Get the job or not") */}
@@ -664,7 +885,7 @@ export default function TaskManagement() {
                   <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-bold text-amber-400 flex items-center gap-1">
                     <ShieldCheck className="w-3 h-3" /> Contract Governance
                   </span>
-                  <span className="text-xs text-[var(--muted)]">Task ID: {selectedTaskForProposals._id}</span>
+                  <span className="text-xs text-[var(--muted)] font-mono">ID: {selectedTaskForProposals._id}</span>
                 </div>
                 <h3 className="text-xl font-black text-[var(--text)] line-clamp-1">
                   Candidate Moderation: {selectedTaskForProposals.title}
@@ -682,7 +903,7 @@ export default function TaskManagement() {
             </div>
 
             {/* Task Info Bar */}
-            <div className="grid grid-cols-3 gap-3 p-3 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] text-xs">
+            <div className="grid grid-cols-3 gap-3 p-3.5 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] text-xs">
               <div>
                 <span className="text-[10px] uppercase font-black text-[var(--muted)]">Client Email</span>
                 <p className="font-bold truncate text-[var(--text)]">{selectedTaskForProposals.clientEmail}</p>
@@ -727,7 +948,7 @@ export default function TaskManagement() {
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
                             <span className="font-bold text-sm text-[var(--text)]">
-                              {proposal.freelancerEmail || proposal.email || "Freelancer"}
+                              {proposal.freelancerEmail || proposal.email || "Freelancer Candidate"}
                             </span>
                             <span
                               className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${
