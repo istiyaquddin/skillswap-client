@@ -24,6 +24,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import ThemeToggle from "../minor/ThemeToggle";
 
 const roleBadge = {
   client: { label: "Client", cls: "bg-[#1dbf73]/15 text-[#1dbf73] border-[#1dbf73]/30" },
@@ -233,13 +234,16 @@ export default function Sidebar() {
                 </span>
               </div>
             </div>
-            <button
-              onClick={handleLogout}
-              title="Logout"
-              className="rounded-xl p-2 text-[var(--muted)] transition-all hover:bg-rose-500/10 hover:text-rose-400 cursor-pointer"
-            >
-              <LogOut size={17} />
-            </button>
+            <div className="flex items-center gap-1">
+              <ThemeToggle />
+              <button
+                onClick={handleLogout}
+                title="Logout"
+                className="rounded-xl p-2 text-[var(--muted)] transition-all hover:bg-rose-500/10 hover:text-rose-400 cursor-pointer"
+              >
+                <LogOut size={17} />
+              </button>
+            </div>
           </div>
         </div>
       </aside>
